@@ -716,17 +716,6 @@ export function DesignLogPreview({ delay, label, log }: { delay: number; label: 
             <TypewriterText as="p" text={log.relatedProject} speed={18} className="mt-2 text-sm leading-6 text-zinc-700" />
           </div>
         </div>
-        <div className="mt-6">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-400">Perspective Lens</div>
-          <div className="mt-3 grid gap-2 md:grid-cols-2">
-            {log.lens.slice(0, 4).map((lens) => (
-              <div key={lens.audience} className="rounded-[18px] bg-white p-4">
-                <div className="text-sm font-semibold text-black">{lens.audience}</div>
-                <TypewriterText as="p" text={lens.takeaway} speed={18} className="mt-2 text-sm leading-6 text-zinc-600" />
-              </div>
-            ))}
-          </div>
-        </div>
       </article>
     </MotionBlock>
   );

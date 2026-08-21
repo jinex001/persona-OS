@@ -304,6 +304,10 @@ function AnswerWorkspace({
   question: QuestionNode;
   onSelectQuestion: (question: string) => void;
 }) {
+  const answerBlocks = useMemo(
+    () => question.answerBlocks.filter((block) => block.type !== "perspectiveLens"),
+    [question.answerBlocks],
+  );
   const [visibleBlockCount, setVisibleBlockCount] = useState(0);
   const blockRefs = useRef<Array<HTMLDivElement | null>>([]);
 
@@ -312,7 +316,7 @@ function AnswerWorkspace({
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     if (!isPresenting) {
-      setVisibleBlockCount(question.answerBlocks.length);
+      setVisibleBlockCount(answerBlocks.length);
       return () => {
         if (timeoutId) clearTimeout(timeoutId);
       };
@@ -320,14 +324,14 @@ function AnswerWorkspace({
 
     setVisibleBlockCount(0);
 
-    const durations = question.answerBlocks.map((block) => estimateBlockDuration(block));
+    const durations = answerBlocks.map((block) => estimateBlockDuration(block));
 
     function revealBlock(index: number) {
       if (cancelled) return;
 
       setVisibleBlockCount(index + 1);
 
-      if (index === question.answerBlocks.length - 1) {
+      if (index === answerBlocks.length - 1) {
         timeoutId = setTimeout(() => {
           if (!cancelled) onPresentationComplete();
         }, durations[index]);
@@ -347,7 +351,7 @@ function AnswerWorkspace({
       cancelled = true;
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [isPresenting, onPresentationComplete, question]);
+  }, [answerBlocks, isPresenting, onPresentationComplete]);
 
   useEffect(() => {
     if (!isPresenting || visibleBlockCount === 0) return;
@@ -391,7 +395,7 @@ function AnswerWorkspace({
       </motion.div>
 
       <div className="mt-10 space-y-10">
-        {question.answerBlocks.slice(0, visibleBlockCount).map((block, index) => (
+        {answerBlocks.slice(0, visibleBlockCount).map((block, index) => (
           <div
             key={block.id}
             ref={(node) => {
@@ -404,7 +408,7 @@ function AnswerWorkspace({
         ))}
       </div>
 
-      {!isPresenting && visibleBlockCount >= question.answerBlocks.length ? (
+      {!isPresenting && visibleBlockCount >= answerBlocks.length ? (
         <DiscoveryRail cards={question.relatedCards} onSelect={onSelectQuestion} />
       ) : null}
     </div>
