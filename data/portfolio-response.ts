@@ -169,6 +169,12 @@ export const starterQuestions: Pick<QuestionNode, "id" | "question" | "intent" |
     intent: "Inspect a decision log and its evaluation lenses.",
     category: "Logs",
   },
+  {
+    id: "saas-admin-redesign",
+    question: "Show me the SaaS Admin Redesign case.",
+    intent: "Open a structural refactoring case study about a complex SaaS admin interface.",
+    category: "Work",
+  },
 ];
 
 const sharedLens: PerspectiveLens[] = [
