@@ -309,6 +309,11 @@ export const questionBank: QuestionNode[] = [
             summary: "A system for translating ambiguous work into promptable, inspectable flows.",
             outcome: "Reusable workflow patterns and faster prototype cycles.",
           },
+          {
+            title: "SaaS Admin Redesign",
+            summary: "A structural refactoring of a complex Workspace Manager admin interface without changing its underlying business logic.",
+            outcome: "A clearer responsibility hierarchy across global, navigation, page, filter, and data layers.",
+          },
         ],
       },
       {
@@ -570,6 +575,13 @@ export const questionBank: QuestionNode[] = [
         reason: "Inspect the proof behind the case story.",
         targetQuestion: "What proves the quality of your work?",
       },
+      {
+        id: "room-case-saas",
+        type: "Case",
+        title: "SaaS Admin Redesign",
+        reason: "Compare with another structural, responsibility-driven redesign.",
+        targetQuestion: "Show me the SaaS Admin Redesign case.",
+      },
     ],
     evidenceReferences: [
       { label: "State taxonomy", detail: "Availability states separated by meeting data and operational rules.", type: "artifact" },
@@ -714,6 +726,137 @@ export const questionBank: QuestionNode[] = [
     ],
     followUpQuestions: ["Who are you?", "How has your design philosophy changed?"],
   },
+  {
+    id: "saas-admin-redesign",
+    question: "Show me the SaaS Admin Redesign case.",
+    intent: "Open a structural refactoring case study about reorganizing a complex SaaS admin interface without changing its underlying business logic.",
+    category: "Work",
+    answerTitle: "SaaS Admin Redesign",
+    answerBlocks: [
+      {
+        id: "saas-summary",
+        type: "summary",
+        label: "Case Summary",
+        title: "The problem wasn't the functionality. It was how the functionality was structured.",
+        body:
+          "The Workspace Manager admin interface had accumulated multiple responsibilities within the same visual hierarchy: global navigation, page actions, filters, tabs, search, and data tables all competed within one flat structure. The redesign was scoped as structural refactoring rather than functional redesign. Business logic, data models, and filter behavior stayed untouched; what changed was the architecture through which users understand and interact with that functionality.",
+        signals: ["SaaS admin UX", "Information architecture", "Structural refactoring", "Progressive disclosure"],
+      },
+      {
+        id: "saas-reasoning",
+        type: "designReasoning",
+        label: "Design Reasoning",
+        title: "Structural decisions",
+        steps: [
+          "Separate interface responsibility into distinct layers: global, navigation, page context, query and filtering, and data.",
+          "Move application-wide actions (organization switcher, notifications, help, changelog) into a dedicated global header, away from page layouts.",
+          "Reorganize sidebar navigation into collapsible groups (Setup, Management, Analysis) with collapsed and full-width states.",
+          "Unify the main content area around a single card: page title, tabs, and primary actions positioned above the data.",
+          "Reorder filters by frequency: search and date range stay primary; building, floor, and department move into a collapsible advanced section.",
+          "Integrate the data table directly with its filter layer and remove duplicate result-count displays.",
+        ],
+      },
+      {
+        id: "saas-evidence",
+        type: "evidence",
+        label: "Evidence",
+        title: "Structural decisions and artifacts",
+        items: [
+          {
+            title: "Sidebar Navigation",
+            detail: "Collapsible navigation groups organized into higher-level categories, with a minimized and full-width state to let navigation scale as functionality grows.",
+            references: [{ label: "Navigation restructuring", detail: "Setup, Management, and Analysis groups with preserved expand/collapse state.", type: "artifact" }],
+          },
+          {
+            title: "Global Header",
+            detail: "Application-wide actions separated from page-specific functionality so users can distinguish global controls from page controls.",
+            references: [{ label: "Global actions", detail: "Organization switcher, notifications, help, and changelog moved out of individual page layouts.", type: "artifact" }],
+          },
+          {
+            title: "Page Layout & Content Container",
+            detail: "A unified card container establishes a predictable page anatomy: where the user is, what actions are available, how the view is configured, and where data appears.",
+            references: [{ label: "Content container", detail: "Tabs moved above the data card; titles and primary actions (Export, Add Booking) placed at the page context level.", type: "artifact" }],
+          },
+          {
+            title: "Filter & Search Hierarchy",
+            detail: "Filtering controls reorganized by frequency and importance to reduce default complexity while keeping advanced filtering available.",
+            references: [{ label: "Progressive disclosure", detail: "Search and date range as primary controls; secondary filters collapsed into an advanced section.", type: "process note" }],
+          },
+          {
+            title: "Data Table Integration",
+            detail: "Filtering and resulting data treated as one continuous task; the column selector moved into the table header and redundant result counts removed.",
+            references: [{ label: "Implementation scope", detail: "Jira-documented scope confirming business logic, data model, and existing functionality were preserved.", type: "process note" }],
+          },
+        ],
+      },
+      {
+        id: "saas-lens",
+        type: "perspectiveLens",
+        label: "Perspective Lens",
+        title: "How the case reads by audience",
+        lenses: [
+          {
+            audience: "Recruiter",
+            takeaway: "Shows the ability to bring order to a genuinely complex enterprise admin surface without inventing new scope.",
+          },
+          {
+            audience: "Design Director",
+            takeaway: "Demonstrates architectural judgment: separating scope and responsibility instead of solving complexity by adding new behavior.",
+          },
+          {
+            audience: "Engineering Manager",
+            takeaway: "Shows respect for existing business logic, data models, and fetch behavior while still improving the interface materially.",
+          },
+          {
+            audience: "Potential Client",
+            takeaway: "Communicates that meaningful redesign doesn't always require rebuilding functionality, which lowers delivery risk.",
+          },
+          {
+            audience: "Future Self",
+            takeaway: "Keeps the case honest by documenting only the verified outcome: a new interface architecture, not unverified efficiency claims.",
+          },
+        ],
+      },
+      {
+        id: "saas-next",
+        type: "nextQuestions",
+        label: "Next Questions",
+        title: "Continue exploring",
+        questions: ["Show me the Meeting Room App Redesign case.", "What proves the quality of your work?"],
+      },
+    ],
+    relatedCards: [
+      {
+        id: "saas-ask-thinking",
+        type: "Ask",
+        title: "How I think",
+        reason: "Connect this case back to the reusable thinking model.",
+        targetQuestion: "Who are you?",
+      },
+      {
+        id: "saas-case-room",
+        type: "Case",
+        title: "Meeting Room App Redesign",
+        reason: "Compare with another structural, state-driven redesign.",
+        targetQuestion: "Show me the Meeting Room App Redesign case.",
+      },
+      {
+        id: "saas-evidence-card",
+        type: "Evidence",
+        title: "Evidence map",
+        reason: "See how process notes and artifacts support this case.",
+        targetQuestion: "What proves the quality of your work?",
+      },
+    ],
+    evidenceReferences: [
+      { label: "Navigation restructuring", detail: "Setup, Management, and Analysis groups with preserved expand/collapse state.", type: "artifact" },
+      { label: "Global actions", detail: "Organization switcher, notifications, help, and changelog moved out of individual page layouts.", type: "artifact" },
+      { label: "Content container", detail: "Tabs moved above the data card; titles and primary actions placed at the page context level.", type: "artifact" },
+      { label: "Progressive disclosure", detail: "Search and date range as primary controls; secondary filters collapsed into an advanced section.", type: "process note" },
+      { label: "Implementation scope", detail: "Jira-documented scope confirming business logic, data model, and existing functionality were preserved.", type: "process note" },
+    ],
+    followUpQuestions: ["Show me the Meeting Room App Redesign case.", "What proves the quality of your work?"],
+  },
 ];
 
 export const fallbackQuestion: QuestionNode = {
@@ -782,6 +925,9 @@ export function resolveQuestion(input: string): QuestionNode {
   if (normalized.includes("meeting") || normalized.includes("case")) return questionBank[2];
   if (normalized.includes("evidence") || normalized.includes("prove") || normalized.includes("proof")) return questionBank[3];
   if (normalized.includes("log") || normalized.includes("decision")) return questionBank[4];
+  if (normalized.includes("saas") || normalized.includes("admin") || normalized.includes("workspace manager")) {
+    return questionBank.find((node) => node.id === "saas-admin-redesign") ?? fallbackQuestion;
+  }
 
   return {
     ...fallbackQuestion,
