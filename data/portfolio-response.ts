@@ -471,6 +471,12 @@ export const questionBank: QuestionNode[] = [
     intent: "Open a case study about a tablet-based room display, real-time availability, and admin-defined room rules.",
     category: "Work",
     answerTitle: "Meeting Room App Redesign",
+    heroMedia: {
+      kind: "image",
+      label: "Cover image placeholder · 1920 × 1080 recommended",
+      tag: "Evidence · Cover Image",
+      meta: "16:9 · edge-to-edge · caption optional",
+    },
     answerBlocks: [
       {
         id: "room-summary",
@@ -758,6 +764,12 @@ export const questionBank: QuestionNode[] = [
     intent: "Open a structural refactoring case study about reorganizing a complex SaaS admin interface without changing its underlying business logic.",
     category: "Work",
     answerTitle: "SaaS Admin Redesign",
+    heroMedia: {
+      kind: "image",
+      label: "Cover image placeholder · 1920 × 1080 recommended",
+      tag: "Evidence · Cover Image",
+      meta: "16:9 · edge-to-edge · caption optional",
+    },
     answerBlocks: [
       {
         id: "saas-summary",
