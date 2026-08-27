@@ -9,6 +9,7 @@ import type {
   DesignLog,
   DiscoveryCardData,
   EvidenceItem,
+  HeroMedia,
   PerspectiveLens,
   SourceReference,
 } from "@/data/portfolio-response";
@@ -37,6 +38,71 @@ export function MotionBlock({ delay, eyebrow, children }: MotionBlockProps) {
       <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-400">{eyebrow}</div>
       {children}
     </motion.section>
+  );
+}
+
+type HeroMediaBlockProps = {
+  media: HeroMedia;
+};
+
+export function HeroMediaBlock({ media }: HeroMediaBlockProps) {
+  const isMotion = media.kind === "motion";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="relative -mx-4 mt-10 h-[80vh] w-[calc(100%+2rem)] overflow-hidden bg-zinc-100 md:-mx-16 md:w-[calc(100%+8rem)]"
+      style={
+        isMotion
+          ? undefined
+          : {
+              backgroundImage: media.src
+                ? `url(${media.src})`
+                : "repeating-linear-gradient(45deg, #f4f4f2 0 2px, #ececea 2px 34px)",
+              backgroundSize: media.src ? "cover" : undefined,
+              backgroundPosition: "center",
+            }
+      }
+    >
+      {isMotion ? (
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(1200px 600px at 20% 20%, #e9e6ff 0%, transparent 55%), radial-gradient(1000px 700px at 80% 70%, #fdeee3 0%, transparent 55%), #f4f4f2",
+          }}
+        >
+          <div className="hero-media-orb hero-media-orb-1 absolute bottom-[8%] left-[8%] h-[46vh] w-[46vh] rounded-full blur-[2px]" style={{ background: "radial-gradient(circle at 35% 35%, rgba(10,10,10,0.10), rgba(10,10,10,0) 70%)" }} />
+          <div className="hero-media-orb hero-media-orb-2 absolute right-[12%] top-[20%] h-[30vh] w-[30vh] rounded-full blur-[2px]" style={{ background: "radial-gradient(circle at 35% 35%, rgba(10,10,10,0.10), rgba(10,10,10,0) 70%)" }} />
+        </div>
+      ) : null}
+
+      {!media.src ? (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 text-zinc-400">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="h-8 w-8 opacity-40">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <path d="M21 15l-5-5L5 21" />
+          </svg>
+          <span className="text-[13px]">{media.label}</span>
+        </div>
+      ) : null}
+
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ background: "linear-gradient(180deg, rgba(255,255,255,0) 55%, rgba(255,255,255,0.9) 100%)" }}
+      />
+
+      <div className="relative z-[1] flex h-full items-end justify-between px-6 pb-6 md:px-14 md:pb-8">
+        <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.08em] text-zinc-500">
+          <span className="h-1.5 w-1.5 rounded-full bg-zinc-500" />
+          {media.tag}
+        </div>
+        <div className="text-[11px] text-zinc-500">{media.meta}</div>
+      </div>
+    </motion.div>
   );
 }
 

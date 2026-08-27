@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { AnswerBlockRenderer, AssemblingState, DiscoveryRail } from "@/components/knowledge-blocks";
+import { AnswerBlockRenderer, AssemblingState, DiscoveryRail, HeroMediaBlock } from "@/components/knowledge-blocks";
 import {
   questionCategories,
   resolveQuestion,
@@ -382,6 +382,8 @@ function AnswerWorkspace({
           <div className="absolute bottom-[-9px] right-0 h-0 w-0 border-l-[14px] border-t-[14px] border-l-transparent border-t-black" />
         </div>
       </motion.div>
+
+      {question.heroMedia ? <HeroMediaBlock media={question.heroMedia} /> : null}
 
       <motion.div
         initial={{ opacity: 0, y: 14 }}

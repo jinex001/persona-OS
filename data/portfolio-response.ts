@@ -124,12 +124,21 @@ export type DiscoveryCardData = {
   targetQuestion: string;
 };
 
+export type HeroMedia = {
+  kind: "image" | "motion";
+  label: string;
+  tag: string;
+  meta: string;
+  src?: string;
+};
+
 export type QuestionNode = {
   id: string;
   question: string;
   intent: string;
   category: QuestionCategory;
   answerTitle: string;
+  heroMedia?: HeroMedia;
   answerBlocks: AnswerBlock[];
   relatedCards: DiscoveryCardData[];
   evidenceReferences: SourceReference[];
@@ -887,6 +896,12 @@ export const questionBank: QuestionNode[] = [
     intent: 'Turning Design System Changes into Engineering Work Automation — "Figma" → "Jira"',
     category: "Work",
     answerTitle: "AI Workflow",
+    heroMedia: {
+      kind: "image",
+      label: "Cover image placeholder · 1920 × 1080 recommended",
+      tag: "Evidence · Cover Image",
+      meta: "16:9 · edge-to-edge · caption optional",
+    },
     answerBlocks: [
       {
         id: "jira-summary",
