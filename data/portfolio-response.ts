@@ -140,6 +140,12 @@ export const questionCategories: QuestionCategory[] = ["Identity", "Work", "Evid
 
 export const starterQuestions: Pick<QuestionNode, "id" | "question" | "intent" | "category">[] = [
   {
+    id: "jira-automation",
+    question: "Show me the Design System → Jira Automation case.",
+    intent: "Open a hackathon workflow-automation case connecting Figma design-system changes to Jira.",
+    category: "Work",
+  },
+  {
     id: "who-are-you",
     question: "Who are you?",
     intent: "Build a first identity map from role, judgment, proof, and next paths.",
@@ -319,6 +325,11 @@ export const questionBank: QuestionNode[] = [
             title: "SaaS Admin Redesign",
             summary: "A structural refactoring of a complex Workspace Manager admin interface without changing its underlying business logic.",
             outcome: "A clearer responsibility hierarchy across global, navigation, page, filter, and data layers.",
+          },
+          {
+            title: "Design System → Jira Automation",
+            summary: "A hackathon prototype connecting Figma design-system changes to structured Jira engineering tickets.",
+            outcome: "A tested workflow architecture for how design intent should cross the boundary into engineering work.",
           },
         ],
       },
@@ -847,6 +858,13 @@ export const questionBank: QuestionNode[] = [
         targetQuestion: "Show me the Meeting Room App Redesign case.",
       },
       {
+        id: "saas-case-jira",
+        type: "Case",
+        title: "Design System → Jira Automation",
+        reason: "See a workflow-shaped case alongside this interface-shaped one.",
+        targetQuestion: "Show me the Design System → Jira Automation case.",
+      },
+      {
         id: "saas-evidence-card",
         type: "Evidence",
         title: "Evidence map",
@@ -862,6 +880,124 @@ export const questionBank: QuestionNode[] = [
       { label: "Implementation scope", detail: "Jira-documented scope confirming business logic, data model, and existing functionality were preserved.", type: "process note" },
     ],
     followUpQuestions: ["Show me the Meeting Room App Redesign case.", "What proves the quality of your work?"],
+  },
+  {
+    id: "jira-automation",
+    question: "Show me the Design System → Jira Automation case.",
+    intent: "Open a hackathon workflow-automation case connecting Figma design-system changes to Jira.",
+    category: "Work",
+    answerTitle: "Design System → Jira Automation",
+    answerBlocks: [
+      {
+        id: "jira-summary",
+        type: "summary",
+        label: "Case Summary",
+        title: "What if a change in the design system could initiate the development workflow itself?",
+        body:
+          "Design systems evolve continuously, but the engineering workflow around them stays manual: a designer updates a component, and someone still has to notice, explain, and create a Jira ticket by hand. During a hackathon I prototyped a workflow connecting Figma design-system updates directly to structured Jira tickets, treating the design system as a source of product events rather than an endpoint.",
+        signals: ["Workflow automation", "Design systems", "Design-to-engineering handoff", "Hackathon prototype"],
+      },
+      {
+        id: "jira-reasoning",
+        type: "designReasoning",
+        label: "Design Reasoning",
+        title: "From design change to development task",
+        steps: [
+          "Reframe the Figma design system as a source of product events, not just where components are designed.",
+          "Distinguish design activity from implementation-ready change, so experimentation doesn't create ticket noise.",
+          "Translate a qualifying change into structured implementation context: what changed, why, where, what needs implementation, and what's affected.",
+          "Generate a Jira ticket that preserves that context and a direct reference back to the Figma source.",
+          "Keep automation scoped to coordination, not decision-making — priority and implementation strategy stay human calls.",
+        ],
+      },
+      {
+        id: "jira-evidence",
+        type: "evidence",
+        label: "Evidence",
+        title: "Workflow architecture",
+        items: [
+          {
+            title: "Trigger Design",
+            detail: "Not every Figma change should create a ticket. The workflow needed a clear signal distinguishing in-progress design activity from an implementation-ready change.",
+            references: [{ label: "Trigger logic", detail: "Conceptual gate between design iteration and engineering-ready change.", type: "process note" }],
+          },
+          {
+            title: "Information Contract",
+            detail: "A useful ticket had to answer what changed, why, where in Figma, what needs implementation, and what else is affected — designed as a structured handoff rather than a free-text note.",
+            references: [{ label: "Ticket context model", detail: "Structured fields connecting design rationale to engineering scope.", type: "process note" }],
+          },
+          {
+            title: "Hackathon Scope",
+            detail: "Built to test the critical path — Figma change to structured Jira issue — rather than production-ready infrastructure.",
+            references: [{ label: "Critical-path prototype", detail: "Tested the highest-risk assumption: can a design-system action become a useful engineering task without a manual handoff.", type: "prototype" }],
+          },
+        ],
+      },
+      {
+        id: "jira-lens",
+        type: "perspectiveLens",
+        label: "Perspective Lens",
+        title: "How the case reads by audience",
+        lenses: [
+          {
+            audience: "Design Director",
+            takeaway: "Shows systems thinking about where design intent leaks at tool boundaries, not just interface craft.",
+          },
+          {
+            audience: "Engineering Manager",
+            takeaway: "Demonstrates designing an information contract that gives engineering structured context instead of fragmented handoffs.",
+          },
+          {
+            audience: "Potential Client",
+            takeaway: "Signals a bias toward reducing coordination overhead between disciplines, not just producing more screens.",
+          },
+          {
+            audience: "Recruiter",
+            takeaway: "A concise hackathon story that reads clearly even without deep workflow-tooling background.",
+          },
+          {
+            audience: "Future Self",
+            takeaway: "Marked explicitly as a hackathon prototype — conceptual scope and open evidence gaps are stated rather than implied as shipped.",
+          },
+        ],
+      },
+      {
+        id: "jira-next",
+        type: "nextQuestions",
+        label: "Next Questions",
+        title: "Continue exploring",
+        questions: ["Show me the SaaS Admin Redesign case.", "Show me the Meeting Room App Redesign case."],
+      },
+    ],
+    relatedCards: [
+      {
+        id: "jira-ask-thinking",
+        type: "Ask",
+        title: "How I think",
+        reason: "Connect this case back to the reusable thinking model.",
+        targetQuestion: "Who are you?",
+      },
+      {
+        id: "jira-case-saas",
+        type: "Case",
+        title: "SaaS Admin Redesign",
+        reason: "Compare with another systems-level, structure-first case.",
+        targetQuestion: "Show me the SaaS Admin Redesign case.",
+      },
+      {
+        id: "jira-case-room",
+        type: "Case",
+        title: "Meeting Room App Redesign",
+        reason: "See a product-shaped case alongside this workflow-shaped one.",
+        targetQuestion: "Show me the Meeting Room App Redesign case.",
+      },
+    ],
+    evidenceReferences: [
+      { label: "Trigger logic", detail: "Conceptual gate between design iteration and engineering-ready change.", type: "process note" },
+      { label: "Ticket context model", detail: "Structured fields connecting design rationale to engineering scope.", type: "process note" },
+      { label: "Critical-path prototype", detail: "Tested whether a design-system action could become a useful engineering task without a manual handoff.", type: "prototype" },
+    ],
+    followUpQuestions: ["Show me the SaaS Admin Redesign case.", "Show me the Meeting Room App Redesign case."],
   },
 ];
 
@@ -933,6 +1069,9 @@ export function resolveQuestion(input: string): QuestionNode {
   if (normalized.includes("log") || normalized.includes("decision")) return questionBank[4];
   if (normalized.includes("saas") || normalized.includes("admin") || normalized.includes("workspace manager")) {
     return questionBank.find((node) => node.id === "saas-admin-redesign") ?? fallbackQuestion;
+  }
+  if (normalized.includes("jira") || normalized.includes("automation") || normalized.includes("hackathon")) {
+    return questionBank.find((node) => node.id === "jira-automation") ?? fallbackQuestion;
   }
 
   return {
