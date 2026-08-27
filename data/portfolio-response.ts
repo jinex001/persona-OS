@@ -141,8 +141,8 @@ export const questionCategories: QuestionCategory[] = ["Identity", "Work", "Evid
 export const starterQuestions: Pick<QuestionNode, "id" | "question" | "intent" | "category">[] = [
   {
     id: "jira-automation",
-    question: "Show me the Design System → Jira Automation case.",
-    intent: "Open a hackathon workflow-automation case connecting Figma design-system changes to Jira.",
+    question: "Show me the AI Workflow case.",
+    intent: 'Turning Design System Changes into Engineering Work Automation — "Figma" → "Jira"',
     category: "Work",
   },
   {
@@ -327,7 +327,7 @@ export const questionBank: QuestionNode[] = [
             outcome: "A clearer responsibility hierarchy across global, navigation, page, filter, and data layers.",
           },
           {
-            title: "Design System → Jira Automation",
+            title: "AI Workflow",
             summary: "A hackathon prototype connecting Figma design-system changes to structured Jira engineering tickets.",
             outcome: "A tested workflow architecture for how design intent should cross the boundary into engineering work.",
           },
@@ -860,9 +860,9 @@ export const questionBank: QuestionNode[] = [
       {
         id: "saas-case-jira",
         type: "Case",
-        title: "Design System → Jira Automation",
+        title: "AI Workflow",
         reason: "See a workflow-shaped case alongside this interface-shaped one.",
-        targetQuestion: "Show me the Design System → Jira Automation case.",
+        targetQuestion: "Show me the AI Workflow case.",
       },
       {
         id: "saas-evidence-card",
@@ -883,10 +883,10 @@ export const questionBank: QuestionNode[] = [
   },
   {
     id: "jira-automation",
-    question: "Show me the Design System → Jira Automation case.",
-    intent: "Open a hackathon workflow-automation case connecting Figma design-system changes to Jira.",
+    question: "Show me the AI Workflow case.",
+    intent: 'Turning Design System Changes into Engineering Work Automation — "Figma" → "Jira"',
     category: "Work",
-    answerTitle: "Design System → Jira Automation",
+    answerTitle: "AI Workflow",
     answerBlocks: [
       {
         id: "jira-summary",
