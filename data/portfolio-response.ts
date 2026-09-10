@@ -1083,7 +1083,7 @@ export const questionBank: QuestionNode[] = [
         title: "One artist. Many identities. One evolving digital system.",
         body:
           "Lee Heemoon's practice moves between Korean traditional music, contemporary performance, pop culture, fashion, and collaborations — often building an entirely new identity from one project to the next. The challenge wasn't to design an artist website; it was to create a digital system that could hold many different artistic identities without reducing them to conventional genre categories. Designed and built directly in Webflow with Ewon Art Company since 2024, and still in active use.",
-        signals: ["UX/UI Design", "Information Architecture", "Interaction Design", "Webflow Development", "Ongoing Ownership"],
+        signals: ["UX/UI Design", "Art Direction", "Information Architecture", "Interaction Design", "Webflow Development", "Ongoing Ownership"],
       },
       {
         id: "heemoon-reasoning",
