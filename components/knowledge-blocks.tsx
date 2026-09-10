@@ -47,6 +47,8 @@ type HeroMediaBlockProps = {
 
 export function HeroMediaBlock({ media }: HeroMediaBlockProps) {
   const isMotion = media.kind === "motion";
+  const isVideo = media.kind === "video";
+  const isImageBg = media.kind === "image";
 
   return (
     <motion.div
@@ -55,17 +57,32 @@ export function HeroMediaBlock({ media }: HeroMediaBlockProps) {
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className="relative -mx-4 mt-10 h-[80vh] w-[calc(100%+2rem)] overflow-hidden bg-zinc-100 md:-mx-16 md:w-[calc(100%+8rem)]"
       style={
-        isMotion
-          ? undefined
-          : {
+        isImageBg
+          ? {
               backgroundImage: media.src
                 ? `url(${media.src})`
                 : "repeating-linear-gradient(45deg, #f4f4f2 0 2px, #ececea 2px 34px)",
               backgroundSize: media.src ? "cover" : undefined,
               backgroundPosition: "center",
             }
+          : undefined
       }
+      role={isImageBg && media.src ? "img" : undefined}
+      aria-label={isImageBg && media.src ? media.alt ?? media.label : undefined}
     >
+      {isVideo && media.src ? (
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          src={media.src}
+          poster={media.poster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-label={media.alt ?? media.label}
+        />
+      ) : null}
+
       {isMotion ? (
         <div
           className="absolute inset-0"

@@ -125,11 +125,13 @@ export type DiscoveryCardData = {
 };
 
 export type HeroMedia = {
-  kind: "image" | "motion";
+  kind: "image" | "video" | "motion";
   label: string;
   tag: string;
   meta: string;
   src?: string;
+  poster?: string;
+  alt?: string;
 };
 
 export type QuestionNode = {
@@ -188,6 +190,12 @@ export const starterQuestions: Pick<QuestionNode, "id" | "question" | "intent" |
     id: "saas-admin-redesign",
     question: "Show me the SaaS Admin Redesign case.",
     intent: "Open a structural refactoring case study about a complex SaaS admin interface.",
+    category: "Work",
+  },
+  {
+    id: "lee-heemoon",
+    question: "Show me the Lee Hee-moon case.",
+    intent: "Designing and maintaining an evolving digital home for a genre-defying artist.",
     category: "Work",
   },
 ];
@@ -339,6 +347,11 @@ export const questionBank: QuestionNode[] = [
             title: "AI Workflow",
             summary: "A hackathon prototype connecting Figma design-system changes to structured Jira engineering tickets.",
             outcome: "A tested workflow architecture for how design intent should cross the boundary into engineering work.",
+          },
+          {
+            title: "Lee Hee-moon — Digital Identity as a Living System",
+            summary: "An ongoing Webflow product for a genre-defying artist, designed around Project as the primary unit instead of genre.",
+            outcome: "A 360° project navigation system that doubles as artist metaphor, still designed, built, and maintained today.",
           },
         ],
       },
@@ -613,6 +626,13 @@ export const questionBank: QuestionNode[] = [
         title: "SaaS Admin Redesign",
         reason: "Compare with another structural, responsibility-driven redesign.",
         targetQuestion: "Show me the SaaS Admin Redesign case.",
+      },
+      {
+        id: "room-case-heemoon",
+        type: "Case",
+        title: "Lee Hee-moon",
+        reason: "See a content-and-identity system alongside this state-driven one.",
+        targetQuestion: "Show me the Lee Hee-moon case.",
       },
     ],
     evidenceReferences: [
@@ -892,6 +912,13 @@ export const questionBank: QuestionNode[] = [
         reason: "See how process notes and artifacts support this case.",
         targetQuestion: "What proves the quality of your work?",
       },
+      {
+        id: "saas-case-heemoon",
+        type: "Case",
+        title: "Lee Hee-moon",
+        reason: "See a content-and-identity system alongside this admin-interface case.",
+        targetQuestion: "Show me the Lee Hee-moon case.",
+      },
     ],
     evidenceReferences: [
       { label: "Navigation restructuring", detail: "Setup, Management, and Analysis groups with preserved expand/collapse state.", type: "artifact" },
@@ -1018,6 +1045,13 @@ export const questionBank: QuestionNode[] = [
         reason: "See a product-shaped case alongside this workflow-shaped one.",
         targetQuestion: "Show me the Meeting Room App Redesign case.",
       },
+      {
+        id: "jira-case-heemoon",
+        type: "Case",
+        title: "Lee Hee-moon",
+        reason: "See ongoing product ownership alongside this hackathon prototype.",
+        targetQuestion: "Show me the Lee Hee-moon case.",
+      },
     ],
     evidenceReferences: [
       { label: "Trigger logic", detail: "Conceptual gate between design iteration and engineering-ready change.", type: "process note" },
@@ -1025,6 +1059,264 @@ export const questionBank: QuestionNode[] = [
       { label: "Critical-path prototype", detail: "Tested whether a design-system action could become a useful engineering task without a manual handoff.", type: "prototype" },
     ],
     followUpQuestions: ["Show me the SaaS Admin Redesign case.", "Show me the Meeting Room App Redesign case."],
+  },
+  {
+    id: "lee-heemoon",
+    question: "Show me the Lee Hee-moon case.",
+    intent: "Designing and maintaining an evolving digital home for a genre-defying artist.",
+    category: "Work",
+    answerTitle: "Lee Hee-moon — Digital Identity as a Living System",
+    heroMedia: {
+      kind: "video",
+      src: "/case-studies/lee-heemoon/lee-heemoon-360-carousel.mp4",
+      poster: "/case-studies/lee-heemoon/lee-heemoon-360-carousel-poster.jpg",
+      label: "360° Projects carousel — interaction recording",
+      tag: "Evidence · 360° Projects Carousel",
+      meta: "loop · muted · autoplay",
+      alt: "The Lee Hee-moon website's 360-degree Projects carousel rotating between project cards",
+    },
+    answerBlocks: [
+      {
+        id: "heemoon-summary",
+        type: "summary",
+        label: "Case Summary",
+        title: "One artist. Many identities. One evolving digital system.",
+        body:
+          "Lee Hee-moon's practice moves between Korean traditional music, contemporary performance, pop culture, fashion, and collaborations — often building an entirely new identity from one project to the next. The challenge wasn't to design an artist website; it was to create a digital system that could hold many different artistic identities without reducing them to conventional genre categories. Designed and built directly in Webflow with Ewon Art Company since 2024, and still in active use.",
+        signals: ["UX/UI Design", "Information Architecture", "Interaction Design", "Webflow Development", "Ongoing Ownership"],
+      },
+      {
+        id: "heemoon-reasoning",
+        type: "designReasoning",
+        label: "Design Reasoning",
+        title: "No genres. Just projects.",
+        steps: [
+          "Make Project — not genre, medium, or format — the primary organizing unit of the system.",
+          "Let a single Project contain a performance, an album, a collaboration, or several of these at once, so different bodies of work can coexist without a fixed hierarchy.",
+          "Treat the 360° carousel as navigation and artist metaphor at the same time: different directions, different identities, one artist at the center.",
+          "Let the newest project take the primary carousel position for promotional visibility, while every earlier project stays reachable in the same continuous structure.",
+          "Design Project as a flexible content container — OBSG holds Concerts and Albums together — so future projects can mix content types without rebuilding the architecture.",
+        ],
+      },
+      {
+        id: "heemoon-evidence-carousel",
+        type: "evidence",
+        label: "Evidence",
+        title: "Why 360°?",
+        items: [
+          {
+            title: "Navigation as artist metaphor",
+            detail: "Lee Hee-moon continuously moves between genres, characters, and artistic identities. Individual projects can look radically different from one another, yet all originate from — and return to — the same artist. The 360° movement turns that idea into interaction, functioning as navigation and artist metaphor simultaneously.",
+            references: [
+              {
+                label: "360° Projects carousel",
+                detail: "Circular carousel with the active project centered and surrounding projects in perspective; persistent navigation stays available underneath.",
+                type: "screenshot",
+                previewImages: [
+                  { src: "/case-studies/lee-heemoon/projects-360-carousel.jpg", alt: "Lee Hee-moon website Projects page showing the 360-degree carousel with OBSG centered" },
+                ],
+              },
+            ],
+          },
+          {
+            title: "Latest first ≠ everything else hidden",
+            detail: "Ewon Art needed the site to support an ongoing promotional cycle: whenever a new project launches, it should be the first thing visitors encounter. The newest project becomes the carousel's initial focal point, while previous projects remain fully accessible within the same continuous structure — business priority and artist structure coexisting rather than competing.",
+            references: [
+              {
+                label: "Business requirement",
+                detail: "Promotional priority incorporated without changing the underlying information architecture.",
+                type: "process note",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "heemoon-evidence-project",
+        type: "evidence",
+        label: "Evidence",
+        title: "Project as an expandable content system",
+        items: [
+          {
+            title: "OBSG — one Project, multiple content types",
+            detail: "Once inside a project, the system adapts to the content rather than forcing every project into the same template. For OBSG, live performances (Concerts) and releases (Albums) coexist within the same project space, and each album can expand into its own detailed experience. Project functions as a flexible content container, not a fixed page template.",
+            references: [
+              {
+                label: "OBSG project overview",
+                detail: "Project description, Concerts, and Albums living inside one Project, with persistent navigation.",
+                type: "screenshot",
+                previewImages: [
+                  { src: "/case-studies/lee-heemoon/obsg-project-overview.jpg", alt: "OBSG project overview page listing Concerts and Albums" },
+                ],
+              },
+              {
+                label: "Live Webflow implementation",
+                detail: "The actual production build in a desktop browser, confirming the structure ships as designed.",
+                type: "screenshot",
+                previewImages: [
+                  { src: "/case-studies/lee-heemoon/obsg-desktop-browser.jpg", alt: "OBSG project structure rendered live in a desktop browser" },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "heemoon-evidence-discovery",
+        type: "evidence",
+        label: "Evidence",
+        title: "Connected discovery: Project → Album → Related → Listen",
+        items: [
+          {
+            title: "Album detail as part of a connected ecosystem",
+            detail: "Individual album pages were designed as part of a connected content ecosystem rather than isolated destinations — album identity, editorial description, and a direct path to streaming platforms.",
+            references: [
+              {
+                label: "DOHWA album detail",
+                detail: "Album identity, editorial description, and streaming links (Spotify, Apple Music, Genie, Bugs, Melon, VIBE).",
+                type: "screenshot",
+                previewImages: [
+                  { src: "/case-studies/lee-heemoon/dohwa-album-detail.jpg", alt: "DOHWA album detail page with editorial description and streaming platform links" },
+                ],
+              },
+              {
+                label: "Related works",
+                detail: "Adjacent OBSG releases surfaced below the album, giving visitors another path into the artist's work instead of ending the experience at the bottom of the page.",
+                type: "screenshot",
+                previewImages: [
+                  { src: "/case-studies/lee-heemoon/dohwa-related-works.jpg", alt: "Related Works section showing adjacent OBSG album releases" },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "heemoon-evidence-homepage",
+        type: "evidence",
+        label: "Evidence",
+        title: "What's New: current activity first",
+        items: [
+          {
+            title: "Homepage as a changing entry point",
+            detail: "Rather than a static introduction to the artist, the homepage functions as a What's New space: current performances, releases, and media take over most of the screen while persistent navigation stays available. This pairs with the carousel's \"latest first\" logic — current activity leads, the archive stays one step away.",
+            references: [
+              {
+                label: "What's New / Homepage",
+                detail: "Featured current media taking over the screen with persistent navigation intact.",
+                type: "screenshot",
+                previewImages: [
+                  { src: "/case-studies/lee-heemoon/whats-new-homepage.jpg", alt: "What's New homepage with featured current media and persistent navigation" },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "heemoon-evidence-system",
+        type: "evidence",
+        label: "Evidence",
+        title: "System continuity: different worlds, one navigation",
+        items: [
+          {
+            title: "Persistent navigation across different visual worlds",
+            detail: "Projects can use dramatically different artwork, imagery, and visual identity — OBSG's saturated blue, DOHWA's editorial monochrome. The persistent navigation and contact system provide a stable layer across those different worlds, so projects can change while the system stays recognizable.",
+            references: [
+              {
+                label: "Contact",
+                detail: "Minimal contact experience with the same persistent navigation and visual system.",
+                type: "screenshot",
+                previewImages: [
+                  { src: "/case-studies/lee-heemoon/contact-persistent-nav.jpg", alt: "Contact page with persistent navigation and a single email call-to-action" },
+                ],
+              },
+            ],
+          },
+          {
+            title: "Responsive design — evidence pending",
+            detail: "Mobile was part of the original design scope, not an automatic Webflow reflow. Mobile screenshots for this case have not been supplied yet; once available, this section will show how the same project hierarchy, navigation, and carousel behavior translate to smaller screens.",
+            references: [{ label: "Mobile evidence", detail: "To be added once mobile screenshots are supplied.", type: "process note" }],
+          },
+        ],
+      },
+      {
+        id: "heemoon-ownership",
+        type: "summary",
+        label: "Ownership",
+        title: "Designed, built, and maintained",
+        body:
+          "I designed and built the website directly in Webflow and have continued managing it in collaboration with Ewon Art since 2024. New projects, performances, albums, and promotional priorities continue to enter the system — the website functions as an evolving publishing platform rather than a finished, one-off deliverable.",
+        signals: ["2024 — Present", "Ewon Art Company, Korea", "Design → Build → Launch → Maintain → Evolve"],
+      },
+      {
+        id: "heemoon-lens",
+        type: "perspectiveLens",
+        label: "Perspective Lens",
+        title: "How the case reads by audience",
+        lenses: [
+          {
+            audience: "Recruiter",
+            takeaway: "Shows more than visual website design: UX thinking, information architecture, responsive design, stakeholder collaboration, implementation, and ongoing ownership in one project.",
+          },
+          {
+            audience: "Design Director",
+            takeaway: "The strongest evidence is the connection between concept and interaction — the artist's multiple identities becoming a project-based taxonomy, then a 360° spatial navigation.",
+          },
+          {
+            audience: "Engineering Manager",
+            takeaway: "Demonstrates that the designer also implemented and maintains the production system in Webflow, without overstating engineering complexity beyond what the evidence supports.",
+          },
+          {
+            audience: "Potential Client",
+            takeaway: "Translates brand identity, content complexity, and a real business requirement (promotional priority) into a maintainable production website.",
+          },
+          {
+            audience: "Future Self",
+            takeaway: "The architecture stays scalable — new projects can be added without inventing new top-level categories or restructuring the site.",
+          },
+        ],
+      },
+      {
+        id: "heemoon-next",
+        type: "nextQuestions",
+        label: "Next Questions",
+        title: "Continue exploring",
+        questions: ["Show me the SaaS Admin Redesign case.", "Show me the AI Workflow case.", "Who are you?"],
+      },
+    ],
+    relatedCards: [
+      {
+        id: "heemoon-ask-thinking",
+        type: "Ask",
+        title: "How I think",
+        reason: "Connect this case back to the reusable thinking model.",
+        targetQuestion: "Who are you?",
+      },
+      {
+        id: "heemoon-case-saas",
+        type: "Case",
+        title: "SaaS Admin Redesign",
+        reason: "Compare with a structure-first, information-architecture case.",
+        targetQuestion: "Show me the SaaS Admin Redesign case.",
+      },
+      {
+        id: "heemoon-case-jira",
+        type: "Case",
+        title: "AI Workflow",
+        reason: "See a workflow-automation case alongside this product-ownership one.",
+        targetQuestion: "Show me the AI Workflow case.",
+      },
+    ],
+    evidenceReferences: [
+      { label: "360° Projects carousel", detail: "Circular carousel with the active project centered; persistent navigation stays available underneath.", type: "screenshot" },
+      { label: "OBSG project overview", detail: "Project description, Concerts, and Albums living inside one Project.", type: "screenshot" },
+      { label: "DOHWA album detail", detail: "Album identity, editorial description, and streaming platform links.", type: "screenshot" },
+      { label: "Related works", detail: "Adjacent OBSG releases surfaced below the album.", type: "screenshot" },
+      { label: "What's New / Homepage", detail: "Featured current media with persistent navigation.", type: "screenshot" },
+      { label: "Contact", detail: "Minimal contact experience with the same persistent navigation system.", type: "screenshot" },
+    ],
+    followUpQuestions: ["Show me the SaaS Admin Redesign case.", "Show me the AI Workflow case.", "Who are you?"],
   },
 ];
 
@@ -1099,6 +1391,9 @@ export function resolveQuestion(input: string): QuestionNode {
   }
   if (normalized.includes("jira") || normalized.includes("automation") || normalized.includes("hackathon")) {
     return questionBank.find((node) => node.id === "jira-automation") ?? fallbackQuestion;
+  }
+  if (normalized.includes("heemoon") || normalized.includes("hee-moon") || normalized.includes("webflow") || normalized.includes("ewon")) {
+    return questionBank.find((node) => node.id === "lee-heemoon") ?? fallbackQuestion;
   }
 
   return {
