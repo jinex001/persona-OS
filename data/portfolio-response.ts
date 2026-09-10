@@ -151,6 +151,12 @@ export const questionCategories: QuestionCategory[] = ["Identity", "Work", "Evid
 
 export const starterQuestions: Pick<QuestionNode, "id" | "question" | "intent" | "category">[] = [
   {
+    id: "lee-heemoon",
+    question: "Show me the Lee Heemoon case.",
+    intent: "Lee Heemoon — designing and maintaining an evolving digital home for a genre-defying artist.",
+    category: "Work",
+  },
+  {
     id: "jira-automation",
     question: "Show me the AI Workflow case.",
     intent: 'Turning Design System Changes into Engineering Work Automation — "Figma" → "Jira"',
@@ -190,12 +196,6 @@ export const starterQuestions: Pick<QuestionNode, "id" | "question" | "intent" |
     id: "saas-admin-redesign",
     question: "Show me the SaaS Admin Redesign case.",
     intent: "Open a structural refactoring case study about a complex SaaS admin interface.",
-    category: "Work",
-  },
-  {
-    id: "lee-heemoon",
-    question: "Show me the Lee Hee-moon case.",
-    intent: "Designing and maintaining an evolving digital home for a genre-defying artist.",
     category: "Work",
   },
 ];
@@ -349,7 +349,7 @@ export const questionBank: QuestionNode[] = [
             outcome: "A tested workflow architecture for how design intent should cross the boundary into engineering work.",
           },
           {
-            title: "Lee Hee-moon — Digital Identity as a Living System",
+            title: "Design for an Artist",
             summary: "An ongoing Webflow product for a genre-defying artist, designed around Project as the primary unit instead of genre.",
             outcome: "A 360° project navigation system that doubles as artist metaphor, still designed, built, and maintained today.",
           },
@@ -630,9 +630,9 @@ export const questionBank: QuestionNode[] = [
       {
         id: "room-case-heemoon",
         type: "Case",
-        title: "Lee Hee-moon",
+        title: "Lee Heemoon",
         reason: "See a content-and-identity system alongside this state-driven one.",
-        targetQuestion: "Show me the Lee Hee-moon case.",
+        targetQuestion: "Show me the Lee Heemoon case.",
       },
     ],
     evidenceReferences: [
@@ -915,9 +915,9 @@ export const questionBank: QuestionNode[] = [
       {
         id: "saas-case-heemoon",
         type: "Case",
-        title: "Lee Hee-moon",
+        title: "Lee Heemoon",
         reason: "See a content-and-identity system alongside this admin-interface case.",
-        targetQuestion: "Show me the Lee Hee-moon case.",
+        targetQuestion: "Show me the Lee Heemoon case.",
       },
     ],
     evidenceReferences: [
@@ -1048,9 +1048,9 @@ export const questionBank: QuestionNode[] = [
       {
         id: "jira-case-heemoon",
         type: "Case",
-        title: "Lee Hee-moon",
+        title: "Lee Heemoon",
         reason: "See ongoing product ownership alongside this hackathon prototype.",
-        targetQuestion: "Show me the Lee Hee-moon case.",
+        targetQuestion: "Show me the Lee Heemoon case.",
       },
     ],
     evidenceReferences: [
@@ -1062,10 +1062,10 @@ export const questionBank: QuestionNode[] = [
   },
   {
     id: "lee-heemoon",
-    question: "Show me the Lee Hee-moon case.",
-    intent: "Designing and maintaining an evolving digital home for a genre-defying artist.",
+    question: "Show me the Lee Heemoon case.",
+    intent: "Lee Heemoon — designing and maintaining an evolving digital home for a genre-defying artist.",
     category: "Work",
-    answerTitle: "Lee Hee-moon — Digital Identity as a Living System",
+    answerTitle: "Design for an Artist",
     heroMedia: {
       kind: "video",
       src: "/case-studies/lee-heemoon/lee-heemoon-360-carousel.mp4",
@@ -1073,7 +1073,7 @@ export const questionBank: QuestionNode[] = [
       label: "360° Projects carousel — interaction recording",
       tag: "Evidence · 360° Projects Carousel",
       meta: "loop · muted · autoplay",
-      alt: "The Lee Hee-moon website's 360-degree Projects carousel rotating between project cards",
+      alt: "The Lee Heemoon website's 360-degree Projects carousel rotating between project cards",
     },
     answerBlocks: [
       {
@@ -1082,7 +1082,7 @@ export const questionBank: QuestionNode[] = [
         label: "Case Summary",
         title: "One artist. Many identities. One evolving digital system.",
         body:
-          "Lee Hee-moon's practice moves between Korean traditional music, contemporary performance, pop culture, fashion, and collaborations — often building an entirely new identity from one project to the next. The challenge wasn't to design an artist website; it was to create a digital system that could hold many different artistic identities without reducing them to conventional genre categories. Designed and built directly in Webflow with Ewon Art Company since 2024, and still in active use.",
+          "Lee Heemoon's practice moves between Korean traditional music, contemporary performance, pop culture, fashion, and collaborations — often building an entirely new identity from one project to the next. The challenge wasn't to design an artist website; it was to create a digital system that could hold many different artistic identities without reducing them to conventional genre categories. Designed and built directly in Webflow with Ewon Art Company since 2024, and still in active use.",
         signals: ["UX/UI Design", "Information Architecture", "Interaction Design", "Webflow Development", "Ongoing Ownership"],
       },
       {
@@ -1106,14 +1106,14 @@ export const questionBank: QuestionNode[] = [
         items: [
           {
             title: "Navigation as artist metaphor",
-            detail: "Lee Hee-moon continuously moves between genres, characters, and artistic identities. Individual projects can look radically different from one another, yet all originate from — and return to — the same artist. The 360° movement turns that idea into interaction, functioning as navigation and artist metaphor simultaneously.",
+            detail: "Lee Heemoon continuously moves between genres, characters, and artistic identities. Individual projects can look radically different from one another, yet all originate from — and return to — the same artist. The 360° movement turns that idea into interaction, functioning as navigation and artist metaphor simultaneously.",
             references: [
               {
                 label: "360° Projects carousel",
                 detail: "Circular carousel with the active project centered and surrounding projects in perspective; persistent navigation stays available underneath.",
                 type: "screenshot",
                 previewImages: [
-                  { src: "/case-studies/lee-heemoon/projects-360-carousel.jpg", alt: "Lee Hee-moon website Projects page showing the 360-degree carousel with OBSG centered" },
+                  { src: "/case-studies/lee-heemoon/projects-360-carousel.jpg", alt: "Lee Heemoon website Projects page showing the 360-degree carousel with OBSG centered" },
                 ],
               },
             ],
