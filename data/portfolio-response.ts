@@ -1231,12 +1231,41 @@ export const questionBank: QuestionNode[] = [
                   { src: "/case-studies/lee-heemoon/contact-persistent-nav.jpg", alt: "Contact page with persistent navigation and a single email call-to-action" },
                 ],
               },
+              {
+                label: "About",
+                detail: "Artist biography and press interview, sharing the same navigation and visual system as every other project world.",
+                type: "screenshot",
+                previewImages: [
+                  { src: "/case-studies/lee-heemoon/about-artist-bio.jpg", alt: "About page with artist biography and a Chosun Daily interview link" },
+                ],
+              },
             ],
           },
           {
-            title: "Responsive design — evidence pending",
-            detail: "Mobile was part of the original design scope, not an automatic Webflow reflow. Mobile screenshots for this case have not been supplied yet; once available, this section will show how the same project hierarchy, navigation, and carousel behavior translate to smaller screens.",
-            references: [{ label: "Mobile evidence", detail: "To be added once mobile screenshots are supplied.", type: "process note" }],
+            title: "Responsive design: desktop ↔ mobile",
+            detail: "Mobile was part of the original design scope, not an automatic Webflow reflow. The same project hierarchy, navigation, and content relationships carry over to mobile: OBSG's quote, description, Concerts, and Albums sections stack into a single scrolling column instead of desktop's side-by-side rows; DOHWA's album detail keeps its editorial description and streaming links, and Related Works becomes a swipeable single-column sequence instead of a four-across grid. The persistent navigation collapses into a compact bottom bar that stays available throughout.",
+            references: [
+              {
+                label: "OBSG — mobile",
+                detail: "Quote and description, Concerts, and Albums stacked into one scrolling column.",
+                type: "screenshot",
+                previewImages: [
+                  { src: "/case-studies/lee-heemoon/obsg-mobile-overview.jpg", alt: "OBSG project page on mobile showing the quote, description, and start of Concerts", stage: "Overview" },
+                  { src: "/case-studies/lee-heemoon/obsg-mobile-concerts-albums.jpg", alt: "OBSG project page on mobile scrolled to Concerts and the start of Albums", stage: "Concerts → Albums" },
+                  { src: "/case-studies/lee-heemoon/obsg-mobile-concert-gallery.jpg", alt: "OBSG concert photo gallery on mobile", stage: "Concert gallery" },
+                ],
+              },
+              {
+                label: "DOHWA — mobile",
+                detail: "Artist portrait, album detail, and Related Works as a single-column sequence.",
+                type: "screenshot",
+                previewImages: [
+                  { src: "/case-studies/lee-heemoon/dohwa-mobile-artist-portrait.jpg", alt: "DOHWA project page on mobile showing the artist portrait transitioning into album detail", stage: "Artist portrait" },
+                  { src: "/case-studies/lee-heemoon/dohwa-mobile-album-detail.jpg", alt: "DOHWA album detail description on mobile", stage: "Album detail" },
+                  { src: "/case-studies/lee-heemoon/dohwa-mobile-related-works.jpg", alt: "DOHWA Related Works section on mobile as a single-column sequence", stage: "Related Works" },
+                ],
+              },
+            ],
           },
         ],
       },
