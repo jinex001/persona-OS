@@ -161,15 +161,6 @@ export function ConversationWorkspace() {
 function OpeningWorkspace({ onSelectQuestion }: { onSelectQuestion: (question: string) => void }) {
   return (
     <div className="mx-auto flex min-h-[calc(100vh-160px)] max-w-6xl flex-col justify-center pb-24 pt-12">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-        className="mb-10 text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-300"
-      >
-        Blank Workspace
-      </motion.div>
-
       <motion.h1
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -206,8 +197,7 @@ function OpeningWorkspace({ onSelectQuestion }: { onSelectQuestion: (question: s
         transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1], delay: 1.45 }}
         className="mt-12"
       >
-        <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-400">Starter paths</div>
-        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
           {starterQuestions.map((starter, index) => (
             <motion.button
               key={starter.id}
