@@ -197,7 +197,7 @@ function OpeningWorkspace({ onSelectQuestion }: { onSelectQuestion: (question: s
         transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1], delay: 1.45 }}
         className="mt-12"
       >
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
           {starterQuestions.map((starter, index) => (
             <motion.button
               key={starter.id}
@@ -205,7 +205,9 @@ function OpeningWorkspace({ onSelectQuestion }: { onSelectQuestion: (question: s
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1], delay: 1.62 + index * 0.08 }}
               onClick={() => onSelectQuestion(starter.question)}
-              className="flex min-h-[150px] flex-col items-start justify-start rounded-[24px] bg-zinc-100 p-4 text-left transition hover:-translate-y-0.5 hover:bg-zinc-200/70 focus:outline-none focus:ring-2 focus:ring-black"
+              className={`flex min-h-[150px] flex-col items-start justify-start rounded-[24px] bg-zinc-100 p-4 text-left transition hover:-translate-y-0.5 hover:bg-zinc-200/70 focus:outline-none focus:ring-2 focus:ring-black ${
+                starter.category === "Work" ? "order-2" : "order-1"
+              }`}
               type="button"
               data-state="related"
             >
