@@ -35,6 +35,10 @@ export type SourceReference = {
   href?: string;
   previewImage?: string;
   previewImages?: ArtifactVisual[];
+  /** Render this artifact at full gallery width instead of the default half-width card. */
+  featured?: boolean;
+  /** "contain" preserves the full, uncropped screenshot (for dense/tall UI); default remains "cover". */
+  fit?: "cover" | "contain";
 };
 
 export type EvidenceItem = {
@@ -340,8 +344,8 @@ export const questionBank: QuestionNode[] = [
           },
           {
             title: "SaaS Admin Redesign",
-            summary: "A structural refactoring of a complex Workspace Manager admin interface without changing its underlying business logic.",
-            outcome: "A clearer responsibility hierarchy across global, navigation, page, filter, and data layers.",
+            summary: "Turning a growing workplace-management admin surface — structure, floorplan, resources, and booking rules — into one configuration system.",
+            outcome: "A shared configuration grammar across resource types and a floorplan that doubles as an operational interface.",
           },
           {
             title: "AI Workflow",
@@ -781,24 +785,27 @@ export const questionBank: QuestionNode[] = [
   {
     id: "saas-admin-redesign",
     question: "Show me the SaaS Admin Redesign case.",
-    intent: "Open a structural refactoring case study about reorganizing a complex SaaS admin interface without changing its underlying business logic.",
+    intent: "A structural case study about turning a growing workplace-management admin surface into one coherent configuration system.",
     category: "Work",
     answerTitle: "SaaS Admin Redesign",
     heroMedia: {
-      kind: "image",
-      label: "Cover image placeholder · 1920 × 1080 recommended",
-      tag: "Evidence · Cover Image",
-      meta: "16:9 · edge-to-edge · caption optional",
+      kind: "video",
+      src: "/case-studies/saas-admin-redesign/hero.mp4",
+      poster: "/case-studies/saas-admin-redesign/hero-poster.jpg",
+      label: "Floorplan and resource-management — interaction recording",
+      tag: "Evidence · Floorplan & Resource Management",
+      meta: "loop · muted · autoplay",
+      alt: "Recording of the LIZ Smart Office floorplan and resource-management experience: placing, moving, and inspecting resources directly on the office layout",
     },
     answerBlocks: [
       {
         id: "saas-summary",
         type: "summary",
         label: "Case Summary",
-        title: "The problem wasn't the functionality. It was how the functionality was structured.",
+        title: "The problem wasn't the screens. It was the structure behind them.",
         body:
-          "The Workspace Manager admin interface had accumulated multiple responsibilities within the same visual hierarchy: global navigation, page actions, filters, tabs, search, and data tables all competed within one flat structure. The redesign was scoped as structural refactoring rather than functional redesign. Business logic, data models, and filter behavior stayed untouched; what changed was the architecture through which users understand and interact with that functionality.",
-        signals: ["SaaS admin UX", "Information architecture", "Structural refactoring", "Progressive disclosure"],
+          "I redesigned the administration experience of LIZ Smart Office, a workplace-management platform, to make complex configuration easier to understand, manage, and scale. As the product grew, new resource types and settings were added over time, and the interface stopped communicating the underlying structure clearly. Rather than redesigning individual screens, I focused on the system itself — how administrators understand workplace structure, configure physical spaces, manage resources, and define booking behaviour.",
+        signals: ["B2B SaaS", "Enterprise UX", "Admin UX", "Information Architecture", "Design Systems", "Complex Workflows"],
       },
       {
         id: "saas-reasoning",
@@ -806,46 +813,181 @@ export const questionBank: QuestionNode[] = [
         label: "Design Reasoning",
         title: "Structural decisions",
         steps: [
-          "Separate interface responsibility into distinct layers: global, navigation, page context, query and filtering, and data.",
-          "Move application-wide actions (organization switcher, notifications, help, changelog) into a dedicated global header, away from page layouts.",
-          "Reorganize sidebar navigation into collapsible groups (Setup, Management, Analysis) with collapsed and full-width states.",
-          "Unify the main content area around a single card: page title, tabs, and primary actions positioned above the data.",
-          "Reorder filters by frequency: search and date range stay primary; building, floor, and department move into a collapsible advanced section.",
-          "Integrate the data table directly with its filter layer and remove duplicate result-count displays.",
+          "Make the workplace hierarchy — building, floor, resource — visible as one navigable structure instead of scattering it across separate screens.",
+          "Treat the floorplan as an operational interface, not a static diagram, so resources can be located, selected, and edited in physical context.",
+          "Move floorplan configuration into direct manipulation: define the usable area and place resources directly on it.",
+          "Establish one shared configuration grammar — enable, booking range, booking period — across every resource type, layering in resource-specific behaviour only where it applies.",
+          "Keep common configuration immediate and push advanced controls, like timeslot details, behind progressive disclosure.",
+          "Replace numeric booking forms with a visual timeslot editor driven by editable presets rather than static filters.",
+          "Document component behaviour — selected vs. configured states, pill states, system feedback — as reusable interaction rules, not one-off UI.",
         ],
       },
       {
-        id: "saas-evidence",
+        id: "saas-evidence-structure",
         type: "evidence",
-        label: "Evidence",
-        title: "Structural decisions and artifacts",
+        label: "Decision 01",
+        title: "Make the system structure visible",
         items: [
           {
-            title: "Sidebar Navigation",
-            detail: "Collapsible navigation groups organized into higher-level categories, with a minimized and full-width state to let navigation scale as functionality grows.",
-            references: [{ label: "Navigation restructuring", detail: "Setup, Management, and Analysis groups with preserved expand/collapse state.", type: "artifact" }],
-          },
-          {
-            title: "Global Header",
-            detail: "Application-wide actions separated from page-specific functionality so users can distinguish global controls from page controls.",
-            references: [{ label: "Global actions", detail: "Organization switcher, notifications, help, and changelog moved out of individual page layouts.", type: "artifact" }],
-          },
-          {
-            title: "Page Layout & Content Container",
-            detail: "A unified card container establishes a predictable page anatomy: where the user is, what actions are available, how the view is configured, and where data appears.",
-            references: [{ label: "Content container", detail: "Tabs moved above the data card; titles and primary actions (Export, Add Booking) placed at the page context level.", type: "artifact" }],
-          },
-          {
-            title: "Filter & Search Hierarchy",
-            detail: "Filtering controls reorganized by frequency and importance to reduce default complexity while keeping advanced filtering available.",
-            references: [{ label: "Progressive disclosure", detail: "Search and date range as primary controls; secondary filters collapsed into an advanced section.", type: "process note" }],
-          },
-          {
-            title: "Data Table Integration",
-            detail: "Filtering and resulting data treated as one continuous task; the column selector moved into the table header and redundant result counts removed.",
-            references: [{ label: "Implementation scope", detail: "Jira-documented scope confirming business logic, data model, and existing functionality were preserved.", type: "process note" }],
+            title: "Building → Floor → Resource",
+            detail:
+              "Before designing screens, I needed to clarify the mental model: buildings contain floors, floors contain resources, and resources carry their own capabilities and configuration rules. Instead of distributing these relationships across separate administration screens, I introduced a hierarchical Structure view that administrators can expand in place. The goal wasn't to reduce clicks — it was to make the relationship between objects visible, so administrators can predict where information lives before interacting with the interface.",
+            references: [
+              {
+                label: "Structure view",
+                detail: "A hierarchical view connects buildings, floors and resources while surfacing key capacity and sensor information directly in context.",
+                type: "screenshot",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/saas-admin-redesign/structure.png", alt: "Structure screen showing a nested list of buildings, floors, and resources with capacity and sensor counts." },
+                ],
+              },
+            ],
           },
         ],
+      },
+      {
+        id: "saas-evidence-floorplan-connection",
+        type: "evidence",
+        label: "Decision 02",
+        title: "Connect data structure with physical space",
+        items: [
+          {
+            title: "Structural and spatial models, held together",
+            detail:
+              "A workplace isn't only a database — administrators also think spatially. A desk belongs to a floor in the system (Building → Floor → Resource), but it also occupies a position in the physical office (Floorplan → Position → Resource). Instead of forcing administrators to choose one model, the floorplan became an operational interface: resources can be located, selected, moved, edited and reset directly on the floorplan while staying connected to the resource list.",
+            references: [
+              {
+                label: "Overview screen",
+                detail: "Resource list and floorplan operate as two representations of the same underlying workplace data.",
+                type: "screenshot",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/saas-admin-redesign/overview.png", alt: "Resource list beside a floorplan, with a desk selected and a contextual menu showing move, edit and reset options." },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "saas-evidence-direct-manipulation",
+        type: "evidence",
+        label: "Decision 03",
+        title: "Turn floorplan setup into direct manipulation",
+        items: [
+          {
+            title: "Configuring the space where it exists",
+            detail:
+              "Configuring a floorplan previously required translating between abstract settings and the physical office. I moved the interaction closer to the object being configured: the administrator defines the usable floorplan area and places resources directly within it. This closes the gap between \"where is this resource stored in the system?\" and \"where is this resource actually located?\" — bringing the interface closer to the administrator's real-world mental model.",
+            references: [
+              {
+                label: "Floorplan editing",
+                detail: "Direct spatial configuration reduces the distance between system configuration and the physical workplace it represents.",
+                type: "screenshot",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/saas-admin-redesign/floorplan-editing.png", alt: "Floorplan editing mode with a drawable area outlined in dashed blue, a desk context menu open, and an upload floorplan control." },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "saas-evidence-configuration-model",
+        type: "evidence",
+        label: "Decision 04",
+        title: "Create one configuration model for different resource types",
+        items: [
+          {
+            title: "Desk, Flexdesk, Meeting room, Parking, Phone booth, Sickday",
+            detail:
+              "The platform supports multiple workplace resources that behave differently, but share many configuration concepts. Instead of designing every resource independently, I looked for the common grammar: enable the resource, define its booking range, define its booking period, then layer in resource-specific behaviour — meeting rooms, for example, can additionally support recurring bookings, web meeting integration, and timeslot configuration. The same resources settings screen applies that grammar across every type, with resource-specific options appearing only when relevant.",
+            references: [
+              {
+                label: "Resource configuration",
+                detail: "The Resources settings screen applies the same configuration grammar across every resource type.",
+                type: "screenshot",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/saas-admin-redesign/resource-configuration.png", alt: "Organisation settings resources tab showing booking configuration for Desk, Flexdesk, Meeting room, Parking, Phone booth and Sickday." },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "saas-progressive-complexity",
+        type: "summary",
+        label: "Decision 05",
+        title: "Progressive complexity instead of permanent complexity",
+        body:
+          "Enterprise administrators need powerful configuration, but that doesn't mean every option should be visible at once. Basic configuration stays directly accessible, while advanced controls such as Timeslot details — visible as a link on the resources screen above — reveal deeper configuration only when required. Common decisions stay immediate; advanced decisions stay available without dominating the interface.",
+      },
+      {
+        id: "saas-evidence-booking-rules",
+        type: "evidence",
+        label: "Decision 06",
+        title: "Make booking rules tangible",
+        items: [
+          {
+            title: "Presets are accelerators, not filters",
+            detail:
+              "Booking configuration becomes difficult when administrators have to reason about time in the abstract. Instead of forms and numeric inputs, I designed a visual timeslot editor: administrators start from a preset (whole day, morning, afternoon, or a fixed duration) and then modify individual generated slots. Selecting a preset doesn't merely filter the interface — it generates an editable configuration model, combining speed for common cases with control for exceptions.",
+            references: [
+              {
+                label: "Timeslot configuration",
+                detail: "Presets generate an editable booking structure, combining speed for common configurations with control for exceptional cases.",
+                type: "screenshot",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/saas-admin-redesign/timeslot-configuration.png", alt: "Meeting room timeslot configuration with preset buttons and a generated grid of editable 60-minute booking slots." },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "saas-evidence-behaviour",
+        type: "evidence",
+        label: "Decision 07",
+        title: "Design behaviour, not just components",
+        items: [
+          {
+            title: "Selected vs. configured — two states, one control",
+            detail:
+              "The redesign also required reusable interaction rules, not just visual components. In the weekday selector, only one weekday represents the current editing context, but configuration exists independently for every weekday — a small indicator shows that a weekday already holds configured access even when it isn't currently selected. The system defines default, hover, active and disabled states for controls, plus feedback for destructive actions, unavailable configurations, successful changes, and warnings.",
+            references: [
+              {
+                label: "Component behaviour specification",
+                detail: "Interaction states were defined as reusable behavioural rules rather than isolated visual components.",
+                type: "Rule model",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/saas-admin-redesign/component-behaviour-spec.png", alt: "Design specification sheet documenting timeslot preset and weekday selector behaviour, pill states, and system feedback messages." },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "saas-outcome",
+        type: "summary",
+        label: "System Outcome",
+        title: "From individual settings to a configuration system",
+        body:
+          "Structure shows how the workplace is organised. The floorplan shows where resources exist physically. Resources define what can be booked. Booking rules define how it can be booked. Interaction patterns keep those behaviours consistent across the product. The result isn't simply a collection of redesigned screens — it is a shared configuration language for the workplace platform.",
+        signals: ["Structure", "Floorplan", "Resources", "Booking Rules", "Interaction Patterns"],
       },
       {
         id: "saas-lens",
@@ -855,23 +997,23 @@ export const questionBank: QuestionNode[] = [
         lenses: [
           {
             audience: "Recruiter",
-            takeaway: "Shows the ability to bring order to a genuinely complex enterprise admin surface without inventing new scope.",
+            takeaway: "Shows the ability to bring order to a genuinely complex enterprise admin surface by treating navigation, spatial configuration and booking rules as one system.",
           },
           {
             audience: "Design Director",
-            takeaway: "Demonstrates architectural judgment: separating scope and responsibility instead of solving complexity by adding new behavior.",
+            takeaway: "Demonstrates systems thinking and judgment: finding a shared configuration grammar across resource types instead of solving each screen in isolation.",
           },
           {
             audience: "Engineering Manager",
-            takeaway: "Shows respect for existing business logic, data models, and fetch behavior while still improving the interface materially.",
+            takeaway: "Shows interaction states — selected vs. configured, presets vs. generated data, progressive disclosure — documented as reusable behavioural rules rather than one-off UI.",
           },
           {
             audience: "Potential Client",
-            takeaway: "Communicates that meaningful redesign doesn't always require rebuilding functionality, which lowers delivery risk.",
+            takeaway: "Communicates that meaningful enterprise redesign can come from clarifying structure, not just adding features — which lowers delivery risk.",
           },
           {
             audience: "Future Self",
-            takeaway: "Keeps the case honest by documenting only the verified outcome: a new interface architecture, not unverified efficiency claims.",
+            takeaway: "Keeps the case honest by documenting only what the real screens show: no invented metrics, no unverified adoption or efficiency claims.",
           },
         ],
       },
@@ -921,11 +1063,12 @@ export const questionBank: QuestionNode[] = [
       },
     ],
     evidenceReferences: [
-      { label: "Navigation restructuring", detail: "Setup, Management, and Analysis groups with preserved expand/collapse state.", type: "artifact" },
-      { label: "Global actions", detail: "Organization switcher, notifications, help, and changelog moved out of individual page layouts.", type: "artifact" },
-      { label: "Content container", detail: "Tabs moved above the data card; titles and primary actions placed at the page context level.", type: "artifact" },
-      { label: "Progressive disclosure", detail: "Search and date range as primary controls; secondary filters collapsed into an advanced section.", type: "process note" },
-      { label: "Implementation scope", detail: "Jira-documented scope confirming business logic, data model, and existing functionality were preserved.", type: "process note" },
+      { label: "Structure view", detail: "A hierarchical view connects buildings, floors and resources with capacity and sensor information.", type: "screenshot" },
+      { label: "Overview screen", detail: "Resource list and floorplan operate as two representations of the same workplace data.", type: "screenshot" },
+      { label: "Floorplan editing", detail: "Direct spatial configuration for placing and adjusting resources on the office layout.", type: "screenshot" },
+      { label: "Resource configuration", detail: "One configuration grammar applied across every resource type.", type: "screenshot" },
+      { label: "Timeslot configuration", detail: "Editable booking slots generated from presets.", type: "screenshot" },
+      { label: "Component behaviour specification", detail: "Reusable interaction rules for selectors, pills, and system feedback.", type: "Rule model" },
     ],
     followUpQuestions: ["Show me the Meeting Room App Redesign case.", "What proves the quality of your work?"],
   },

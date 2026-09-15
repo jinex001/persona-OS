@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type KeyboardEvent, type TouchEvent } from "react";
+import { useEffect, useState, type KeyboardEvent, type ReactNode, type TouchEvent } from "react";
 import { motion } from "framer-motion";
 import type {
   AnswerBlock,
@@ -349,6 +349,7 @@ function ArtifactCard({
 }) {
   const cardLabel = formatArtifactType(reference.type);
   const isFeatured = isFeaturedArtifact(reference);
+  const fit = reference.fit ?? "cover";
 
   return (
     <article className={isFeatured ? "group md:col-span-2" : "group"}>
@@ -361,6 +362,7 @@ function ArtifactCard({
 
       <ArtifactMedia
         isFeatured={isFeatured}
+        fit={fit}
         reference={reference}
         targetQuestion={targetQuestion}
         onQuestionSelect={onQuestionSelect}
@@ -394,11 +396,13 @@ function ArtifactCard({
 
 function ArtifactMedia({
   isFeatured,
+  fit,
   reference,
   targetQuestion,
   onQuestionSelect,
 }: {
   isFeatured: boolean;
+  fit: "cover" | "contain";
   reference: SourceReference;
   targetQuestion?: string;
   onQuestionSelect: (question: string) => void;
@@ -420,6 +424,7 @@ function ArtifactMedia({
   return (
     <ArtifactSinglePreview
       isFeatured={isFeatured}
+      fit={fit}
       reference={reference}
       targetQuestion={targetQuestion}
       visual={visuals[0]}
@@ -430,20 +435,26 @@ function ArtifactMedia({
 
 function ArtifactSinglePreview({
   isFeatured,
+  fit,
   reference,
   targetQuestion,
   visual,
   onQuestionSelect,
 }: {
   isFeatured: boolean;
+  fit: "cover" | "contain";
   reference: SourceReference;
   targetQuestion?: string;
   visual?: ArtifactVisual;
   onQuestionSelect: (question: string) => void;
 }) {
   const preview = (
-    <ArtifactPreviewFrame isFeatured={isFeatured} reference={reference} visual={visual} />
+    <ArtifactPreviewFrame isFeatured={isFeatured} fit={fit} reference={reference} visual={visual} />
   );
+
+  if (fit === "contain" && visual) {
+    return <ZoomableArtifact visual={visual} title={reference.label}>{preview}</ZoomableArtifact>;
+  }
 
   if (reference.href) {
     return (
@@ -466,6 +477,58 @@ function ArtifactSinglePreview({
   }
 
   return preview;
+}
+
+function ZoomableArtifact({
+  visual,
+  title,
+  children,
+}: {
+  visual: ArtifactVisual;
+  title: string;
+  children: ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        className="group/zoom relative block w-full rounded-lg text-left focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-4"
+        type="button"
+        aria-label={`Enlarge ${title}`}
+      >
+        {children}
+        <span className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-black/60 px-3 py-1 text-[11px] text-white opacity-0 transition group-hover/zoom:opacity-100">
+          Click to enlarge
+        </span>
+      </button>
+
+      {open ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-6"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setOpen(false)}
+        >
+          <button
+            onClick={() => setOpen(false)}
+            className="absolute right-5 top-5 text-sm text-white/80 hover:text-white"
+            type="button"
+            aria-label="Close"
+          >
+            Close ✕
+          </button>
+          <img
+            src={visual.src}
+            alt={visual.alt || title}
+            className="max-h-full max-w-full rounded-md object-contain"
+            onClick={(event) => event.stopPropagation()}
+          />
+        </div>
+      ) : null}
+    </>
+  );
 }
 
 function ArtifactCarousel({
@@ -613,10 +676,12 @@ function ArtifactCarousel({
 
 function ArtifactPreviewFrame({
   isFeatured,
+  fit,
   reference,
   visual,
 }: {
   isFeatured: boolean;
+  fit: "cover" | "contain";
   reference: SourceReference;
   visual?: ArtifactVisual;
 }) {
@@ -625,7 +690,7 @@ function ArtifactPreviewFrame({
   if (visual) {
     return (
       <div className="overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 transition group-hover:border-zinc-300">
-        <ArtifactVisualImage isFeatured={isFeatured} title={reference.label} visual={visual} />
+        <ArtifactVisualImage isFeatured={isFeatured} fit={fit} title={reference.label} visual={visual} />
       </div>
     );
   }
@@ -635,13 +700,26 @@ function ArtifactPreviewFrame({
 
 function ArtifactVisualImage({
   isFeatured,
+  fit = "cover",
   title,
   visual,
 }: {
   isFeatured: boolean;
+  fit?: "cover" | "contain";
   title: string;
   visual: ArtifactVisual;
 }) {
+  if (fit === "contain") {
+    return (
+      <img
+        src={visual.src}
+        alt={visual.alt || `${title} preview`}
+        className="h-auto w-full bg-white object-contain"
+        loading="lazy"
+      />
+    );
+  }
+
   const aspectClass = isFeatured ? "aspect-[16/10]" : "aspect-[4/3]";
 
   return (
@@ -720,7 +798,7 @@ function ArtifactFallbackPreview({ isFeatured, variant }: { isFeatured: boolean;
 }
 
 function isFeaturedArtifact(reference: SourceReference) {
-  return reference.label === "Current Time Timeline State";
+  return reference.featured === true || reference.label === "Current Time Timeline State";
 }
 
 function getArtifactVisuals(reference: SourceReference): ArtifactVisual[] {
