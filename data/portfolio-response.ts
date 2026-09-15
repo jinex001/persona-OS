@@ -169,7 +169,7 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
   },
   {
     id: "meeting-room-redesign",
-    question: "Show me the Meeting Room App Redesign case.",
+    question: "Show me the Connected Experience Design case.",
     intent: "Open a case study about a tablet-based room display, real-time availability, and admin-defined room rules.",
     cardDescription: "Real-time room availability on a tablet display.",
     tags: ["Workplace UX", "Tablet interface", "Timeline design"],
@@ -185,8 +185,8 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
   },
   {
     id: "lee-heemoon",
-    question: "Show me the Lee Heemoon case.",
-    intent: "Lee Heemoon — designing and maintaining an evolving digital home for a genre-defying artist.",
+    question: "Show me the Artist's Digital Archive case.",
+    intent: "Designing and maintaining an evolving digital home for a genre-defying artist.",
     cardDescription: "An evolving digital home for a genre-defying artist.",
     tags: ["UX/UI Design", "Art Direction", "Interaction Design"],
     category: "Work",
@@ -346,7 +346,7 @@ export const questionBank: QuestionNode[] = [
         title: "Where this shows up",
         cases: [
           {
-            title: "Meeting Room App Redesign",
+            title: "Connected Experience Design",
             summary: "A tablet-based room display redesigned for real-time availability and admin-defined room rules.",
             outcome: "Clearer room state, distance-readable status, and less coordination friction in shared workplaces.",
           },
@@ -379,7 +379,7 @@ export const questionBank: QuestionNode[] = [
         title: "Suggested next explorations",
         questions: [
           "How has your design philosophy changed?",
-          "Show me the Meeting Room App Redesign case.",
+          "Show me the Connected Experience Design case.",
           "What proves the quality of your work?",
         ],
       },
@@ -395,9 +395,9 @@ export const questionBank: QuestionNode[] = [
       {
         id: "identity-case-room",
         type: "Case",
-        title: "Meeting Room App Redesign",
+        title: "Connected Experience Design",
         reason: "A concrete case makes the identity claims inspectable.",
-        targetQuestion: "Show me the Meeting Room App Redesign case.",
+        targetQuestion: "Show me the Connected Experience Design case.",
       },
       {
         id: "identity-log-12",
@@ -417,7 +417,7 @@ export const questionBank: QuestionNode[] = [
     evidenceReferences: coreEvidence.flatMap((item) => item.references),
     followUpQuestions: [
       "How has your design philosophy changed?",
-      "Show me the Meeting Room App Redesign case.",
+      "Show me the Connected Experience Design case.",
       "Open Decision Log #12.",
     ],
   },
@@ -497,10 +497,10 @@ export const questionBank: QuestionNode[] = [
   },
   {
     id: "meeting-room-redesign",
-    question: "Show me the Meeting Room App Redesign case.",
+    question: "Show me the Connected Experience Design case.",
     intent: "Open a case study about a tablet-based room display, real-time availability, and admin-defined room rules.",
     category: "Work",
-    answerTitle: "Meeting Room App Redesign",
+    answerTitle: "Connected Experience Design",
     heroMedia: {
       kind: "image",
       label: "Cover image placeholder · 1920 × 1080 recommended",
@@ -647,9 +647,9 @@ export const questionBank: QuestionNode[] = [
       {
         id: "room-case-heemoon",
         type: "Case",
-        title: "Lee Heemoon",
+        title: "Artist's Digital Archive",
         reason: "See a content-and-identity system alongside this state-driven one.",
-        targetQuestion: "Show me the Lee Heemoon case.",
+        targetQuestion: "Show me the Artist's Digital Archive case.",
       },
     ],
     evidenceReferences: [
@@ -715,16 +715,16 @@ export const questionBank: QuestionNode[] = [
         type: "nextQuestions",
         label: "Next Questions",
         title: "Ways to inspect the evidence",
-        questions: ["Show me the Meeting Room App Redesign case.", "Open Decision Log #12."],
+        questions: ["Show me the Connected Experience Design case.", "Open Decision Log #12."],
       },
     ],
     relatedCards: [
       {
         id: "evidence-case",
         type: "Case",
-        title: "Meeting Room App Redesign",
+        title: "Connected Experience Design",
         reason: "A case gives evidence more context and consequence.",
-        targetQuestion: "Show me the Meeting Room App Redesign case.",
+        targetQuestion: "Show me the Connected Experience Design case.",
       },
       {
         id: "evidence-log",
@@ -735,7 +735,7 @@ export const questionBank: QuestionNode[] = [
       },
     ],
     evidenceReferences: coreEvidence.flatMap((item) => item.references),
-    followUpQuestions: ["Show me the Meeting Room App Redesign case.", "Open Decision Log #12."],
+    followUpQuestions: ["Show me the Connected Experience Design case.", "Open Decision Log #12."],
   },
   {
     id: "decision-log-12",
@@ -1035,7 +1035,7 @@ export const questionBank: QuestionNode[] = [
         type: "nextQuestions",
         label: "Next Questions",
         title: "Continue exploring",
-        questions: ["Show me the Meeting Room App Redesign case.", "What proves the quality of your work?"],
+        questions: ["Show me the Connected Experience Design case.", "What proves the quality of your work?"],
       },
     ],
     relatedCards: [
@@ -1049,9 +1049,9 @@ export const questionBank: QuestionNode[] = [
       {
         id: "saas-case-room",
         type: "Case",
-        title: "Meeting Room App Redesign",
+        title: "Connected Experience Design",
         reason: "Compare with another structural, state-driven redesign.",
-        targetQuestion: "Show me the Meeting Room App Redesign case.",
+        targetQuestion: "Show me the Connected Experience Design case.",
       },
       {
         id: "saas-case-jira",
@@ -1070,9 +1070,9 @@ export const questionBank: QuestionNode[] = [
       {
         id: "saas-case-heemoon",
         type: "Case",
-        title: "Lee Heemoon",
+        title: "Artist's Digital Archive",
         reason: "See a content-and-identity system alongside this admin-interface case.",
-        targetQuestion: "Show me the Lee Heemoon case.",
+        targetQuestion: "Show me the Artist's Digital Archive case.",
       },
     ],
     evidenceReferences: [
@@ -1083,7 +1083,7 @@ export const questionBank: QuestionNode[] = [
       { label: "Timeslot configuration", detail: "Editable booking slots generated from presets.", type: "screenshot" },
       { label: "Component behaviour specification", detail: "Reusable interaction rules for selectors, pills, and system feedback.", type: "Rule model" },
     ],
-    followUpQuestions: ["Show me the Meeting Room App Redesign case.", "What proves the quality of your work?"],
+    followUpQuestions: ["Show me the Connected Experience Design case.", "What proves the quality of your work?"],
   },
   {
     id: "jira-automation",
@@ -1176,7 +1176,7 @@ export const questionBank: QuestionNode[] = [
         type: "nextQuestions",
         label: "Next Questions",
         title: "Continue exploring",
-        questions: ["Show me the SaaS Admin Redesign case.", "Show me the Meeting Room App Redesign case."],
+        questions: ["Show me the SaaS Admin Redesign case.", "Show me the Connected Experience Design case."],
       },
     ],
     relatedCards: [
@@ -1197,16 +1197,16 @@ export const questionBank: QuestionNode[] = [
       {
         id: "jira-case-room",
         type: "Case",
-        title: "Meeting Room App Redesign",
+        title: "Connected Experience Design",
         reason: "See a product-shaped case alongside this workflow-shaped one.",
-        targetQuestion: "Show me the Meeting Room App Redesign case.",
+        targetQuestion: "Show me the Connected Experience Design case.",
       },
       {
         id: "jira-case-heemoon",
         type: "Case",
-        title: "Lee Heemoon",
+        title: "Artist's Digital Archive",
         reason: "See ongoing product ownership alongside this hackathon prototype.",
-        targetQuestion: "Show me the Lee Heemoon case.",
+        targetQuestion: "Show me the Artist's Digital Archive case.",
       },
     ],
     evidenceReferences: [
@@ -1214,12 +1214,12 @@ export const questionBank: QuestionNode[] = [
       { label: "Ticket context model", detail: "Structured fields connecting design rationale to engineering scope.", type: "process note" },
       { label: "Critical-path prototype", detail: "Tested whether a design-system action could become a useful engineering task without a manual handoff.", type: "prototype" },
     ],
-    followUpQuestions: ["Show me the SaaS Admin Redesign case.", "Show me the Meeting Room App Redesign case."],
+    followUpQuestions: ["Show me the SaaS Admin Redesign case.", "Show me the Connected Experience Design case."],
   },
   {
     id: "lee-heemoon",
-    question: "Show me the Lee Heemoon case.",
-    intent: "Lee Heemoon — designing and maintaining an evolving digital home for a genre-defying artist.",
+    question: "Show me the Artist's Digital Archive case.",
+    intent: "Designing and maintaining an evolving digital home for a genre-defying artist.",
     category: "Work",
     answerTitle: "Design for an Artist",
     heroMedia: {
