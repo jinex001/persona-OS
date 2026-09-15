@@ -153,17 +153,42 @@ export type QuestionNode = {
 
 export const questionCategories: QuestionCategory[] = ["Identity", "Work", "Evidence", "Principles", "Logs"];
 
-export const starterQuestions: Pick<QuestionNode, "id" | "question" | "intent" | "category">[] = [
+export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" | "category"> & {
+  /** Short, one-line version of the description shown on the Work starter-path card. Falls back to `intent`. */
+  cardDescription?: string;
+  /** Tags shown on Work starter-path cards only. Card shows the first 2 plus a "+N" overflow badge. */
+  tags?: string[];
+})[] = [
   {
-    id: "lee-heemoon",
-    question: "Show me the Lee Heemoon case.",
-    intent: "Lee Heemoon — designing and maintaining an evolving digital home for a genre-defying artist.",
+    id: "saas-admin-redesign",
+    question: "Show me the SaaS Admin Redesign case.",
+    intent: "A structural case study about turning a growing workplace-management admin surface into one coherent configuration system.",
+    cardDescription: "Turning workplace configuration into one coherent system.",
+    tags: ["B2B SaaS", "Enterprise UX", "Information Architecture"],
+    category: "Work",
+  },
+  {
+    id: "meeting-room-redesign",
+    question: "Show me the Meeting Room App Redesign case.",
+    intent: "Open a case study about a tablet-based room display, real-time availability, and admin-defined room rules.",
+    cardDescription: "Real-time room availability on a tablet display.",
+    tags: ["Workplace UX", "Tablet interface", "Timeline design"],
     category: "Work",
   },
   {
     id: "jira-automation",
     question: "Show me the AI Workflow case.",
     intent: 'Turning Design System Changes into Engineering Work Automation — "Figma" → "Jira"',
+    cardDescription: "Turning Figma design-system changes into Jira tickets.",
+    tags: ["Workflow automation", "Design systems", "Design-to-engineering handoff"],
+    category: "Work",
+  },
+  {
+    id: "lee-heemoon",
+    question: "Show me the Lee Heemoon case.",
+    intent: "Lee Heemoon — designing and maintaining an evolving digital home for a genre-defying artist.",
+    cardDescription: "An evolving digital home for a genre-defying artist.",
+    tags: ["UX/UI Design", "Art Direction", "Interaction Design"],
     category: "Work",
   },
   {
@@ -179,12 +204,6 @@ export const starterQuestions: Pick<QuestionNode, "id" | "question" | "intent" |
     category: "Principles",
   },
   {
-    id: "meeting-room-redesign",
-    question: "Show me the Meeting Room App Redesign case.",
-    intent: "Open a product-shaped case study about live meeting room availability.",
-    category: "Work",
-  },
-  {
     id: "evidence",
     question: "What proves the quality of your work?",
     intent: "Review artifacts, process notes, and credibility signals.",
@@ -195,12 +214,6 @@ export const starterQuestions: Pick<QuestionNode, "id" | "question" | "intent" |
     question: "Open Decision Log #12.",
     intent: "Inspect a decision log and its evaluation lenses.",
     category: "Logs",
-  },
-  {
-    id: "saas-admin-redesign",
-    question: "Show me the SaaS Admin Redesign case.",
-    intent: "Open a structural refactoring case study about a complex SaaS admin interface.",
-    category: "Work",
   },
 ];
 

@@ -221,7 +221,25 @@ function OpeningWorkspace({ onSelectQuestion }: { onSelectQuestion: (question: s
             >
               <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-500">{starter.category}</div>
               <h2 className="mt-4 text-base font-semibold leading-6 text-black">{starter.question}</h2>
-              <p className="mt-3 text-sm leading-6 text-zinc-600">{starter.intent}</p>
+              {starter.tags ? (
+                <>
+                  <p className="mt-3 line-clamp-1 text-sm leading-6 text-zinc-600">{starter.cardDescription ?? starter.intent}</p>
+                  <div className="mt-4 flex flex-wrap items-center gap-1.5">
+                    {starter.tags.slice(0, 2).map((tag) => (
+                      <span key={tag} className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-600 ring-1 ring-zinc-200">
+                        {tag}
+                      </span>
+                    ))}
+                    {starter.tags.length > 2 ? (
+                      <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-400 ring-1 ring-zinc-200">
+                        +{starter.tags.length - 2}
+                      </span>
+                    ) : null}
+                  </div>
+                </>
+              ) : (
+                <p className="mt-3 text-sm leading-6 text-zinc-600">{starter.intent}</p>
+              )}
             </motion.button>
           ))}
         </div>
