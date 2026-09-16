@@ -345,7 +345,9 @@ function AnswerWorkspace({
         ))}
       </div>
 
-      <DiscoveryRail cards={question.relatedCards} onSelect={onSelectQuestion} />
+      {question.relatedCards.length > 0 ? (
+        <DiscoveryRail cards={question.relatedCards} onSelect={onSelectQuestion} />
+      ) : null}
     </div>
   );
 }

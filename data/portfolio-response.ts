@@ -491,13 +491,6 @@ export const questionBank: QuestionNode[] = [
         endingHeadline: "I design products by understanding the system behind the interface.",
       },
       {
-        id: "identity-evidence",
-        type: "evidence",
-        label: "Evidence",
-        title: "Proof patterns",
-        items: coreEvidence,
-      },
-      {
         id: "related-identity-work",
         type: "relatedWork",
         label: "Related Work",
@@ -530,48 +523,8 @@ export const questionBank: QuestionNode[] = [
           },
         ],
       },
-      {
-        id: "identity-next",
-        type: "nextQuestions",
-        label: "Next Questions",
-        title: "Suggested next explorations",
-        questions: [
-          "How has your design philosophy changed?",
-          "Show me the Connected Experience Design case.",
-          "What proves the quality of your work?",
-        ],
-      },
     ],
-    relatedCards: [
-      {
-        id: "identity-ask-philosophy",
-        type: "Ask",
-        title: "Design philosophy",
-        reason: "This continues from identity into principles and judgment.",
-        targetQuestion: "How has your design philosophy changed?",
-      },
-      {
-        id: "identity-case-room",
-        type: "Case",
-        title: "Connected Experience Design",
-        reason: "A concrete case makes the identity claims inspectable.",
-        targetQuestion: "Show me the Connected Experience Design case.",
-      },
-      {
-        id: "identity-log-12",
-        type: "Design Log",
-        title: "Decision Log #12",
-        reason: "Shows why this system uses blocks instead of chat paragraphs.",
-        targetQuestion: "Open Decision Log #12.",
-      },
-      {
-        id: "identity-evidence-proof",
-        type: "Evidence",
-        title: "Proof of quality",
-        reason: "Moves from claims to artifacts, process notes, and outcomes.",
-        targetQuestion: "What proves the quality of your work?",
-      },
-    ],
+    relatedCards: [],
     evidenceReferences: coreEvidence.flatMap((item) => item.references),
     followUpQuestions: [
       "How has your design philosophy changed?",
