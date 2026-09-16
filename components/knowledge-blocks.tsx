@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode, type TouchEvent } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import type {
   AnswerBlock,
   ArtifactType,
@@ -920,11 +920,12 @@ function CareerTimelineNode({
   onQuestionSelect: (question: string) => void;
 }) {
   const isCreative = variant === "creative";
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <motion.div
       className="grid grid-cols-[32px_1fr] gap-4 md:grid-cols-[64px_1fr]"
-      initial="hidden"
+      initial={shouldReduceMotion ? "show" : "hidden"}
       whileInView="show"
       viewport={{ once: true, amount: 0.3 }}
       variants={timelineEntryVariants}
@@ -939,10 +940,10 @@ function CareerTimelineNode({
           }
         />
         <motion.div
-          initial={{ scaleY: 0 }}
+          initial={shouldReduceMotion ? { scaleY: 1 } : { scaleY: 0 }}
           whileInView={{ scaleY: 1 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] }}
           style={{ transformOrigin: "top" }}
           className={
             isCreative
@@ -1059,6 +1060,7 @@ function CareerEvolutionBlock({
   onQuestionSelect: (question: string) => void;
 }) {
   const nowRef = useRef<HTMLDivElement | null>(null);
+  const shouldReduceMotion = useReducedMotion();
   const creativeByAlignAfter = new Map<string, CareerTimelineEntry[]>();
   creativeTrack.forEach((entry) => {
     const key = entry.alignAfter ?? "";
@@ -1066,6 +1068,26 @@ function CareerEvolutionBlock({
     list.push(entry);
     creativeByAlignAfter.set(key, list);
   });
+
+  const fadeUp = (delay = 0) =>
+    shouldReduceMotion
+      ? { initial: { opacity: 1, y: 0 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } }
+      : {
+          initial: { opacity: 0, y: 14 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.6 },
+          transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] as const, delay },
+        };
+
+  const drawPath = (duration = 0.8, delay = 0) =>
+    shouldReduceMotion
+      ? { initial: { pathLength: 1 }, whileInView: { pathLength: 1 }, viewport: { once: true } }
+      : {
+          initial: { pathLength: 0 },
+          whileInView: { pathLength: 1 },
+          viewport: { once: true, amount: 0.6 },
+          transition: { duration, ease: [0.22, 1, 0.36, 1] as const, delay },
+        };
 
   return (
     <MotionBlock delay={delay} eyebrow={label}>
@@ -1112,72 +1134,30 @@ function CareerEvolutionBlock({
 
       <div ref={nowRef} className="mt-8 flex flex-col items-center py-16 text-center">
         <svg viewBox="0 0 480 200" className="mb-6 h-auto w-full max-w-[420px]" fill="none">
-          <motion.path
-            d="M120 0 C120 80, 230 100, 240 160"
-            stroke="#111111"
-            strokeWidth={1.5}
-            pathLength={1}
-            initial={{ pathLength: 0 }}
-            whileInView={{ pathLength: 1 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          />
-          <motion.path
-            d="M360 0 C360 80, 250 100, 240 160"
-            stroke="#A1A1AA"
-            strokeWidth={1.5}
-            pathLength={1}
-            initial={{ pathLength: 0 }}
-            whileInView={{ pathLength: 1 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          />
+          <motion.path d="M120 0 C120 80, 230 100, 240 160" stroke="#111111" strokeWidth={1.5} pathLength={1} {...drawPath(0.8)} />
+          <motion.path d="M360 0 C360 80, 250 100, 240 160" stroke="#A1A1AA" strokeWidth={1.5} pathLength={1} {...drawPath(0.8)} />
           <motion.circle
             cx={240}
             cy={164}
             r={5}
             fill="#111111"
-            initial={{ opacity: 0 }}
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.3, delay: 0.7 }}
+            transition={{ duration: shouldReduceMotion ? 0 : 0.3, delay: shouldReduceMotion ? 0 : 0.7 }}
           />
         </svg>
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: 0.7 }}
-          className="text-xs uppercase tracking-[0.16em] text-zinc-400"
-        >
+        <motion.div {...fadeUp(0.7)} className="text-xs uppercase tracking-[0.16em] text-zinc-400">
           Now
         </motion.div>
-        <motion.h3
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: 0.78 }}
-          className="mt-3 font-title text-2xl font-medium text-black md:text-3xl"
-        >
+        <motion.h3 {...fadeUp(0.78)} className="mt-3 font-title text-2xl font-medium text-black md:text-3xl">
           {mergeHeadline}
         </motion.h3>
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: 0.86 }}
-          className="mt-2 text-sm text-zinc-500"
-        >
+        <motion.div {...fadeUp(0.86)} className="mt-2 text-sm text-zinc-500">
           {mergeFallback}
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: 0.96 }}
-          className="mt-10 flex flex-col items-center"
-        >
+        <motion.div {...fadeUp(0.96)} className="mt-10 flex flex-col items-center">
           <div className="h-8 w-px bg-zinc-200" />
           <div className="mt-2 text-xs uppercase tracking-[0.16em] text-zinc-400">+ AI</div>
           <h4 className="mt-3 font-title text-xl font-medium text-black md:text-2xl">{aiHeadline}</h4>
@@ -1195,13 +1175,7 @@ function CareerEvolutionBlock({
         </motion.div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 14 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-        className="mt-4 max-w-xl border-t border-zinc-100 pt-10 text-center text-lg leading-8 text-black md:text-xl"
-      >
+      <motion.div {...fadeUp(0)} viewport={{ once: true, amount: 0.5 }} className="mt-4 max-w-xl border-t border-zinc-100 pt-10 text-center text-lg leading-8 text-black md:text-xl">
         {endingHeadline}
       </motion.div>
     </MotionBlock>
