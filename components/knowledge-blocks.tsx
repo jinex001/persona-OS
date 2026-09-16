@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode, type TouchEvent } from "react";
+import { useRef, useState, type KeyboardEvent, type ReactNode, type TouchEvent } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import type {
   AnswerBlock,
@@ -1159,10 +1159,10 @@ function isWide(map: Map<string, CareerTimelineEntry[]>, id: string) {
   return !!list && list.length > 0;
 }
 
+/** Renders text with a single fade/rise-in reveal (no more character-by-character typing). Name kept to avoid touching every call site. */
 function TypewriterText({
   as: Component = "p",
   className,
-  speed = 18,
   text,
 }: {
   as?: "div" | "h1" | "h2" | "h3" | "p" | "span";
@@ -1170,44 +1170,19 @@ function TypewriterText({
   speed?: number;
   text: string;
 }) {
-  const [visibleLength, setVisibleLength] = useState(0);
-
-  useEffect(() => {
-    setVisibleLength(0);
-
-    if (!text) return;
-
-    let frameId: ReturnType<typeof setTimeout> | null = null;
-    let cancelled = false;
-
-    function tick(length: number) {
-      if (cancelled) return;
-
-      const nextLength = Math.min(text.length, length + 1);
-      setVisibleLength(nextLength);
-
-      if (nextLength >= text.length) return;
-
-      frameId = setTimeout(() => {
-        tick(nextLength);
-      }, speed);
-    }
-
-    frameId = setTimeout(() => {
-      tick(0);
-    }, Math.min(speed * 2, 50));
-
-    return () => {
-      cancelled = true;
-      if (frameId) clearTimeout(frameId);
-    };
-  }, [speed, text]);
+  const shouldReduceMotion = useReducedMotion();
+  const Motioned = motion[Component];
 
   return (
-    <Component className={className}>
-      {text.slice(0, visibleLength)}
-      {visibleLength < text.length ? <span className="inline-block w-[0.55ch] animate-pulse text-zinc-400">|</span> : null}
-    </Component>
+    <Motioned
+      className={className}
+      initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.6 }}
+      transition={{ duration: shouldReduceMotion ? 0 : 0.42, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {text}
+    </Motioned>
   );
 }
 
