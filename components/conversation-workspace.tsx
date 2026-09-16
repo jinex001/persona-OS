@@ -28,7 +28,6 @@ export function ConversationWorkspace() {
   const collapseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const answerTopRef = useRef<HTMLDivElement | null>(null);
   const hasConversation = activeQuestion !== null;
-  const isPresentingAnswer = composerState === "disabled" && activeQuestion !== null;
 
   const groupedHistory = useMemo(() => {
     return questionCategories.map((category) => ({
@@ -128,7 +127,6 @@ export function ConversationWorkspace() {
         {hasConversation ? (
           <AnswerWorkspace
             key={activeQuestion.id}
-            isPresenting={isPresentingAnswer}
             question={activeQuestion}
             onPresentationComplete={handlePresentationComplete}
             onSelectQuestion={activateQuestion}
@@ -294,12 +292,10 @@ function UnderlinePhrase({
 }
 
 function AnswerWorkspace({
-  isPresenting,
   onPresentationComplete,
   question,
   onSelectQuestion,
 }: {
-  isPresenting: boolean;
   onPresentationComplete: () => void;
   question: QuestionNode;
   onSelectQuestion: (question: string) => void;
@@ -308,66 +304,11 @@ function AnswerWorkspace({
     () => question.answerBlocks.filter((block) => block.type !== "perspectiveLens"),
     [question.answerBlocks],
   );
-  const [visibleBlockCount, setVisibleBlockCount] = useState(0);
-  const blockRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
-    let cancelled = false;
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
-
-    if (!isPresenting) {
-      setVisibleBlockCount(answerBlocks.length);
-      return () => {
-        if (timeoutId) clearTimeout(timeoutId);
-      };
-    }
-
-    setVisibleBlockCount(0);
-
-    const durations = answerBlocks.map((block) => estimateBlockDuration(block));
-
-    function revealBlock(index: number) {
-      if (cancelled) return;
-
-      setVisibleBlockCount(index + 1);
-
-      if (index === answerBlocks.length - 1) {
-        timeoutId = setTimeout(() => {
-          if (!cancelled) onPresentationComplete();
-        }, durations[index]);
-        return;
-      }
-
-      timeoutId = setTimeout(() => {
-        revealBlock(index + 1);
-      }, durations[index]);
-    }
-
-    timeoutId = setTimeout(() => {
-      revealBlock(0);
-    }, 260);
-
-    return () => {
-      cancelled = true;
-      if (timeoutId) clearTimeout(timeoutId);
-    };
-  }, [answerBlocks, isPresenting, onPresentationComplete]);
-
-  useEffect(() => {
-    if (!isPresenting || visibleBlockCount === 0) return;
-
-    const currentBlock = blockRefs.current[visibleBlockCount - 1];
-    if (!currentBlock) return;
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        currentBlock.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      });
-    });
-  }, [isPresenting, visibleBlockCount]);
+    onPresentationComplete();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [question.id]);
 
   return (
     <div className="mx-auto max-w-5xl pb-20">
@@ -397,22 +338,14 @@ function AnswerWorkspace({
       </motion.div>
 
       <div className="mt-10 space-y-10">
-        {answerBlocks.slice(0, visibleBlockCount).map((block, index) => (
-          <div
-            key={block.id}
-            ref={(node) => {
-              blockRefs.current[index] = node;
-            }}
-            className="max-w-4xl"
-          >
+        {answerBlocks.map((block) => (
+          <div key={block.id} className="max-w-4xl">
             <AnswerBlockRenderer block={block} delay={0.18} onQuestionSelect={onSelectQuestion} />
           </div>
         ))}
       </div>
 
-      {!isPresenting && visibleBlockCount >= answerBlocks.length ? (
-        <DiscoveryRail cards={question.relatedCards} onSelect={onSelectQuestion} />
-      ) : null}
+      <DiscoveryRail cards={question.relatedCards} onSelect={onSelectQuestion} />
     </div>
   );
 }
@@ -482,34 +415,7 @@ function PromptComposer({
   );
 }
 
-function estimateBlockDuration(block: QuestionNode["answerBlocks"][number]) {
-  const base = 540;
-  const perChar = 14;
-  const minimum = 850;
-  const maximum = 2600;
 
-  const text =
-    block.type === "summary"
-      ? `${block.title} ${block.body} ${(block.signals ?? []).join(" ")}`
-      : block.type === "perspectiveLens"
-        ? `${block.title} ${block.lenses.map((lens) => `${lens.audience} ${lens.takeaway}`).join(" ")}`
-        : block.type === "designReasoning"
-          ? `${block.title} ${block.steps.join(" ")}`
-          : block.type === "evidence"
-            ? `${block.title} ${block.items.map((item) => `${item.title} ${item.detail}`).join(" ")}`
-            : block.type === "relatedWork"
-              ? `${block.title} ${block.cases.map((item) => `${item.title} ${item.summary} ${item.outcome}`).join(" ")}`
-              : block.type === "decisionLog"
-                ? `${block.log.title} ${block.log.decisionSummary} ${block.log.whyItMatters}`
-                : block.type === "careerEvolution"
-                  ? `${block.introLines.join(" ")} ${block.primaryTrack
-                      .concat(block.creativeTrack)
-                      .flatMap((entry) => entry.entries.map((sub) => sub.narrative))
-                      .join(" ")} ${block.mergeHeadline} ${block.aiHeadline} ${block.endingHeadline}`
-                  : `${block.title} ${block.questions.join(" ")}`;
-
-  return Math.min(maximum, Math.max(minimum, base + text.length * perChar));
-}
 
 function FloatingQuestionTree({
   groupedHistory,
