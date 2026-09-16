@@ -116,7 +116,6 @@ export type AnswerBlock =
       label: string;
       title: string;
       introLines: string[];
-      fastPathLabel: string;
       primaryTrack: CareerTimelineEntry[];
       creativeTrack: CareerTimelineEntry[];
       mergeHeadline: string;
@@ -236,24 +235,6 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     question: "Who are you?",
     intent: "Build a first identity map from role, judgment, proof, and next paths.",
     category: "Identity",
-  },
-  {
-    id: "design-philosophy",
-    question: "How has your design philosophy changed?",
-    intent: "Understand the principles behind the work, not just the output.",
-    category: "Principles",
-  },
-  {
-    id: "evidence",
-    question: "What proves the quality of your work?",
-    intent: "Review artifacts, process notes, and credibility signals.",
-    category: "Evidence",
-  },
-  {
-    id: "decision-log-12",
-    question: "Open Decision Log #12.",
-    intent: "Inspect a decision log and its evaluation lenses.",
-    category: "Logs",
   },
 ];
 
@@ -378,7 +359,6 @@ export const questionBank: QuestionNode[] = [
         label: "The Evolution",
         title: "Career evolution",
         introLines: ["I didn't start as a product designer.", "I became one."],
-        fastPathLabel: "Prefer the short version? \u2192 Now: Product \u00d7 Systems \u00d7 Craft + AI",
         primaryTrack: [
           {
             id: "shoop",

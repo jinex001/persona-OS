@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent, type ReactNode, type TouchEvent } from "react";
+import { useState, type KeyboardEvent, type ReactNode, type TouchEvent } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { starterQuestions } from "@/data/portfolio-response";
 import type {
@@ -185,7 +185,6 @@ export function AnswerBlockRenderer({
         delay={delay}
         label={block.label}
         introLines={block.introLines}
-        fastPathLabel={block.fastPathLabel}
         primaryTrack={block.primaryTrack}
         creativeTrack={block.creativeTrack}
         mergeHeadline={block.mergeHeadline}
@@ -1044,7 +1043,6 @@ function CareerEvolutionBlock({
   delay,
   label,
   introLines,
-  fastPathLabel,
   primaryTrack,
   creativeTrack,
   mergeHeadline,
@@ -1058,7 +1056,6 @@ function CareerEvolutionBlock({
   delay: number;
   label: string;
   introLines: string[];
-  fastPathLabel: string;
   primaryTrack: CareerTimelineEntry[];
   creativeTrack: CareerTimelineEntry[];
   mergeHeadline: string;
@@ -1069,7 +1066,6 @@ function CareerEvolutionBlock({
   endingHeadline: string;
   onQuestionSelect: (question: string) => void;
 }) {
-  const nowRef = useRef<HTMLDivElement | null>(null);
   const shouldReduceMotion = useReducedMotion();
   const creativeByAlignAfter = new Map<string, CareerTimelineEntry[]>();
   creativeTrack.forEach((entry) => {
@@ -1111,13 +1107,6 @@ function CareerEvolutionBlock({
             className={i === 0 ? "font-title text-3xl font-medium text-black md:text-4xl" : "mt-1 font-title text-2xl font-medium text-zinc-500 md:text-3xl"}
           />
         ))}
-        <button
-          type="button"
-          onClick={() => nowRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
-          className="mt-6 border-b border-zinc-200 pb-0.5 text-sm text-zinc-500 transition hover:border-black hover:text-black"
-        >
-          {fastPathLabel}
-        </button>
       </div>
 
       <div className="mt-16 space-y-0">
@@ -1142,7 +1131,7 @@ function CareerEvolutionBlock({
         </div>
       </div>
 
-      <div ref={nowRef} className="mt-8 flex flex-col items-center py-16 text-center">
+      <div className="mt-8 flex flex-col items-center py-16 text-center">
         <svg viewBox="0 0 480 200" className="mb-6 h-auto w-full max-w-[420px]" fill="none">
           <motion.path d="M120 0 C120 80, 230 100, 240 160" stroke="#111111" strokeWidth={1.5} pathLength={1} {...drawPath(0.8)} />
           <motion.path d="M360 0 C360 80, 250 100, 240 160" stroke="#A1A1AA" strokeWidth={1.5} pathLength={1} {...drawPath(0.8)} />
