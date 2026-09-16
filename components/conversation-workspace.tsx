@@ -215,8 +215,10 @@ function OpeningWorkspace({ onSelectQuestion }: { onSelectQuestion: (question: s
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1], delay: 1.62 + index * 0.08 }}
               onClick={() => onSelectQuestion(starter.question)}
-              className={`flex min-h-[150px] flex-col items-start justify-start rounded-[24px] bg-zinc-100 p-4 text-left transition hover:-translate-y-0.5 hover:bg-zinc-200/70 focus:outline-none focus:ring-2 focus:ring-black ${
-                starter.category === "Work" ? "order-2" : "order-1 col-span-full"
+              className={`flex min-h-[150px] flex-col items-start justify-start rounded-[24px] p-4 text-left transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-black ${
+                starter.category === "Work"
+                  ? "order-2 bg-[#E4EFF2] hover:bg-[#D2E4E8]"
+                  : "order-1 col-span-full bg-zinc-100 hover:bg-zinc-200/70"
               }`}
               type="button"
               data-state="related"

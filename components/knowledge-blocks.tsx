@@ -222,7 +222,7 @@ export function AnswerBlockRenderer({
               key={starter.id}
               type="button"
               onClick={() => onQuestionSelect(starter.question)}
-              className="flex flex-col items-start rounded-[22px] bg-zinc-100 p-5 text-left transition hover:-translate-y-0.5 hover:bg-zinc-200/70 focus:outline-none focus:ring-2 focus:ring-black"
+              className="flex flex-col items-start rounded-[22px] bg-[#E4EFF2] p-5 text-left transition hover:-translate-y-0.5 hover:bg-[#D2E4E8] focus:outline-none focus:ring-2 focus:ring-black"
             >
               <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-500">{starter.category}</div>
               <h3 className="mt-3 text-base font-semibold leading-6 text-black">{starter.question}</h3>
