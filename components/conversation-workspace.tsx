@@ -128,6 +128,17 @@ export function ConversationWorkspace() {
 
   return (
     <main className="min-h-screen bg-white pb-32 text-ink">
+      {hasConversation ? (
+        <button
+          onClick={goHome}
+          className="fixed left-4 top-4 z-30 flex items-center gap-1.5 rounded-full bg-white/78 px-4 py-2.5 text-sm font-medium text-zinc-700 shadow-[0_12px_35px_rgba(0,0,0,0.08)] backdrop-blur-xl transition hover:bg-white hover:text-black md:left-7 md:top-7"
+          type="button"
+          aria-label="Back to start"
+        >
+          <span aria-hidden="true">←</span> Back
+        </button>
+      ) : null}
+
       <FloatingQuestionTree
         groups={knowledgeMapGroups}
         activeQuestionId={activeQuestion?.id ?? null}
@@ -162,7 +173,6 @@ export function ConversationWorkspace() {
         hasConversation={hasConversation || history.length > 0}
         onChange={setPrompt}
         onSubmit={submitPrompt}
-        onSelectQuestion={activateQuestion}
       />
     </main>
   );
@@ -382,14 +392,12 @@ function PromptComposer({
   hasConversation,
   onChange,
   onSubmit,
-  onSelectQuestion,
 }: {
   value: string;
   state: ComposerState;
   hasConversation: boolean;
   onChange: (value: string) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
-  onSelectQuestion: (question: string) => void;
 }) {
   const disabled = state !== "idle";
 
@@ -400,21 +408,6 @@ function PromptComposer({
       transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: hasConversation ? 0 : 1.9 }}
       className="fixed inset-x-0 bottom-0 z-20 px-4 pb-4"
     >
-      {!hasConversation ? (
-        <div className="mx-auto mb-3 hidden max-w-3xl gap-2 md:flex">
-          {starterQuestions.slice(0, 3).map((starter) => (
-            <button
-              key={starter.id}
-              onClick={() => onSelectQuestion(starter.question)}
-              className="rounded-full border border-white/80 bg-white/75 px-3 py-1.5 text-xs text-zinc-600 shadow-[0_8px_24px_rgba(0,0,0,0.06)] backdrop-blur-xl transition hover:bg-white hover:text-black"
-              type="button"
-              data-state="related"
-            >
-              {starter.question}
-            </button>
-          ))}
-        </div>
-      ) : null}
       <form
         onSubmit={onSubmit}
         className="mx-auto flex h-14 max-w-3xl items-center gap-2 rounded-full border border-white/80 bg-white/80 pl-5 pr-2 shadow-[0_12px_45px_rgba(0,0,0,0.08)] backdrop-blur-xl md:h-16"
@@ -461,14 +454,14 @@ function FloatingQuestionTree({
   onToggle: () => void;
 }) {
   return (
-    <div className="fixed left-4 top-4 z-30 md:left-7 md:top-7">
+    <div className="fixed right-4 top-4 z-30 md:right-7 md:top-7">
       <AnimatePresence mode="wait">
         {isOpen ? (
           <motion.aside
             key="question-tree-panel"
-            initial={{ opacity: 0, x: -24 }}
+            initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -24 }}
+            exit={{ opacity: 0, x: 24 }}
             transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
             className="max-h-[calc(100vh-32px)] w-[min(340px,calc(100vw-32px))] overflow-y-auto rounded-[26px] bg-white/78 p-4 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-xl"
           >
@@ -529,9 +522,9 @@ function FloatingQuestionTree({
         ) : (
           <motion.button
             key="question-tree-handle"
-            initial={{ opacity: 0, x: -18 }}
+            initial={{ opacity: 0, x: 18 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -18 }}
+            exit={{ opacity: 0, x: 18 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             onClick={onToggle}
             className="rounded-full bg-black px-5 py-3 text-sm font-medium text-white shadow-[0_12px_35px_rgba(0,0,0,0.16)]"
