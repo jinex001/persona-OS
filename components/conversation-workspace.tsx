@@ -4,10 +4,8 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AnswerBlockRenderer, DiscoveryRail, HeroMediaBlock } from "@/components/knowledge-blocks";
 import {
-  questionCategories,
   resolveQuestion,
   starterQuestions,
-  type QuestionCategory,
   type QuestionNode,
 } from "@/data/portfolio-response";
 
@@ -29,12 +27,28 @@ export function ConversationWorkspace() {
   const answerTopRef = useRef<HTMLDivElement | null>(null);
   const hasConversation = activeQuestion !== null;
 
-  const groupedHistory = useMemo(() => {
-    return questionCategories.map((category) => ({
-      category,
-      nodes: history.filter((node) => node.category === category),
-    }));
-  }, [history]);
+  const knowledgeMapGroups = useMemo(() => {
+    const workCases = starterQuestions.filter((starter) => starter.category === "Work");
+
+    return [
+      {
+        label: "Start",
+        items: [{ id: "start", label: "Design philosophy", question: null as string | null }],
+      },
+      {
+        label: "Identity",
+        items: [{ id: "who-are-you", label: "Who are you", question: "Who are you?" as string | null }],
+      },
+      {
+        label: "Works",
+        items: workCases.map((starter) => ({
+          id: starter.id,
+          label: starter.question,
+          question: starter.question as string | null,
+        })),
+      },
+    ];
+  }, []);
 
   useEffect(() => {
     if (!isTreeOpen || history.length === 0) return;
@@ -57,6 +71,12 @@ export function ConversationWorkspace() {
       block: "start",
     });
   }, [activeQuestion]);
+
+  function goHome() {
+    setActiveQuestion(null);
+    setComposerState("idle");
+    setIsTreeOpen(true);
+  }
 
   function activateQuestion(questionText: string) {
     const trimmed = questionText.trim();
@@ -109,10 +129,12 @@ export function ConversationWorkspace() {
   return (
     <main className="min-h-screen bg-white pb-32 text-ink">
       <FloatingQuestionTree
-        groupedHistory={groupedHistory}
-        hasConversation={hasConversation || history.length > 0}
+        groups={knowledgeMapGroups}
+        activeQuestionId={activeQuestion?.id ?? null}
+        isHome={!hasConversation}
         isOpen={isTreeOpen}
         onSelectQuestion={activateQuestion}
+        onGoHome={goHome}
         onToggle={() => setIsTreeOpen((current) => !current)}
       />
 
@@ -420,20 +442,22 @@ function PromptComposer({
 
 
 function FloatingQuestionTree({
-  groupedHistory,
-  hasConversation,
+  groups,
+  activeQuestionId,
+  isHome,
   isOpen,
   onSelectQuestion,
+  onGoHome,
   onToggle,
 }: {
-  groupedHistory: { category: QuestionCategory; nodes: TreeNode[] }[];
-  hasConversation: boolean;
+  groups: { label: string; items: { id: string; label: string; question: string | null }[] }[];
+  activeQuestionId: string | null;
+  isHome: boolean;
   isOpen: boolean;
   onSelectQuestion: (question: string) => void;
+  onGoHome: () => void;
   onToggle: () => void;
 }) {
-  if (!hasConversation) return null;
-
   return (
     <div className="fixed left-4 top-4 z-30 md:left-7 md:top-7">
       <AnimatePresence mode="wait">
@@ -449,7 +473,7 @@ function FloatingQuestionTree({
             <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="text-sm font-semibold text-black">Knowledge Map</div>
-                <p className="mt-2 text-xs leading-5 text-zinc-500">Conversation history grouped by branch.</p>
+                <p className="mt-2 text-xs leading-5 text-zinc-500">Explore any part of Portfolio OS.</p>
               </div>
               <button
                 onClick={onToggle}
@@ -460,49 +484,41 @@ function FloatingQuestionTree({
               </button>
             </div>
 
-            <nav className="mt-6 space-y-5" aria-label="Question tree">
-              {groupedHistory.map(({ category, nodes }) => (
-                <div key={category}>
+            <nav className="mt-6 space-y-5" aria-label="Site navigation">
+              {groups.map((group) => (
+                <div key={group.label}>
                   <div className="flex items-center gap-2 px-2">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-400">{category}</div>
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-400">{group.label}</div>
                     <div className="h-px flex-1 bg-zinc-200/80" />
                   </div>
                   <div className="mt-2 space-y-1.5">
-                    {nodes.length > 0 ? (
-                      nodes.map((node, index) => (
+                    {group.items.map((item) => {
+                      const isCurrent = item.question === null ? isHome : item.id === activeQuestionId;
+
+                      return (
                         <button
-                          key={node.instanceId}
-                          onClick={() => onSelectQuestion(node.question)}
+                          key={item.id}
+                          onClick={() => (item.question === null ? onGoHome() : onSelectQuestion(item.question))}
                           className={`group block w-full rounded-[18px] px-3 py-2.5 text-left text-sm transition ${
-                            node.state === "current" ? "bg-black text-white" : "bg-white/55 text-zinc-700 hover:bg-zinc-100"
+                            isCurrent ? "bg-black text-white" : "bg-white/55 text-zinc-700 hover:bg-zinc-100"
                           }`}
                           type="button"
-                          data-state={node.state}
+                          data-state={isCurrent ? "current" : "default"}
                         >
                           <span className="flex items-start gap-2">
                             <span
                               className={`mt-1.5 size-2 rounded-full ${
-                                node.state === "current" ? "bg-white" : "bg-zinc-300 group-hover:bg-zinc-500"
+                                isCurrent ? "bg-white" : "bg-zinc-300 group-hover:bg-zinc-500"
                               }`}
                             />
                             <span>
-                              <span className="block leading-5">{node.question}</span>
-                              <span
-                                className={`mt-1 block text-[11px] ${
-                                  node.state === "current" ? "text-white/60" : "text-zinc-400"
-                                }`}
-                              >
-                                {node.state === "current" ? "Current node" : `History node ${index + 1}`}
-                              </span>
+                              <span className="block leading-5">{item.label}</span>
+                              {isCurrent ? <span className="mt-1 block text-[11px] text-white/60">You are here</span> : null}
                             </span>
                           </span>
                         </button>
-                      ))
-                    ) : (
-                      <div className="px-3 py-2 text-xs text-zinc-400" data-state="disabled">
-                        No nodes yet
-                      </div>
-                    )}
+                      );
+                    })}
                   </div>
                 </div>
               ))}
