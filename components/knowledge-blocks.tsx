@@ -1146,7 +1146,7 @@ function CareerEvolutionBlock({
         </motion.div>
       </div>
 
-      <motion.div {...fadeUp(0)} viewport={{ once: true, amount: 0.5 }} className="mt-4 max-w-xl border-t border-zinc-100 pt-10 text-center text-lg leading-8 text-black md:text-xl">
+      <motion.div {...fadeUp(0)} viewport={{ once: true, amount: 0.5 }} className="mx-auto mt-4 max-w-xl border-t border-zinc-100 pt-10 text-center text-lg leading-8 text-black md:text-xl">
         {endingHeadline}
       </motion.div>
     </MotionBlock>
