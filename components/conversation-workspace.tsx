@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { AnswerBlockRenderer, AssemblingState, DiscoveryRail, HeroMediaBlock } from "@/components/knowledge-blocks";
+import { AnswerBlockRenderer, DiscoveryRail, HeroMediaBlock } from "@/components/knowledge-blocks";
 import {
   questionCategories,
   resolveQuestion,
@@ -11,7 +11,7 @@ import {
   type QuestionNode,
 } from "@/data/portfolio-response";
 
-type ComposerState = "idle" | "loading" | "disabled";
+type ComposerState = "idle" | "disabled";
 type TreeNode = QuestionNode & {
   instanceId: string;
   state: "current" | "answered";
@@ -28,7 +28,6 @@ export function ConversationWorkspace() {
   const collapseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const answerTopRef = useRef<HTMLDivElement | null>(null);
   const hasConversation = activeQuestion !== null;
-  const isAssembling = composerState === "loading" && activeQuestion === null;
   const isPresentingAnswer = composerState === "disabled" && activeQuestion !== null;
 
   const groupedHistory = useMemo(() => {
@@ -52,17 +51,17 @@ export function ConversationWorkspace() {
   }, [isTreeOpen, history.length, activeQuestion?.id]);
 
   useEffect(() => {
-    if (!isAssembling || !answerTopRef.current) return;
+    if (!activeQuestion || !answerTopRef.current) return;
 
     answerTopRef.current.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
-  }, [isAssembling]);
+  }, [activeQuestion]);
 
   function activateQuestion(questionText: string) {
     const trimmed = questionText.trim();
-    if (!trimmed || composerState === "loading") return;
+    if (!trimmed || composerState === "disabled") return;
 
     const activeElement = document.activeElement as HTMLElement | null;
     activeElement?.blur();
@@ -70,25 +69,20 @@ export function ConversationWorkspace() {
     const resolved = resolveQuestion(trimmed);
     setPrompt("");
     setIsTreeOpen(true);
-    setComposerState("loading");
-    setActiveQuestion(null);
-
-    window.setTimeout(() => {
-      setActiveQuestion(resolved);
-      setHistory((current) => {
-        const answered = current.map((node) => ({ ...node, state: "answered" as const }));
-        return [
-          ...answered,
-          {
-            ...resolved,
-            question: trimmed,
-            instanceId: `${resolved.id}-${Date.now()}`,
-            state: "current",
-          },
-        ];
-      });
-      setComposerState("disabled");
-    }, 720);
+    setComposerState("disabled");
+    setActiveQuestion(resolved);
+    setHistory((current) => {
+      const answered = current.map((node) => ({ ...node, state: "answered" as const }));
+      return [
+        ...answered,
+        {
+          ...resolved,
+          question: trimmed,
+          instanceId: `${resolved.id}-${Date.now()}`,
+          state: "current",
+        },
+      ];
+    });
   }
 
   function handlePresentationComplete() {
@@ -124,18 +118,14 @@ export function ConversationWorkspace() {
       />
 
       <section className="main-content min-h-screen min-w-0 px-5 pt-6 md:px-8 lg:px-10">
-        {(isAssembling || hasConversation) ? <div ref={answerTopRef} className="answer-top-anchor" /> : null}
+        {hasConversation ? <div ref={answerTopRef} className="answer-top-anchor" /> : null}
         <AnimatePresence mode="wait">
-          {!hasConversation && !isAssembling ? (
+          {!hasConversation ? (
             <OpeningWorkspace key="opening" onSelectQuestion={activateQuestion} />
           ) : null}
         </AnimatePresence>
 
-        <AnimatePresence mode="wait">
-          {isAssembling ? <AssemblingState key="assembling" question={prompt || "selected path"} /> : null}
-        </AnimatePresence>
-
-        {hasConversation && !isAssembling ? (
+        {hasConversation ? (
           <AnswerWorkspace
             key={activeQuestion.id}
             isPresenting={isPresentingAnswer}

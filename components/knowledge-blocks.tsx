@@ -252,35 +252,6 @@ export function AnswerBlockRenderer({
   );
 }
 
-export function AssemblingState({ question }: { question: string }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      className="mx-auto mt-24 max-w-3xl"
-      data-state="loading"
-    >
-      <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-400">Assembling</div>
-      <h1 className="mt-4 text-2xl font-semibold text-black">Building a structured answer.</h1>
-      <p className="mt-3 text-sm leading-6 text-zinc-500">
-        Mapping "{question}" into summary, reasoning, evidence, and related paths.
-      </p>
-      <div className="mt-7 flex gap-2">
-        {[0, 1, 2].map((item) => (
-          <motion.span
-            key={item}
-            animate={{ opacity: [0.25, 1, 0.25] }}
-            transition={{ duration: 1.2, repeat: Infinity, delay: item * 0.18 }}
-            className="size-2 rounded-full bg-zinc-400"
-          />
-        ))}
-      </div>
-    </motion.div>
-  );
-}
-
 export function PerspectiveLensBlock({
   delay,
   label,
