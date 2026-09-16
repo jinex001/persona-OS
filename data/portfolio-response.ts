@@ -69,6 +69,24 @@ export type DesignLog = {
   lens: PerspectiveLens[];
 };
 
+export type CareerTimelineEntry = {
+  id: string;
+  year: string;
+  chapterLabel: string;
+  headline?: string;
+  emphasis?: boolean;
+  entries: {
+    company: string;
+    context?: string;
+    narrative: string;
+  }[];
+  tags?: string[];
+  tagGroups?: string[][];
+  links?: { label: string; targetQuestion: string }[];
+  /** For creativeTrack entries only: id of the primaryTrack entry this should render alongside. */
+  alignAfter?: string;
+};
+
 export type AnswerBlock =
   | {
       id: string;
@@ -91,6 +109,22 @@ export type AnswerBlock =
       label: string;
       title: string;
       steps: string[];
+    }
+  | {
+      id: string;
+      type: "careerEvolution";
+      label: string;
+      title: string;
+      introLines: string[];
+      fastPathLabel: string;
+      primaryTrack: CareerTimelineEntry[];
+      creativeTrack: CareerTimelineEntry[];
+      mergeHeadline: string;
+      mergeFallback: string;
+      aiHeadline: string;
+      aiLinkLabel: string;
+      aiLinkTargetQuestion?: string;
+      endingHeadline: string;
     }
   | {
       id: string;
@@ -331,6 +365,130 @@ export const questionBank: QuestionNode[] = [
           "Shape the response as an object someone can inspect.",
           "Use motion to reveal structure in the order understanding forms.",
         ],
+      },
+      {
+        id: "career-evolution",
+        type: "careerEvolution",
+        label: "The Evolution",
+        title: "Career evolution",
+        introLines: ["I didn't start as a product designer.", "I became one."],
+        fastPathLabel: "Prefer the short version? \u2192 Now: Product \u00d7 Systems \u00d7 Craft + AI",
+        primaryTrack: [
+          {
+            id: "shoop",
+            year: "2013",
+            chapterLabel: "Visual \u2192 Digital",
+            entries: [
+              {
+                company: "Shoop",
+                context: "Germany's cashback online portal",
+                narrative:
+                  "Brand identity, interface design and digital product began to converge \u2014 the start of a shift from visual design toward digital product design.\n\nI actually started out making marketing and sales design assets. It was a platform redesign project that changed that \u2014 working with the customer team to research real user feedback and translate it into design decisions. That's where I first felt the pull of UX/UI.",
+              },
+            ],
+          },
+          {
+            id: "zyseme",
+            year: "2016",
+            chapterLabel: "Interaction",
+            entries: [
+              {
+                company: "ZyseME",
+                context: "Digital measurement software",
+                narrative:
+                  "I led the corporate identity for ZyseME itself, a startup brand at the time.\n\nData became part of the experience. Worked with a data analyst on a survey-based custom shirt sizing tool, and designed plugin-style software for e-commerce integration.",
+              },
+            ],
+          },
+          {
+            id: "product-2018",
+            year: "2018",
+            chapterLabel: "Product",
+            headline: "Interfaces became journeys.",
+            entries: [
+              {
+                company: "Simplesurance",
+                context: "Short-term freelance engagement",
+                narrative: "Insurance comparison experiences and animation-driven interactions.",
+              },
+              {
+                company: "Prodigy A.I / Luna Card",
+                narrative: "A mobile-native app pairing digital loan UX with physical card design.",
+              },
+            ],
+          },
+          {
+            id: "pyrexx",
+            year: "2018\u20132023",
+            chapterLabel: "Complexity",
+            headline: "Analog processes became digital systems.",
+            emphasis: true,
+            entries: [
+              {
+                company: "Pyrexx",
+                narrative:
+                  "Started as a freelancer redesigning the company homepage with the marketing team, and building out design guidelines. That work turned into a full-time role, where I began building the SaaS admin product \u2014 the transition from interface design toward complex product systems.",
+              },
+            ],
+            tags: ["SaaS", "Admin Interfaces", "Dashboards", "Data Management", "Design Systems"],
+          },
+          {
+            id: "liz-smart-office",
+            year: "2023\u20132026",
+            chapterLabel: "Systems",
+            emphasis: true,
+            entries: [
+              {
+                company: "Liz Smart Office",
+                context: "B2B SaaS workplace management platform",
+                narrative: "Designing systems behind workplace experiences.",
+              },
+            ],
+            tagGroups: [
+              ["Desk", "Room", "Parking", "Resources"],
+              ["B2B SaaS", "Product UX", "Admin Interfaces", "Design Systems", "Physical \u00d7 Digital"],
+            ],
+            links: [
+              { label: "Explore the Design System \u2192", targetQuestion: "How has your design philosophy changed?" },
+              { label: "Explore the Meeting Room Experience \u2192", targetQuestion: "Show me the Meeting Room App Redesign case." },
+            ],
+          },
+        ],
+        creativeTrack: [
+          {
+            id: "lee-heemoon-career",
+            year: "2020\u2013Present",
+            chapterLabel: "Creative Practice",
+            alignAfter: "pyrexx",
+            entries: [
+              {
+                company: "Lee Heemoon",
+                context: "Artist archive",
+                narrative:
+                  "Designed and developed the artist's personal archive, evolving the visual direction over multiple years \u2014 the continuing creative side of the practice.",
+              },
+            ],
+          },
+          {
+            id: "manon",
+            year: "2025",
+            chapterLabel: "Creative Practice",
+            alignAfter: "liz-smart-office",
+            entries: [
+              {
+                company: "Manon Brasserie",
+                context: "Digital creative direction",
+                narrative: "Website structure, layout and seasonal visual direction.",
+              },
+            ],
+          },
+        ],
+        mergeHeadline: "Product \u00d7 Systems \u00d7 Craft",
+        mergeFallback: "Two paths, one practice.",
+        aiHeadline: "Product \u00d7 Systems \u00d7 Craft + AI",
+        aiLinkLabel: "See how \u2192 AI Lab",
+        aiLinkTargetQuestion: "Show me the AI Workflow case.",
+        endingHeadline: "I design products by understanding the system behind the interface.",
       },
       {
         id: "identity-evidence",

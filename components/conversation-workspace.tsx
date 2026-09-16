@@ -511,7 +511,12 @@ function estimateBlockDuration(block: QuestionNode["answerBlocks"][number]) {
               ? `${block.title} ${block.cases.map((item) => `${item.title} ${item.summary} ${item.outcome}`).join(" ")}`
               : block.type === "decisionLog"
                 ? `${block.log.title} ${block.log.decisionSummary} ${block.log.whyItMatters}`
-                : `${block.title} ${block.questions.join(" ")}`;
+                : block.type === "careerEvolution"
+                  ? `${block.introLines.join(" ")} ${block.primaryTrack
+                      .concat(block.creativeTrack)
+                      .flatMap((entry) => entry.entries.map((sub) => sub.narrative))
+                      .join(" ")} ${block.mergeHeadline} ${block.aiHeadline} ${block.endingHeadline}`
+                  : `${block.title} ${block.questions.join(" ")}`;
 
   return Math.min(maximum, Math.max(minimum, base + text.length * perChar));
 }

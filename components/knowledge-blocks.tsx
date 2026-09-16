@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState, type KeyboardEvent, type ReactNode, type TouchEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode, type TouchEvent } from "react";
 import { motion } from "framer-motion";
 import type {
   AnswerBlock,
   ArtifactType,
   ArtifactVisual,
+  CareerTimelineEntry,
   DesignLog,
   DiscoveryCardData,
   EvidenceItem,
@@ -174,6 +175,26 @@ export function AnswerBlockRenderer({
           ))}
         </div>
       </MotionBlock>
+    );
+  }
+
+  if (block.type === "careerEvolution") {
+    return (
+      <CareerEvolutionBlock
+        delay={delay}
+        label={block.label}
+        introLines={block.introLines}
+        fastPathLabel={block.fastPathLabel}
+        primaryTrack={block.primaryTrack}
+        creativeTrack={block.creativeTrack}
+        mergeHeadline={block.mergeHeadline}
+        mergeFallback={block.mergeFallback}
+        aiHeadline={block.aiHeadline}
+        aiLinkLabel={block.aiLinkLabel}
+        aiLinkTargetQuestion={block.aiLinkTargetQuestion}
+        endingHeadline={block.endingHeadline}
+        onQuestionSelect={onQuestionSelect}
+      />
     );
   }
 
@@ -875,6 +896,322 @@ export function DesignLogPreview({ delay, label, log }: { delay: number; label: 
       </article>
     </MotionBlock>
   );
+}
+
+const timelineEntryVariants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.08 },
+  },
+};
+
+const timelineFieldVariants = {
+  hidden: { opacity: 0, y: 14 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] as const } },
+};
+
+function CareerTimelineNode({
+  entry,
+  variant,
+  onQuestionSelect,
+}: {
+  entry: CareerTimelineEntry;
+  variant: "primary" | "creative";
+  onQuestionSelect: (question: string) => void;
+}) {
+  const isCreative = variant === "creative";
+
+  return (
+    <motion.div
+      className="grid grid-cols-[32px_1fr] gap-4 md:grid-cols-[64px_1fr]"
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={timelineEntryVariants}
+    >
+      <div className="relative flex flex-col items-center">
+        <motion.span
+          variants={timelineFieldVariants}
+          className={
+            isCreative
+              ? "z-10 mt-0.5 h-2 w-2 rounded-full border-[1.5px] border-zinc-400 bg-white"
+              : "z-10 mt-0.5 h-2 w-2 rounded-full bg-black"
+          }
+        />
+        <motion.div
+          initial={{ scaleY: 0 }}
+          whileInView={{ scaleY: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          style={{ transformOrigin: "top" }}
+          className={
+            isCreative
+              ? "absolute top-3 w-px flex-1 border-l border-dashed border-zinc-300"
+              : "absolute top-3 w-px flex-1 bg-zinc-200"
+          }
+        />
+      </div>
+
+      <div className={isCreative ? "pb-16" : entry.emphasis ? "pb-24" : "pb-16"}>
+        <motion.div variants={timelineFieldVariants} className="text-xs tabular-nums text-zinc-400">
+          {entry.year}
+        </motion.div>
+        <motion.div
+          variants={timelineFieldVariants}
+          className={
+            isCreative
+              ? "mt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-400"
+              : "mt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-black"
+          }
+        >
+          {entry.chapterLabel}
+        </motion.div>
+
+        {entry.headline ? (
+          <motion.h3
+            variants={timelineFieldVariants}
+            className={`mt-3 font-title font-medium text-black ${entry.emphasis ? "text-2xl" : "text-xl"}`}
+          >
+            {entry.headline}
+          </motion.h3>
+        ) : null}
+
+        {entry.entries.map((sub, index) => (
+          <motion.div key={sub.company + index} variants={timelineFieldVariants} className={index > 0 ? "mt-5" : "mt-3"}>
+            <div className={isCreative ? "text-base font-medium text-black" : entry.emphasis ? "font-title text-xl text-black" : "text-base font-medium text-black"}>
+              {sub.company}
+            </div>
+            {sub.context ? <div className="mt-1 text-sm text-zinc-500">{sub.context}</div> : null}
+            <p className={isCreative ? "mt-2 max-w-[46ch] text-sm leading-6 text-zinc-600" : "mt-2 max-w-[52ch] text-base leading-7 text-zinc-700 whitespace-pre-line"}>
+              {sub.narrative}
+            </p>
+          </motion.div>
+        ))}
+
+        {entry.tags ? (
+          <motion.div variants={timelineFieldVariants} className="mt-5 flex flex-wrap gap-2">
+            {entry.tags.map((tag) => (
+              <span key={tag} className="rounded-full bg-zinc-100 px-3 py-1 text-xs text-zinc-700">
+                {tag}
+              </span>
+            ))}
+          </motion.div>
+        ) : null}
+
+        {entry.tagGroups
+          ? entry.tagGroups.map((group, gi) => (
+              <motion.div key={gi} variants={timelineFieldVariants} className="mt-3 flex flex-wrap gap-2">
+                {group.map((tag) => (
+                  <span key={tag} className="rounded-full bg-zinc-100 px-3 py-1 text-xs text-zinc-700">
+                    {tag}
+                  </span>
+                ))}
+              </motion.div>
+            ))
+          : null}
+
+        {entry.links ? (
+          <motion.div variants={timelineFieldVariants} className="mt-5 flex flex-col gap-1.5">
+            {entry.links.map((link) => (
+              <button
+                key={link.label}
+                type="button"
+                onClick={() => onQuestionSelect(link.targetQuestion)}
+                className="w-fit border-b border-zinc-200 pb-0.5 text-left text-sm text-zinc-600 transition hover:border-black hover:text-black"
+              >
+                {link.label}
+              </button>
+            ))}
+          </motion.div>
+        ) : null}
+      </div>
+    </motion.div>
+  );
+}
+
+function CareerEvolutionBlock({
+  delay,
+  label,
+  introLines,
+  fastPathLabel,
+  primaryTrack,
+  creativeTrack,
+  mergeHeadline,
+  mergeFallback,
+  aiHeadline,
+  aiLinkLabel,
+  aiLinkTargetQuestion,
+  endingHeadline,
+  onQuestionSelect,
+}: {
+  delay: number;
+  label: string;
+  introLines: string[];
+  fastPathLabel: string;
+  primaryTrack: CareerTimelineEntry[];
+  creativeTrack: CareerTimelineEntry[];
+  mergeHeadline: string;
+  mergeFallback: string;
+  aiHeadline: string;
+  aiLinkLabel: string;
+  aiLinkTargetQuestion?: string;
+  endingHeadline: string;
+  onQuestionSelect: (question: string) => void;
+}) {
+  const nowRef = useRef<HTMLDivElement | null>(null);
+  const creativeByAlignAfter = new Map<string, CareerTimelineEntry[]>();
+  creativeTrack.forEach((entry) => {
+    const key = entry.alignAfter ?? "";
+    const list = creativeByAlignAfter.get(key) ?? [];
+    list.push(entry);
+    creativeByAlignAfter.set(key, list);
+  });
+
+  return (
+    <MotionBlock delay={delay} eyebrow={label}>
+      <div className="max-w-2xl">
+        {introLines.map((line, i) => (
+          <TypewriterText
+            key={i}
+            as={i === 0 ? "h2" : "h2"}
+            text={line}
+            speed={14}
+            className={i === 0 ? "font-title text-3xl font-medium text-black md:text-4xl" : "mt-1 font-title text-2xl font-medium text-zinc-500 md:text-3xl"}
+          />
+        ))}
+        <button
+          type="button"
+          onClick={() => nowRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+          className="mt-6 border-b border-zinc-200 pb-0.5 text-sm text-zinc-500 transition hover:border-black hover:text-black"
+        >
+          {fastPathLabel}
+        </button>
+      </div>
+
+      <div className="mt-16 space-y-0">
+        {primaryTrack.map((entry) => (
+          <div key={entry.id} className={isWide(creativeByAlignAfter, entry.id) ? "grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,280px)]" : ""}>
+            <CareerTimelineNode entry={entry} variant="primary" onQuestionSelect={onQuestionSelect} />
+            {(creativeByAlignAfter.get(entry.id) ?? []).map((creativeEntry) => (
+              <div key={creativeEntry.id} className="hidden md:block">
+                <CareerTimelineNode entry={creativeEntry} variant="creative" onQuestionSelect={onQuestionSelect} />
+              </div>
+            ))}
+          </div>
+        ))}
+
+        {/* Mobile: render creative entries inline, branching off the main line */}
+        <div className="md:hidden">
+          {creativeTrack.map((entry) => (
+            <div key={entry.id} className="ml-8 border-l border-dashed border-zinc-300 pl-6">
+              <CareerTimelineNode entry={entry} variant="creative" onQuestionSelect={onQuestionSelect} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div ref={nowRef} className="mt-8 flex flex-col items-center py-16 text-center">
+        <svg viewBox="0 0 480 200" className="mb-6 h-auto w-full max-w-[420px]" fill="none">
+          <motion.path
+            d="M120 0 C120 80, 230 100, 240 160"
+            stroke="#111111"
+            strokeWidth={1.5}
+            pathLength={1}
+            initial={{ pathLength: 0 }}
+            whileInView={{ pathLength: 1 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <motion.path
+            d="M360 0 C360 80, 250 100, 240 160"
+            stroke="#A1A1AA"
+            strokeWidth={1.5}
+            pathLength={1}
+            initial={{ pathLength: 0 }}
+            whileInView={{ pathLength: 1 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <motion.circle
+            cx={240}
+            cy={164}
+            r={5}
+            fill="#111111"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 0.3, delay: 0.7 }}
+          />
+        </svg>
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: 0.7 }}
+          className="text-xs uppercase tracking-[0.16em] text-zinc-400"
+        >
+          Now
+        </motion.div>
+        <motion.h3
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: 0.78 }}
+          className="mt-3 font-title text-2xl font-medium text-black md:text-3xl"
+        >
+          {mergeHeadline}
+        </motion.h3>
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: 0.86 }}
+          className="mt-2 text-sm text-zinc-500"
+        >
+          {mergeFallback}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: 0.96 }}
+          className="mt-10 flex flex-col items-center"
+        >
+          <div className="h-8 w-px bg-zinc-200" />
+          <div className="mt-2 text-xs uppercase tracking-[0.16em] text-zinc-400">+ AI</div>
+          <h4 className="mt-3 font-title text-xl font-medium text-black md:text-2xl">{aiHeadline}</h4>
+          {aiLinkTargetQuestion ? (
+            <button
+              type="button"
+              onClick={() => onQuestionSelect(aiLinkTargetQuestion)}
+              className="mt-3 border-b border-zinc-200 pb-0.5 text-sm text-zinc-500 transition hover:border-black hover:text-black"
+            >
+              {aiLinkLabel}
+            </button>
+          ) : (
+            <span className="mt-3 text-sm text-zinc-500">{aiLinkLabel}</span>
+          )}
+        </motion.div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+        className="mt-4 max-w-xl border-t border-zinc-100 pt-10 text-center text-lg leading-8 text-black md:text-xl"
+      >
+        {endingHeadline}
+      </motion.div>
+    </MotionBlock>
+  );
+}
+
+/** True if this primary entry has at least one aligned creative entry (desktop two-column layout). */
+function isWide(map: Map<string, CareerTimelineEntry[]>, id: string) {
+  const list = map.get(id);
+  return !!list && list.length > 0;
 }
 
 function TypewriterText({
