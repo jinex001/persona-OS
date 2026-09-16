@@ -1159,7 +1159,7 @@ function isWide(map: Map<string, CareerTimelineEntry[]>, id: string) {
   return !!list && list.length > 0;
 }
 
-/** Renders text with a single fade/rise-in reveal (no more character-by-character typing). Name kept to avoid touching every call site. */
+/** Renders text as plain, static content — no typing, no fade, no scroll trigger. Name kept to avoid touching every call site. */
 function TypewriterText({
   as: Component = "p",
   className,
@@ -1170,20 +1170,7 @@ function TypewriterText({
   speed?: number;
   text: string;
 }) {
-  const shouldReduceMotion = useReducedMotion();
-  const Motioned = motion[Component];
-
-  return (
-    <Motioned
-      className={className}
-      initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.6 }}
-      transition={{ duration: shouldReduceMotion ? 0 : 0.42, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {text}
-    </Motioned>
-  );
+  return <Component className={className}>{text}</Component>;
 }
 
 export function DiscoveryRail({
