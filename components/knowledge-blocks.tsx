@@ -2,6 +2,7 @@
 
 import { useRef, useState, type KeyboardEvent, type ReactNode, type TouchEvent } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { starterQuestions } from "@/data/portfolio-response";
 import type {
   AnswerBlock,
   ArtifactType,
@@ -207,6 +208,44 @@ export function AnswerBlockRenderer({
         items={block.items}
         onQuestionSelect={onQuestionSelect}
       />
+    );
+  }
+
+  if (block.type === "workShowcase") {
+    const workCases = starterQuestions.filter((starter) => starter.category === "Work");
+
+    return (
+      <MotionBlock delay={delay} eyebrow={block.label}>
+        <TypewriterText as="h2" text={block.title} speed={14} className="text-xl font-semibold text-black" />
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          {workCases.map((starter) => (
+            <button
+              key={starter.id}
+              type="button"
+              onClick={() => onQuestionSelect(starter.question)}
+              className="flex flex-col items-start rounded-[22px] bg-zinc-100 p-5 text-left transition hover:-translate-y-0.5 hover:bg-zinc-200/70 focus:outline-none focus:ring-2 focus:ring-black"
+            >
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-500">{starter.category}</div>
+              <h3 className="mt-3 text-base font-semibold leading-6 text-black">{starter.question}</h3>
+              <p className="mt-2 line-clamp-1 text-sm leading-6 text-zinc-600">{starter.cardDescription ?? starter.intent}</p>
+              {starter.tags ? (
+                <div className="mt-4 flex flex-wrap items-center gap-1.5">
+                  {starter.tags.slice(0, 2).map((tag) => (
+                    <span key={tag} className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-600 ring-1 ring-zinc-200">
+                      {tag}
+                    </span>
+                  ))}
+                  {starter.tags.length > 2 ? (
+                    <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-400 ring-1 ring-zinc-200">
+                      +{starter.tags.length - 2}
+                    </span>
+                  ) : null}
+                </div>
+              ) : null}
+            </button>
+          ))}
+        </div>
+      </MotionBlock>
     );
   }
 

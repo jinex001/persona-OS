@@ -142,6 +142,12 @@ export type AnswerBlock =
     }
   | {
       id: string;
+      type: "workShowcase";
+      label: string;
+      title: string;
+    }
+  | {
+      id: string;
       type: "decisionLog";
       label: string;
       log: DesignLog;
@@ -492,36 +498,9 @@ export const questionBank: QuestionNode[] = [
       },
       {
         id: "related-identity-work",
-        type: "relatedWork",
+        type: "workShowcase",
         label: "Related Work",
         title: "Where this shows up",
-        cases: [
-          {
-            title: "Connected Experience Design",
-            summary: "A tablet-based room display redesigned for real-time availability and admin-defined room rules.",
-            outcome: "Clearer room state, distance-readable status, and less coordination friction in shared workplaces.",
-          },
-          {
-            title: "AI Workflow Mapping",
-            summary: "A system for translating ambiguous work into promptable, inspectable flows.",
-            outcome: "Reusable workflow patterns and faster prototype cycles.",
-          },
-          {
-            title: "SaaS Admin Redesign",
-            summary: "Turning a growing workplace-management admin surface — structure, floorplan, resources, and booking rules — into one configuration system.",
-            outcome: "A shared configuration grammar across resource types and a floorplan that doubles as an operational interface.",
-          },
-          {
-            title: "AI Workflow",
-            summary: "A hackathon prototype connecting Figma design-system changes to structured Jira engineering tickets.",
-            outcome: "A tested workflow architecture for how design intent should cross the boundary into engineering work.",
-          },
-          {
-            title: "Design for an Artist",
-            summary: "An ongoing Webflow product for a genre-defying artist, designed around Project as the primary unit instead of genre.",
-            outcome: "A 360° project navigation system that doubles as artist metaphor, still designed, built, and maintained today.",
-          },
-        ],
       },
     ],
     relatedCards: [],
