@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { AnswerBlockRenderer, DiscoveryRail, HeroMediaBlock } from "@/components/knowledge-blocks";
+import { AnswerBlockRenderer, HeroMediaBlock } from "@/components/knowledge-blocks";
 import {
   resolveQuestion,
   starterQuestions,
@@ -378,10 +378,6 @@ function AnswerWorkspace({
           </div>
         ))}
       </div>
-
-      {question.relatedCards.length > 0 ? (
-        <DiscoveryRail cards={question.relatedCards} onSelect={onSelectQuestion} />
-      ) : null}
     </div>
   );
 }
