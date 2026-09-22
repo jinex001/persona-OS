@@ -397,29 +397,6 @@ function ArtifactCard({
         targetQuestion={targetQuestion}
         onQuestionSelect={onQuestionSelect}
       />
-
-      <div className="mt-3">
-        {reference.href ? (
-          <a
-            href={reference.href}
-            className="text-sm font-medium text-zinc-500 underline-offset-4 transition hover:text-black hover:underline"
-          >
-            View artifact &rarr;
-          </a>
-        ) : targetQuestion ? (
-          <button
-            onClick={() => onQuestionSelect(targetQuestion)}
-            className="text-left text-sm font-medium text-zinc-500 underline-offset-4 transition hover:text-black hover:underline"
-            type="button"
-          >
-            View artifact &rarr;
-          </button>
-        ) : (
-          <span className="text-sm font-medium text-zinc-400" aria-disabled="true">
-            View artifact &rarr;
-          </span>
-        )}
-      </div>
     </article>
   );
 }
