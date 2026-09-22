@@ -57,7 +57,7 @@ export function HeroMediaBlock({ media }: HeroMediaBlockProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="relative -mx-4 mt-10 h-[80vh] w-[calc(100%+2rem)] overflow-hidden bg-zinc-100 md:-mx-16 md:w-[calc(100%+8rem)]"
+      className="relative mt-10 h-[95vh] w-screen ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] overflow-hidden bg-zinc-100"
       style={
         isImageBg
           ? {

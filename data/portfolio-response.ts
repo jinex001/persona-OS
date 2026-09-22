@@ -1170,8 +1170,9 @@ export const questionBank: QuestionNode[] = [
     category: "Work",
     answerTitle: "Filter-First Matching",
     heroMedia: {
-      kind: "image",
-      src: "/case-studies/coach-finder-filter/hero.jpg",
+      kind: "video",
+      src: "/case-studies/coach-finder-filter/hero.mp4",
+      poster: "/case-studies/coach-finder-filter/hero.jpg",
       label: "Coach-finder result screen — final prototype",
       tag: "Evidence · Filter-Driven Matching",
       meta: "concept prototype",
