@@ -116,10 +116,12 @@ export function AnswerBlockRenderer({
   block,
   delay,
   onQuestionSelect,
+  currentQuestionId,
 }: {
   block: AnswerBlock;
   delay: number;
   onQuestionSelect: (question: string) => void;
+  currentQuestionId?: string;
 }) {
   if (block.type === "summary") {
     return (
@@ -203,7 +205,9 @@ export function AnswerBlockRenderer({
   }
 
   if (block.type === "workShowcase") {
-    const workCases = starterQuestions.filter((starter) => starter.category === "Work");
+    const workCases = starterQuestions.filter(
+      (starter) => starter.category === "Work" && starter.id !== currentQuestionId,
+    );
 
     return (
       <MotionBlock delay={delay} eyebrow={block.label}>

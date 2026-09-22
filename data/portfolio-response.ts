@@ -699,6 +699,12 @@ export const questionBank: QuestionNode[] = [
           },
         ],
       },
+      {
+        id: "room-related-work",
+        type: "workShowcase",
+        label: "Related Work",
+        title: "Where this shows up",
+      },
     ],
     relatedCards: [
       {
@@ -1115,6 +1121,12 @@ export const questionBank: QuestionNode[] = [
         title: "Continue exploring",
         questions: ["Show me the Connected Experience Design case.", "What proves the quality of your work?"],
       },
+      {
+        id: "saas-related-work",
+        type: "workShowcase",
+        label: "Related Work",
+        title: "Where this shows up",
+      },
     ],
     relatedCards: [
       {
@@ -1448,6 +1460,12 @@ export const questionBank: QuestionNode[] = [
         title: "Continue exploring",
         questions: ["Show me the SaaS Admin Redesign case.", "What proves the quality of your work?"],
       },
+      {
+        id: "coach-related-work",
+        type: "workShowcase",
+        label: "Related Work",
+        title: "Where this shows up",
+      },
     ],
     relatedCards: [
       {
@@ -1590,6 +1608,12 @@ export const questionBank: QuestionNode[] = [
         label: "Next Questions",
         title: "Continue exploring",
         questions: ["Show me the SaaS Admin Redesign case.", "Show me the Connected Experience Design case."],
+      },
+      {
+        id: "jira-related-work",
+        type: "workShowcase",
+        label: "Related Work",
+        title: "Where this shows up",
       },
     ],
     relatedCards: [
@@ -1881,6 +1905,12 @@ export const questionBank: QuestionNode[] = [
         label: "Next Questions",
         title: "Continue exploring",
         questions: ["Show me the SaaS Admin Redesign case.", "Show me the AI Workflow case.", "Who are you?"],
+      },
+      {
+        id: "heemoon-related-work",
+        type: "workShowcase",
+        label: "Related Work",
+        title: "Where this shows up",
       },
     ],
     relatedCards: [

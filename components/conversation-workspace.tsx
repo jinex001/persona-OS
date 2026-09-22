@@ -374,7 +374,7 @@ function AnswerWorkspace({
       <div className="mt-10 space-y-10">
         {answerBlocks.map((block) => (
           <div key={block.id} className="max-w-4xl">
-            <AnswerBlockRenderer block={block} delay={0.18} onQuestionSelect={onSelectQuestion} />
+            <AnswerBlockRenderer block={block} delay={0.18} onQuestionSelect={onSelectQuestion} currentQuestionId={question.id} />
           </div>
         ))}
       </div>
