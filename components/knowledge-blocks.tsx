@@ -108,14 +108,6 @@ export function HeroMediaBlock({ media }: HeroMediaBlockProps) {
           <span className="text-[13px]">{media.label}</span>
         </div>
       ) : null}
-
-      <div className="relative z-[1] flex h-full items-end justify-between px-6 pb-6 md:px-14 md:pb-8">
-        <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.08em] text-zinc-500">
-          <span className="h-1.5 w-1.5 rounded-full bg-zinc-500" />
-          {media.tag}
-        </div>
-        <div className="text-[11px] text-zinc-500">{media.meta}</div>
-      </div>
     </motion.div>
   );
 }
