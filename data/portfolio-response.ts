@@ -231,6 +231,14 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     category: "Work",
   },
   {
+    id: "coach-finder-filter",
+    question: "Show me the Filter-First Matching case.",
+    intent: "A concept case study about making filtering the primary interaction for matching people with the right coach, instead of a secondary refinement step.",
+    cardDescription: "Making filtering the main way people find the right coach.",
+    tags: ["Mobile UX", "Filter Design", "Interaction Design"],
+    category: "Work",
+  },
+  {
     id: "who-are-you",
     question: "Who are you?",
     intent: "Build a first identity map from role, judgment, proof, and next paths.",
@@ -1154,6 +1162,340 @@ export const questionBank: QuestionNode[] = [
       { label: "Component behaviour specification", detail: "Reusable interaction rules for selectors, pills, and system feedback.", type: "Rule model" },
     ],
     followUpQuestions: ["Show me the Connected Experience Design case.", "What proves the quality of your work?"],
+  },
+  {
+    id: "coach-finder-filter",
+    question: "Show me the Filter-First Matching case.",
+    intent: "A concept case study about making filtering the primary interaction for matching people with the right coach, instead of a secondary refinement step.",
+    category: "Work",
+    answerTitle: "Filter-First Matching",
+    heroMedia: {
+      kind: "image",
+      src: "/case-studies/coach-finder-filter/hero.jpg",
+      label: "Coach-finder result screen — final prototype",
+      tag: "Evidence · Filter-Driven Matching",
+      meta: "concept prototype",
+      alt: "Coach-finder app home screen showing a matched-coach count and filter pills for skills, location, interest and availability.",
+    },
+    answerBlocks: [
+      {
+        id: "coach-summary",
+        type: "summary",
+        label: "Case Summary",
+        title: "The filter isn't a refinement tool here. It's the main thing being designed.",
+        body:
+          "This is a concept case for a Find Coach app: a user is matched with coaches based on skills, interests, location, availability and price, set up once during onboarding. The obvious approach is to design a search experience and let filtering sit underneath it as a secondary control. A short user interview said otherwise — the actual repeat behaviour was narrowing and re-narrowing a list, not searching for something specific. So I treated filter as the main design component: the category structure behind it, the way it's grouped on screen, and the components and prototype built around it.",
+          signals: ["Mobile UX", "Filter Design", "Interaction Design", "User Research", "Design Systems"],
+      },
+      {
+        id: "coach-reasoning",
+        type: "designReasoning",
+        label: "Design Reasoning",
+        title: "Structural decisions",
+        steps: [
+          "Start from a short user interview rather than an assumption about search vs. filter.",
+          "Read the interview as a user story and flow, to see which action actually closes the loop for the user.",
+          "Break the filter into a category architecture — Skills, Location, Interest, Availability — so the model matches how someone actually describes a coach.",
+          "Audit filter UX in existing apps for what breaks in real use, and turn each problem into a concrete design rule.",
+          "Sketch the fix as grouped, colour-coded filter pills before touching visual design.",
+          "Carry that grouped model directly into the home screen, as part of the page's main structure, not a hidden panel.",
+          "Define one small component and colour system shared by filter pills, profile chips and coach cards.",
+          "Prototype the full loop — select, adjust, apply — so the result count updates as part of one continuous interaction.",
+        ],
+      },
+      {
+        id: "coach-evidence-interview",
+        type: "evidence",
+        label: "Decision 01",
+        title: "Ground the design in a real interview, not an assumption",
+        items: [
+          {
+            title: "What a user actually does after the first match list",
+            detail:
+              "Asked what someone expects on opening the app, the answer was simple: a list of coaches who matched with them. Told there were 100 matches, the reaction was immediate — \"that many? I wouldn't see them all.\" Narrowed to a top 10, the next step was to check the first photo, then compare price, language, and personality if possible. And asked what happens after finding a coach, then wanting a different one later for different skills, the answer was: \"edit my preference and see results.\" That one line reframed the whole app — editing filter preferences, not browsing or searching, is the action the user actually repeats.",
+            references: [
+              {
+                label: "User interview",
+                detail: "A short Q&A surfaces filtering, not searching or browsing, as the behaviour that actually repeats.",
+                type: "process note",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/coach-finder-filter/user-interview.png", alt: "User interview transcript about expectations when opening the app, narrowing 100 coaches to a top 10, and editing preferences to see new results." },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "coach-evidence-flow",
+        type: "evidence",
+        label: "Decision 02",
+        title: "Read the story as a flow, not a feature list",
+        items: [
+          {
+            title: "Searching → Filtering → See result",
+            detail:
+              "A concrete user story made the same point from a different angle: someone found a yoga coach months ago, developed running and yoga skills with them, and now wants a new coach who can also teach meditation — while worrying about language and wanting a slightly lower price. At the end of that journey, there are two possible actions: search or filter. Search isn't the right fit, because the user doesn't have enough information to write a specific query. Filtering is the only option that lets them adjust wishes and see other results — which is why filter, not search, became the app's main design component.",
+            references: [
+              {
+                label: "User story & flow chart",
+                detail: "Mapping the user's own words onto Searching → Filtering → See result shows why filtering, not search, carries the actual journey.",
+                type: "UX flow",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/coach-finder-filter/user-story-flow.png", alt: "User story about switching coaches, next to a flow chart showing Searching, Filtering and See result, with each coach branching through skills, interests, location and availability." },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "coach-evidence-categories",
+        type: "evidence",
+        label: "Decision 03",
+        title: "Give the filter a category architecture",
+        items: [
+          {
+            title: "One filter, four branching categories",
+            detail:
+              "Instead of one long, flat list of filter values, the filter got its own small information architecture: Skills branches into Power, Speed, Agility, Coordination, Balance and Reaction Time; Location branches into distance bands plus indoor/outdoor; Interest branches into activity types like Running, Yoga, Pilates and Cross fit; Availability branches into frequency and time slot. Level, Age and Price sit alongside as standalone filters. Designing this structure before any screen meant the filter UI could later be generated from the model, not the other way around.",
+            references: [
+              {
+                label: "Category architecture for matching",
+                detail: "A branching model — Skills, Location, Interest, Availability — mirrors how a person actually describes the coach they want.",
+                type: "System map",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/coach-finder-filter/category-architecture.png", alt: "Category architecture diagram branching Skills, Location, Interest and Availability into concrete filter values, plus standalone Level, Age and Price filters." },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "coach-evidence-research",
+        type: "evidence",
+        label: "Decision 04",
+        title: "Learn from where filter UX already breaks",
+        items: [
+          {
+            title: "Five problems, five corresponding rules",
+            detail:
+              "Before designing a solution, I looked at how filtering already fails in shipped products — a travel-booking flow and a fashion e-commerce app — and named the recurring issues: parent and child categories aren't sorted clearly, checkbox-heavy panels overwhelm, the interaction is generally complicated, nothing is remembered between visits, and some filter panels simply look messy. Each problem became a rule: filters should be easy to reach on screen, manageable without any guidance, split by category group, treated as a primary layout component rather than a hidden panel, and always visible to the user rather than disappearing once applied.",
+            references: [
+              {
+                label: "Problem & solution research",
+                detail: "Five recurring filter-UX problems, observed in existing apps, turned into five concrete design rules.",
+                type: "process note",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/coach-finder-filter/problem-solution-research.png", alt: "List of five filter-usage problems and five corresponding solutions, illustrated with filter-panel screenshots from a travel-booking app and a fashion e-commerce app." },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "coach-evidence-wireframe-groups",
+        type: "evidence",
+        label: "Decision 05",
+        title: "Sketch the grouped structure before touching visuals",
+        items: [
+          {
+            title: "From one filter row to group A / B / C",
+            detail:
+              "The fix started as a low-fidelity sketch, not a UI pass: a single undifferentiated filter row split into three colour-coded groups, annotated directly on the board with the rules driving the split — easy to access on the screen, intuitively managed, organised per group with a show-all option. Settling the grouping logic here, on paper, made every later UI decision close to mechanical.",
+            references: [
+              {
+                label: "Wireframe — filter groups",
+                detail: "A flat filter row is re-sorted into three annotated groups before any visual design begins.",
+                type: "process note",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/coach-finder-filter/wireframe-filter-groups.png", alt: "Wireframe sketch splitting Filter A-1 through C-1 into colour-coded group A, group B and group C boxes, annotated with the reasoning behind the split." },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "coach-evidence-wireframe-screen",
+        type: "evidence",
+        label: "Decision 06",
+        title: "Carry the model into the actual screen",
+        items: [
+          {
+            title: "Filter groups become the home screen's top strip",
+            detail:
+              "The grouped filters moved directly onto the coach-finder home screen, sitting above the matched-coach count and the \"Meet top coaches\" and \"Recommendation for you\" rows. Filtering reads as part of the page's main structure from the first screen a user sees, rather than living behind a separate settings or search screen.",
+            references: [
+              {
+                label: "Low-fidelity home screen",
+                detail: "Grouped filter pills sit directly above the matched-coach count, as part of the home screen's primary layout.",
+                type: "screenshot",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/coach-finder-filter/wireframe-home-screen.png", alt: "Low-fidelity mobile wireframe showing a Welcome header, a row of skill/location/interest/availability filter pills, and rows of matched coach cards." },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "coach-evidence-components",
+        type: "evidence",
+        label: "Decision 07",
+        title: "Define one component system for the whole flow",
+        items: [
+          {
+            title: "Shared components, one small colour system",
+            detail:
+              "Before building the prototype, I defined the recurring pieces as named components — Welcome, Language, Message, Filter, Tops, Recommends — against a small five-colour system: a saturated pink and a saturated green as the two accent colours, a near-black primary CTA, and two near-white backgrounds for surfaces and sections. Filter pills, language flags, and coach cards all draw from the same small system, so the interface reads as one product rather than a set of separately designed screens.",
+            references: [
+              {
+                label: "Components & colour palette",
+                detail: "Named, reusable components and a five-colour system shared across filters, profile elements and coach cards.",
+                type: "Design log",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/coach-finder-filter/components-and-palette.png", alt: "UI component sheet showing Welcome, Language, Message, Filter and Recommends components alongside a five-colour palette with accent, CTA, background and section colours." },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "coach-evidence-prototype",
+        type: "evidence",
+        label: "Decision 08",
+        title: "Prototype the loop the interview described",
+        items: [
+          {
+            title: "Select → adjust → apply, without leaving the result",
+            detail:
+              "The final prototype builds the exact interaction the first interview implied: select a filter element, adjust it in a bottom sheet — Adjust Price, in this flow — and apply it, with the matched-coach count updating in the header as the filter set changes. That closes the loop from Decision 01: editing a preference and seeing new results immediately, in one continuous motion, instead of a separate search step in between.",
+            references: [
+              {
+                label: "Prototype — apply filter flow",
+                detail: "A three-step select, adjust, apply flow updates the matched-coach count live, closing the loop the interview described.",
+                type: "prototype",
+                featured: true,
+                fit: "contain",
+                previewImages: [
+                  { src: "/case-studies/coach-finder-filter/prototype-apply-flow.png", alt: "Three mobile screens showing a filter element selected, a price adjusted in a bottom sheet, and the resulting screen with an updated matched-coach count." },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "coach-outcome",
+        type: "summary",
+        label: "System Outcome",
+        title: "From a search screen to a filter-first product",
+        body:
+          "Interview, story and category structure explain why filter matters here. The grouped sketch and the home-screen wireframe show where it lives. The component system and colour palette give it one consistent surface. The prototype closes the loop the interview described in the first place. The result isn't a decorated filter panel bolted onto a search app — it's a coach-finder concept where filtering is the main thing being designed, because that's what the person using it actually does.",
+        signals: ["User Interview", "Category Model", "Component System", "Prototype"],
+      },
+      {
+        id: "coach-lens",
+        type: "perspectiveLens",
+        label: "Perspective Lens",
+        title: "How the case reads by audience",
+        lenses: [
+          {
+            audience: "Recruiter",
+            takeaway: "Shows the instinct to test an assumption — search vs. filter — against a short, real interview before committing a product's whole structure to it.",
+          },
+          {
+            audience: "Design Director",
+            takeaway: "Demonstrates a complete method — interview, user story, category modelling, competitive research, sketch, component system, prototype — applied to one disciplined design bet.",
+          },
+          {
+            audience: "Engineering Manager",
+            takeaway: "Shows a filter category model — parent/child groups plus standalone filters — documented clearly enough to translate directly into a data structure.",
+          },
+          {
+            audience: "Potential Client",
+            takeaway: "Communicates that a small, well-reasoned interaction decision can reshape a product's entire information architecture, not just one screen.",
+          },
+          {
+            audience: "Future Self",
+            takeaway: "Keeps the case honest: this is a concept exploration and proof-of-concept prototype, not a shipped product with adoption data.",
+          },
+        ],
+      },
+      {
+        id: "coach-next",
+        type: "nextQuestions",
+        label: "Next Questions",
+        title: "Continue exploring",
+        questions: ["Show me the SaaS Admin Redesign case.", "What proves the quality of your work?"],
+      },
+    ],
+    relatedCards: [
+      {
+        id: "coach-ask-thinking",
+        type: "Ask",
+        title: "How I think",
+        reason: "Connect this case back to the reusable thinking model.",
+        targetQuestion: "Who are you?",
+      },
+      {
+        id: "coach-case-saas",
+        type: "Case",
+        title: "SaaS Admin Redesign",
+        reason: "Compare this interaction-first case with a structure-first enterprise redesign.",
+        targetQuestion: "Show me the SaaS Admin Redesign case.",
+      },
+      {
+        id: "coach-case-room",
+        type: "Case",
+        title: "Connected Experience Design",
+        reason: "See another state-driven redesign built from a small set of clear rules.",
+        targetQuestion: "Show me the Connected Experience Design case.",
+      },
+      {
+        id: "coach-evidence-card",
+        type: "Evidence",
+        title: "Evidence map",
+        reason: "See how process notes and artifacts support this case.",
+        targetQuestion: "What proves the quality of your work?",
+      },
+      {
+        id: "coach-case-heemoon",
+        type: "Case",
+        title: "Artist's Digital Archive",
+        reason: "See a content-and-identity system alongside this interaction-first case.",
+        targetQuestion: "Show me the Artist's Digital Archive case.",
+      },
+    ],
+    evidenceReferences: [
+      { label: "User interview", detail: "A short Q&A surfaces filtering, not searching, as the behaviour that actually repeats.", type: "process note" },
+      { label: "User story & flow chart", detail: "Searching, Filtering and See result mapped against a real user story.", type: "UX flow" },
+      { label: "Category architecture for matching", detail: "Skills, Location, Interest and Availability broken into a branching filter model.", type: "System map" },
+      { label: "Problem & solution research", detail: "Five filter-usage problems from existing apps, turned into five design rules.", type: "process note" },
+      { label: "Wireframe — filter groups", detail: "A flat filter row re-sorted into three annotated, colour-coded groups.", type: "process note" },
+      { label: "Low-fidelity home screen", detail: "Grouped filter pills placed above the matched-coach count on the home screen.", type: "screenshot" },
+      { label: "Components & colour palette", detail: "Named components and a five-colour system shared across the flow.", type: "Design log" },
+      { label: "Prototype — apply filter flow", detail: "A select, adjust, apply loop that updates the matched-coach count live.", type: "prototype" },
+    ],
+    followUpQuestions: ["Show me the SaaS Admin Redesign case.", "What proves the quality of your work?"],
   },
   {
     id: "jira-automation",
