@@ -493,11 +493,7 @@ export const questionBank: QuestionNode[] = [
     ],
     relatedCards: [],
     evidenceReferences: coreEvidence.flatMap((item) => item.references),
-    followUpQuestions: [
-      "How has your design philosophy changed?",
-      "Show me the Connected Experience Design case.",
-      "Open Decision Log #12.",
-    ],
+    followUpQuestions: ["How has your design philosophy changed?", "Show me the Connected Experience Design case."],
   },
   {
     id: "design-philosophy",
@@ -543,20 +539,6 @@ export const questionBank: QuestionNode[] = [
     ],
     relatedCards: [
       {
-        id: "philosophy-log-card",
-        type: "Design Log",
-        title: "Decision Log #12",
-        reason: "The philosophy is encoded in the block-based answer model.",
-        targetQuestion: "Open Decision Log #12.",
-      },
-      {
-        id: "philosophy-evidence-card",
-        type: "Evidence",
-        title: "Evidence patterns",
-        reason: "Review how philosophy becomes observable through artifacts.",
-        targetQuestion: "What proves the quality of your work?",
-      },
-      {
         id: "philosophy-explore-card",
         type: "Explore",
         title: "AI workflow",
@@ -571,7 +553,7 @@ export const questionBank: QuestionNode[] = [
         type: "process note" as const,
       },
     ]),
-    followUpQuestions: ["Open Decision Log #12.", "What proves the quality of your work?"],
+    followUpQuestions: [],
   },
   {
     id: "meeting-room-redesign",
@@ -715,13 +697,6 @@ export const questionBank: QuestionNode[] = [
         targetQuestion: "Who are you?",
       },
       {
-        id: "room-evidence",
-        type: "Evidence",
-        title: "Room artifacts",
-        reason: "Inspect the proof behind the case story.",
-        targetQuestion: "What proves the quality of your work?",
-      },
-      {
         id: "room-case-saas",
         type: "Case",
         title: "SaaS Admin Redesign",
@@ -770,114 +745,7 @@ export const questionBank: QuestionNode[] = [
         ],
       },
     ],
-    followUpQuestions: ["What proves the quality of your work?", "How has your design philosophy changed?"],
-  },
-  {
-    id: "evidence",
-    question: "What proves the quality of your work?",
-    intent: "Surface proof, artifacts, and evaluation signals.",
-    category: "Evidence",
-    answerTitle: "Evidence map",
-    answerBlocks: [
-      {
-        id: "evidence-summary",
-        type: "summary",
-        label: "Summary",
-        title: "The work should be evaluated through decisions, artifacts, and outcomes.",
-        body:
-          "A portfolio claim is only useful when someone can inspect what led to it. Evidence should include artifacts, decision logs, prototypes, process notes, and outcome signals.",
-      },
-      {
-        id: "evidence-items",
-        type: "evidence",
-        label: "Evidence",
-        title: "Evidence references",
-        items: coreEvidence,
-      },
-      {
-        id: "evidence-next",
-        type: "nextQuestions",
-        label: "Next Questions",
-        title: "Ways to inspect the evidence",
-        questions: ["Show me the Connected Experience Design case.", "Open Decision Log #12."],
-      },
-    ],
-    relatedCards: [
-      {
-        id: "evidence-case",
-        type: "Case",
-        title: "Connected Experience Design",
-        reason: "A case gives evidence more context and consequence.",
-        targetQuestion: "Show me the Connected Experience Design case.",
-      },
-      {
-        id: "evidence-log",
-        type: "Design Log",
-        title: "Decision Log #12",
-        reason: "Decision logs make the reasoning behind evidence visible.",
-        targetQuestion: "Open Decision Log #12.",
-      },
-    ],
-    evidenceReferences: coreEvidence.flatMap((item) => item.references),
-    followUpQuestions: ["Show me the Connected Experience Design case.", "Open Decision Log #12."],
-  },
-  {
-    id: "decision-log-12",
-    question: "Open Decision Log #12.",
-    intent: "Open a full decision log preview with perspective-based evaluation.",
-    category: "Logs",
-    answerTitle: "Decision Log #12",
-    answerBlocks: [
-      {
-        id: "log-preview",
-        type: "decisionLog",
-        label: "Design Log Preview",
-        log: decisionLog12,
-      },
-      {
-        id: "log-lens",
-        type: "perspectiveLens",
-        label: "Perspective Lens",
-        title: "Decision evaluation",
-        lenses: sharedLens,
-      },
-      {
-        id: "log-reasoning",
-        type: "designReasoning",
-        label: "Design Reasoning",
-        title: "Why the block model won",
-        steps: [
-          "Plain chat hides structure inside paragraphs.",
-          "Portfolio readers evaluate different evidence at different speeds.",
-          "Blocks let the answer expose claims, reasoning, evidence, and next paths separately.",
-          "The model can scale into cases, logs, and source references.",
-        ],
-      },
-    ],
-    relatedCards: [
-      {
-        id: "log-identity",
-        type: "Ask",
-        title: "Return to identity",
-        reason: "See the decision log applied to the first answer.",
-        targetQuestion: "Who are you?",
-      },
-      {
-        id: "log-principles",
-        type: "Explore",
-        title: "Design philosophy",
-        reason: "Connect this decision to the broader design principle.",
-        targetQuestion: "How has your design philosophy changed?",
-      },
-    ],
-    evidenceReferences: [
-      {
-        label: decisionLog12.title,
-        detail: decisionLog12.decisionSummary,
-        type: "process note",
-      },
-    ],
-    followUpQuestions: ["Who are you?", "How has your design philosophy changed?"],
+    followUpQuestions: ["How has your design philosophy changed?"],
   },
   {
     id: "saas-admin-redesign",
@@ -1119,7 +987,7 @@ export const questionBank: QuestionNode[] = [
         type: "nextQuestions",
         label: "Next Questions",
         title: "Continue exploring",
-        questions: ["Show me the Connected Experience Design case.", "What proves the quality of your work?"],
+        questions: ["Show me the Connected Experience Design case.", "Show me the AI Workflow case."],
       },
       {
         id: "saas-related-work",
@@ -1151,13 +1019,6 @@ export const questionBank: QuestionNode[] = [
         targetQuestion: "Show me the AI Workflow case.",
       },
       {
-        id: "saas-evidence-card",
-        type: "Evidence",
-        title: "Evidence map",
-        reason: "See how process notes and artifacts support this case.",
-        targetQuestion: "What proves the quality of your work?",
-      },
-      {
         id: "saas-case-heemoon",
         type: "Case",
         title: "Artist's Digital Archive",
@@ -1173,7 +1034,7 @@ export const questionBank: QuestionNode[] = [
       { label: "Timeslot configuration", detail: "Editable booking slots generated from presets.", type: "screenshot" },
       { label: "Component behaviour specification", detail: "Reusable interaction rules for selectors, pills, and system feedback.", type: "Rule model" },
     ],
-    followUpQuestions: ["Show me the Connected Experience Design case.", "What proves the quality of your work?"],
+    followUpQuestions: ["Show me the Connected Experience Design case.", "Show me the AI Workflow case."],
   },
   {
     id: "coach-finder-filter",
@@ -1458,7 +1319,7 @@ export const questionBank: QuestionNode[] = [
         type: "nextQuestions",
         label: "Next Questions",
         title: "Continue exploring",
-        questions: ["Show me the SaaS Admin Redesign case.", "What proves the quality of your work?"],
+        questions: ["Show me the SaaS Admin Redesign case.", "Show me the Artist's Digital Archive case."],
       },
       {
         id: "coach-related-work",
@@ -1490,13 +1351,6 @@ export const questionBank: QuestionNode[] = [
         targetQuestion: "Show me the Connected Experience Design case.",
       },
       {
-        id: "coach-evidence-card",
-        type: "Evidence",
-        title: "Evidence map",
-        reason: "See how process notes and artifacts support this case.",
-        targetQuestion: "What proves the quality of your work?",
-      },
-      {
         id: "coach-case-heemoon",
         type: "Case",
         title: "Artist's Digital Archive",
@@ -1514,7 +1368,7 @@ export const questionBank: QuestionNode[] = [
       { label: "Components & colour palette", detail: "Named components and a five-colour system shared across the flow.", type: "Design log" },
       { label: "Prototype — apply filter flow", detail: "A select, adjust, apply loop that updates the matched-coach count live.", type: "prototype" },
     ],
-    followUpQuestions: ["Show me the SaaS Admin Redesign case.", "What proves the quality of your work?"],
+    followUpQuestions: ["Show me the SaaS Admin Redesign case.", "Show me the Artist's Digital Archive case."],
   },
   {
     id: "jira-automation",
@@ -1976,7 +1830,7 @@ export const fallbackQuestion: QuestionNode = {
       type: "nextQuestions",
       label: "Next Questions",
       title: "More grounded paths",
-      questions: ["Who are you?", "What proves the quality of your work?", "Open Decision Log #12."],
+      questions: ["Who are you?", "Show me the SaaS Admin Redesign case."],
     },
   ],
   relatedCards: [
@@ -1987,16 +1841,9 @@ export const fallbackQuestion: QuestionNode = {
       reason: "Return to the strongest static identity response.",
       targetQuestion: "Who are you?",
     },
-    {
-      id: "custom-evidence",
-      type: "Evidence",
-      title: "Evidence map",
-      reason: "Move from a custom prompt to proof and artifacts.",
-      targetQuestion: "What proves the quality of your work?",
-    },
   ],
   evidenceReferences: [],
-  followUpQuestions: ["Who are you?", "What proves the quality of your work?"],
+  followUpQuestions: ["Who are you?"],
 };
 
 export function resolveQuestion(input: string): QuestionNode {
@@ -2009,11 +1856,15 @@ export function resolveQuestion(input: string): QuestionNode {
     return questionBank.find((node) => node.id === starter.id) ?? fallbackQuestion;
   }
 
-  if (normalized.includes("who") || normalized.includes("identity")) return questionBank[0];
-  if (normalized.includes("philosophy") || normalized.includes("principle")) return questionBank[1];
-  if (normalized.includes("meeting") || normalized.includes("case")) return questionBank[2];
-  if (normalized.includes("evidence") || normalized.includes("prove") || normalized.includes("proof")) return questionBank[3];
-  if (normalized.includes("log") || normalized.includes("decision")) return questionBank[4];
+  if (normalized.includes("who") || normalized.includes("identity")) {
+    return questionBank.find((node) => node.id === "who-are-you") ?? fallbackQuestion;
+  }
+  if (normalized.includes("philosophy") || normalized.includes("principle")) {
+    return questionBank.find((node) => node.id === "design-philosophy") ?? fallbackQuestion;
+  }
+  if (normalized.includes("meeting") || normalized.includes("case")) {
+    return questionBank.find((node) => node.id === "meeting-room-redesign") ?? fallbackQuestion;
+  }
   if (normalized.includes("saas") || normalized.includes("admin") || normalized.includes("workspace manager")) {
     return questionBank.find((node) => node.id === "saas-admin-redesign") ?? fallbackQuestion;
   }
