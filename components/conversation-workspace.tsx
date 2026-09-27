@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AnswerBlockRenderer, HeroMediaBlock } from "@/components/knowledge-blocks";
 import {
@@ -18,7 +18,6 @@ type TreeNode = QuestionNode & {
 const AUTO_COLLAPSE_MS = 10000;
 
 export function ConversationWorkspace() {
-  const [prompt, setPrompt] = useState("");
   const [activeQuestion, setActiveQuestion] = useState<QuestionNode | null>(null);
   const [history, setHistory] = useState<TreeNode[]>([]);
   const [isTreeOpen, setIsTreeOpen] = useState(false);
@@ -86,7 +85,6 @@ export function ConversationWorkspace() {
     activeElement?.blur();
 
     const resolved = resolveQuestion(trimmed);
-    setPrompt("");
     setIsTreeOpen(true);
     setComposerState("disabled");
     setActiveQuestion(resolved);
@@ -121,13 +119,8 @@ export function ConversationWorkspace() {
     });
   }
 
-  function submitPrompt(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    activateQuestion(prompt);
-  }
-
   return (
-    <main className="min-h-screen bg-white pb-32 text-ink">
+    <main className="min-h-screen bg-white text-ink">
       {hasConversation ? (
         <button
           onClick={goHome}
@@ -166,14 +159,6 @@ export function ConversationWorkspace() {
           />
         ) : null}
       </section>
-
-      <PromptComposer
-        value={prompt}
-        state={composerState}
-        hasConversation={hasConversation || history.length > 0}
-        onChange={setPrompt}
-        onSubmit={submitPrompt}
-      />
     </main>
   );
 }
@@ -381,56 +366,6 @@ function AnswerWorkspace({
     </div>
   );
 }
-
-function PromptComposer({
-  value,
-  state,
-  hasConversation,
-  onChange,
-  onSubmit,
-}: {
-  value: string;
-  state: ComposerState;
-  hasConversation: boolean;
-  onChange: (value: string) => void;
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
-}) {
-  const disabled = state !== "idle";
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: hasConversation ? 0 : 1.9 }}
-      className="fixed inset-x-0 bottom-0 z-20 px-4 pb-4"
-    >
-      <form
-        onSubmit={onSubmit}
-        className="mx-auto flex h-14 max-w-3xl items-center gap-2 rounded-full border border-white/80 bg-white/80 pl-5 pr-2 shadow-[0_12px_45px_rgba(0,0,0,0.08)] backdrop-blur-xl md:h-16"
-      >
-        <input
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-          placeholder="Ask anything about my work..."
-          className="h-full min-w-0 flex-1 bg-transparent text-base text-ink outline-none placeholder:text-zinc-500 disabled:cursor-not-allowed disabled:text-zinc-400"
-          aria-label="Ask anything about my work"
-          disabled={disabled}
-        />
-        <button
-          className="flex size-10 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-sm font-medium text-white transition hover:bg-black disabled:cursor-not-allowed disabled:bg-zinc-300 md:size-11"
-          type="submit"
-          aria-label="Send"
-          disabled={disabled || value.trim().length === 0}
-          data-state={disabled ? "disabled" : "default"}
-        >
-          <span aria-hidden="true">→</span>
-        </button>
-      </form>
-    </motion.div>
-  );
-}
-
-
 
 function FloatingQuestionTree({
   groups,
