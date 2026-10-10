@@ -12,6 +12,7 @@ import type {
   EvidenceItem,
   HeroMedia,
   PerspectiveLens,
+  ServicePhase,
   SourceReference,
 } from "@/data/portfolio-response";
 
@@ -173,41 +174,79 @@ export function AnswerBlockRenderer({
   }
 
   if (block.type === "serviceStack") {
+    const accents = [
+      "bg-[#ff1744] text-white",
+      "bg-black text-[#39ff14]",
+      "bg-[#39ff14] text-black",
+    ];
+
     return (
       <MotionBlock delay={delay} eyebrow={block.label}>
-        <TypewriterText as="h2" text={block.title} speed={14} className="text-xl font-semibold text-black" />
-        <div className="mt-5 grid gap-3 md:grid-cols-3">
-          {block.phases.map((phase) => (
-            <article key={phase.step} className="flex flex-col rounded-[22px] bg-zinc-100 p-5">
-              <div className="text-xs font-semibold text-zinc-400">{phase.step}</div>
-              <h3 className="mt-3 text-base font-semibold text-black">{phase.title}</h3>
-              <p className="mt-2 text-sm leading-6 text-zinc-600">{phase.description}</p>
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {phase.deliverables.map((deliverable) => (
-                  <span key={deliverable} className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-600 ring-1 ring-zinc-200">
-                    {deliverable}
-                  </span>
-                ))}
-              </div>
-              <div className="mt-auto pt-5">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-400">Proof</div>
-                <div className="mt-2 space-y-1">
-                  {phase.proof.map((item) => (
-                    <button
-                      key={item.label}
-                      onClick={() => onQuestionSelect(item.targetQuestion)}
-                      className="block text-left text-sm font-medium text-black underline-offset-4 hover:underline"
-                      type="button"
-                      data-state="related"
-                    >
-                      {item.label} →
-                    </button>
-                  ))}
+        <h2 className="font-title text-4xl font-semibold uppercase leading-[0.92] tracking-[-0.035em] text-black md:text-6xl">
+          {block.title}
+        </h2>
+        <div className="mt-10">
+          {block.phases.map((phase, index) => (
+            <article key={phase.step} className="grid gap-8 border-t-2 border-black py-10 md:grid-cols-12 md:py-14">
+              <div className="md:col-span-5">
+                <span
+                  className={`inline-block px-2 font-title text-6xl font-semibold leading-none tracking-[-0.05em] md:text-8xl ${accents[index % accents.length]}`}
+                >
+                  {phase.step}
+                </span>
+                <h3 className="mt-6 font-title text-3xl font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-black md:text-5xl">
+                  {phase.title}
+                </h3>
+                <p className="mt-4 font-serif text-2xl italic leading-[1.15] text-zinc-700 md:text-3xl">{phase.description}</p>
+                <p className="mt-6 text-[11px] font-semibold uppercase leading-5 tracking-[0.16em] text-black">
+                  {phase.deliverables.join(" / ")}
+                </p>
+                <div className="mt-6 border-t border-zinc-300 pt-4">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">Proof</div>
+                  <div className="mt-2 space-y-1.5">
+                    {phase.proof.map((item) => (
+                      <button
+                        key={item.label}
+                        onClick={() => onQuestionSelect(item.targetQuestion)}
+                        className="block text-left text-sm font-medium text-black underline decoration-zinc-300 underline-offset-4 transition hover:decoration-black"
+                        type="button"
+                        data-state="related"
+                      >
+                        {item.label} →
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
+              <figure className="md:col-span-7">
+                <ServiceMedia media={phase.media} />
+                <figcaption className="mt-3 flex gap-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                  <span className="text-black">Fig. {phase.step}</span>
+                  <span>{phase.media.caption}</span>
+                </figcaption>
+              </figure>
             </article>
           ))}
         </div>
+      </MotionBlock>
+    );
+  }
+
+  if (block.type === "processStrip") {
+    return (
+      <MotionBlock delay={delay} eyebrow={block.label}>
+        <h2 className="font-title text-3xl font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-black md:text-5xl">
+          {block.title}
+        </h2>
+        <ol className="mt-8 grid gap-x-4 gap-y-6 sm:grid-cols-2 md:grid-cols-5">
+          {block.steps.map((step, index) => (
+            <li key={step.title} className="border-t-2 border-black pt-3">
+              <div className="text-xs font-semibold tabular-nums text-zinc-400">0{index + 1}</div>
+              <div className="mt-2 font-title text-xl font-semibold uppercase tracking-[-0.02em] text-black">{step.title}</div>
+              <p className="mt-2 text-sm leading-6 text-zinc-600">{step.detail}</p>
+            </li>
+          ))}
+        </ol>
       </MotionBlock>
     );
   }
@@ -322,6 +361,52 @@ export function AnswerBlockRenderer({
         ))}
       </div>
     </MotionBlock>
+  );
+}
+
+function ServiceMedia({ media }: { media: ServicePhase["media"] }) {
+  if (media.kind === "specimen") {
+    return (
+      <div
+        role="img"
+        aria-label={media.alt}
+        className="relative flex aspect-[4/3] flex-col justify-between overflow-hidden bg-[#ff1744] p-6 text-white md:p-8"
+      >
+        <div className="flex items-start justify-between text-[11px] font-semibold uppercase tracking-[0.16em]">
+          <span>Mark</span>
+          <span>Type</span>
+          <span>Colour</span>
+        </div>
+        <div className="flex items-end justify-between gap-6">
+          <span className="font-serif text-[clamp(120px,22vw,260px)] italic leading-[0.75]">Aa</span>
+          <span className="mb-3 grid grid-cols-2 gap-1.5">
+            {["#ff1744", "#111111", "#39ff14", "#ffffff"].map((swatch) => (
+              <span key={swatch} className="size-8 ring-1 ring-white/70 md:size-12" style={{ background: swatch }} />
+            ))}
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  if (media.kind === "video" && media.src) {
+    return (
+      <video
+        className="aspect-[4/3] w-full bg-zinc-100 object-cover"
+        src={media.src}
+        poster={media.poster}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label={media.alt}
+      />
+    );
+  }
+
+  return (
+    <img className="aspect-[4/3] w-full bg-zinc-100 object-cover" src={media.src} alt={media.alt} />
   );
 }
 

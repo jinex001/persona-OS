@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, Poppins } from "next/font/google";
+import { IBM_Plex_Sans, Instrument_Serif, Poppins } from "next/font/google";
 import "./globals.css";
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-ibm-plex-sans",
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
 });
 
 const poppins = Poppins({
@@ -42,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${ibmPlexSans.variable} ${poppins.variable}`}>
+    <html lang="en" className={`${ibmPlexSans.variable} ${poppins.variable} ${instrumentSerif.variable}`}>
       <body>{children}</body>
     </html>
   );

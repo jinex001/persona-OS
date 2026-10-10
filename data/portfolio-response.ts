@@ -93,9 +93,24 @@ export type ServicePhase = {
   description: string;
   deliverables: string[];
   proof: { label: string; targetQuestion: string }[];
+  /** Visual shown beside the phase. "specimen" renders a typographic identity specimen instead of a file. */
+  media: {
+    kind: "video" | "image" | "specimen";
+    src?: string;
+    poster?: string;
+    alt: string;
+    caption: string;
+  };
 };
 
 export type AnswerBlock =
+  | {
+      id: string;
+      type: "processStrip";
+      label: string;
+      title: string;
+      steps: { title: string; detail: string }[];
+    }
   | {
       id: string;
       type: "serviceStack";
@@ -212,6 +227,13 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
   cardDescription?: string;
   /** Tags shown on Work starter-path cards only. Card shows the first 2 plus a "+N" overflow badge. */
   tags?: string[];
+  /** Short project name for the editorial work index on the home screen. */
+  title?: string;
+  /** Year or project type shown in the work index. */
+  year?: string;
+  /** Thumbnail image for the work index. Falls back to a typographic tile with `thumbnailLabel`. */
+  thumbnail?: string;
+  thumbnailLabel?: string;
 })[] = [
   {
     id: "saas-admin-redesign",
@@ -220,6 +242,9 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     cardDescription: "Turning workplace configuration into one coherent system.",
     tags: ["B2B SaaS", "Enterprise UX", "Information Architecture"],
     category: "Work",
+    title: "SaaS Admin Redesign",
+    year: "2023–26",
+    thumbnail: "/case-studies/saas-admin-redesign/hero-poster.jpg",
   },
   {
     id: "meeting-room-redesign",
@@ -228,6 +253,9 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     cardDescription: "Real-time room availability on a tablet display.",
     tags: ["Workplace UX", "Tablet interface", "Timeline design"],
     category: "Work",
+    title: "Connected Experience",
+    year: "2023–26",
+    thumbnail: "/artifacts/meeting-room-timeline-meeting-current.png",
   },
   {
     id: "jira-automation",
@@ -236,6 +264,9 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     cardDescription: "Turning Figma design-system changes into Jira tickets.",
     tags: ["Workflow automation", "Design systems", "Design-to-engineering handoff"],
     category: "Work",
+    title: "AI Workflow",
+    year: "Hackathon",
+    thumbnailLabel: "Figma → Jira",
   },
   {
     id: "lee-heemoon",
@@ -244,6 +275,9 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     cardDescription: "An evolving digital home for a genre-defying artist.",
     tags: ["UX/UI Design", "Art Direction", "Interaction Design"],
     category: "Work",
+    title: "Artist's Digital Archive",
+    year: "2024–",
+    thumbnail: "/case-studies/lee-heemoon/lee-heemoon-360-carousel-poster.jpg",
   },
   {
     id: "coach-finder-filter",
@@ -252,6 +286,9 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     cardDescription: "Making filtering the main way people find the right coach.",
     tags: ["Mobile UX", "Filter Design", "Interaction Design"],
     category: "Work",
+    title: "Filter-First Matching",
+    year: "Concept",
+    thumbnail: "/case-studies/coach-finder-filter/hero.jpg",
   },
   {
     id: "who-are-you",
@@ -350,9 +387,9 @@ export const questionBank: QuestionNode[] = [
         id: "services-summary",
         type: "summary",
         label: "Studio Summary",
-        title: "Identity, product, and code — designed and built by one person.",
+        title: "Identity, product, and code — by one person.",
         body:
-          "Most products lose intent at every handoff: brand agency to product team, designer to developer. I work as a one-person studio so that never happens. The same person defines how your brand looks and speaks, designs the product people use, and builds it into a working site or app with AI-assisted development. You get one point of contact, one continuous line of reasoning, and something real at the end — not a deck.",
+          "One point of contact and one line of reasoning, from the first mark to the shipped product. You end up with something that works, not a deck.",
         signals: ["Corporate identity", "Digital product design", "Vibe coding", "Launch & maintenance"],
       },
       {
@@ -363,51 +400,67 @@ export const questionBank: QuestionNode[] = [
         phases: [
           {
             step: "01",
-            title: "Brand identity (CI)",
-            description:
-              "Define who you are visually and verbally before a single screen exists, so the product has something to stand on.",
-            deliverables: ["Logo & visual identity", "Colour & type system", "Brand guidelines", "Art direction"],
+            title: "Brand identity",
+            description: "Who you are, visually and verbally, before a single screen exists.",
+            deliverables: ["Logo & mark", "Colour & type", "Brand guidelines", "Art direction"],
             proof: [
-              { label: "Career evolution — CI for ZyseME & Pyrexx", targetQuestion: "Who are you?" },
+              { label: "Career — CI for ZyseME & Pyrexx", targetQuestion: "Who are you?" },
               { label: "Artist's Digital Archive", targetQuestion: "Show me the Artist's Digital Archive case." },
             ],
+            media: {
+              kind: "specimen",
+              alt: "Typographic identity specimen showing a letterform and a four-colour palette",
+              caption: "Specimen — mark, type, colour",
+            },
           },
           {
             step: "02",
-            title: "Digital product design",
-            description:
-              "Turn the problem into structure: information architecture, flows, interface, and a design system that keeps scaling.",
-            deliverables: ["UX research & framing", "Information architecture", "UI & interaction design", "Design system"],
+            title: "Product design",
+            description: "Structure, flows, interface, and a design system that keeps scaling.",
+            deliverables: ["UX framing", "Information architecture", "UI & interaction", "Design system"],
             proof: [
               { label: "SaaS Admin Redesign", targetQuestion: "Show me the SaaS Admin Redesign case." },
               { label: "Connected Experience Design", targetQuestion: "Show me the Connected Experience Design case." },
               { label: "Filter-First Matching", targetQuestion: "Show me the Filter-First Matching case." },
             ],
+            media: {
+              kind: "video",
+              src: "/case-studies/saas-admin-redesign/hero.mp4",
+              poster: "/case-studies/saas-admin-redesign/hero-poster.jpg",
+              alt: "Recording of the LIZ Smart Office floorplan and resource-management interface",
+              caption: "SaaS Admin Redesign — floorplan & resources",
+            },
           },
           {
             step: "03",
-            title: "Build with vibe coding",
-            description:
-              "Ship the design as a working product using AI-assisted development — websites, web apps, and prototypes that behave like the real thing.",
-            deliverables: ["Websites (Next.js, Webflow)", "Web app MVPs", "Interactive prototypes", "Launch & ongoing care"],
+            title: "Build with code",
+            description: "The design shipped as a working product, built with AI-assisted development.",
+            deliverables: ["Websites", "Web app MVPs", "Interactive prototypes", "Ongoing care"],
             proof: [
               { label: "Artist's Digital Archive — built & maintained", targetQuestion: "Show me the Artist's Digital Archive case." },
               { label: "AI Workflow prototype", targetQuestion: "Show me the AI Workflow case." },
             ],
+            media: {
+              kind: "video",
+              src: "/case-studies/lee-heemoon/lee-heemoon-360-carousel.mp4",
+              poster: "/case-studies/lee-heemoon/lee-heemoon-360-carousel-poster.jpg",
+              alt: "The Lee Heemoon website's 360-degree Projects carousel rotating between project cards",
+              caption: "Artist's Digital Archive — live since 2024",
+            },
           },
         ],
       },
       {
         id: "services-process",
-        type: "designReasoning",
+        type: "processStrip",
         label: "How A Project Runs",
         title: "From first question to live product",
         steps: [
-          "Frame — find the real problem, the audience, and what success looks like before anything is designed.",
-          "Identify — shape the brand foundation: name, mark, colour, type, and tone.",
-          "Design — structure the product: flows, information architecture, interface, and components.",
-          "Build — turn the design into working code with AI-assisted development, reviewing every decision as the designer.",
-          "Launch & evolve — ship it, then keep improving it as content, features, and the business grow.",
+          { title: "Frame", detail: "The real problem, the audience, what success means." },
+          { title: "Identify", detail: "Name, mark, colour, type, tone." },
+          { title: "Design", detail: "Flows, structure, interface, components." },
+          { title: "Build", detail: "Working code, AI-assisted, designer-reviewed." },
+          { title: "Evolve", detail: "Launch, then keep improving it." },
         ],
       },
       {
@@ -416,7 +469,7 @@ export const questionBank: QuestionNode[] = [
         label: "Why One Person",
         title: "No handoff, no translation loss.",
         body:
-          "AI-assisted development changed what a single designer can ship. Instead of handing a Figma file to someone who has to reinterpret it, I carry the same intent from brand to build. Small teams, founders, and creative practices get a coherent identity and a working product without assembling an agency. You can also take any single layer on its own — identity only, product design only, or building from an existing design.",
+          "The same intent carries from brand to build. Founders, small teams, and creative practices get a coherent identity and a working product without assembling an agency — or book any single layer on its own.",
         signals: ["Founders & startups", "Small businesses", "Artists & creative practices", "In-house teams needing extra hands"],
       },
       {
@@ -424,8 +477,7 @@ export const questionBank: QuestionNode[] = [
         type: "summary",
         label: "Proof In Plain Sight",
         title: "This site is an example.",
-        body:
-          "Portfolio OS — the site you are reading — was designed and built the same way: concept, interface system, and code produced by one designer working with AI coding tools.",
+        body: "Concept, interface system, and code — produced by one designer working with AI coding tools.",
       },
       {
         id: "services-related-work",

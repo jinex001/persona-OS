@@ -169,153 +169,289 @@ export function ConversationWorkspace() {
   );
 }
 
+const EDITORIAL_EASE = [0.22, 1, 0.36, 1] as const;
+
+function fadeUp(delay: number) {
+  return {
+    initial: { opacity: 0, y: 16 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, ease: EDITORIAL_EASE, delay },
+  };
+}
+
 function OpeningWorkspace({ onSelectQuestion }: { onSelectQuestion: (question: string) => void }) {
+  const workCases = starterQuestions.filter((starter) => starter.category === "Work");
+  const servicesQuestion = starterQuestions.find((starter) => starter.category === "Services")?.question ?? "What can you build for me?";
+  const identityQuestion = starterQuestions.find((starter) => starter.category === "Identity")?.question ?? "Who are you?";
+
   return (
-    <div className="mx-auto flex min-h-[calc(100vh-160px)] max-w-6xl flex-col justify-center pb-24 pt-12">
-      <motion.h1
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.64, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
-        className="max-w-6xl whitespace-pre-line text-4xl font-semibold uppercase leading-[1.22] tracking-[-0.01em] text-black md:text-6xl"
-      >
-        <TypedWordGroup words={["Design", "is"]} delay={0.42} />
-        <UnderlinePhrase
-          words={["not", "presentation."]}
-          delay={0.9}
-          underlineClassName="bg-[#ff1744]"
-        />
-        <br />
-        <TypedWordGroup words={["Design", "is", "the", "starting", "point", "for"]} delay={1.2} />
-        <UnderlinePhrase
-          words={["finding", "the", "right", "solution."]}
-          delay={1.85}
-          underlineClassName="bg-[#39ff14]"
-        />
-      </motion.h1>
-
-      <motion.p
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 1.05 }}
-        className="mt-8 max-w-3xl text-lg leading-8 text-zinc-600"
-      >
-        Independent designer in Berlin — a studio of one, from brand identity and digital product design to a
-        working product built with AI-assisted code.
-      </motion.p>
-
+    <div className="mx-auto max-w-[1440px] pb-10">
       <motion.div
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1], delay: 1.45 }}
-        className="mt-12"
+        {...fadeUp(0.05)}
+        className="mt-14 flex items-end justify-between gap-6 border-b-2 border-black pb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-black md:mt-16"
       >
-        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-          {starterQuestions.map((starter, index) => (
-            <motion.button
-              key={starter.id}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1], delay: 1.62 + index * 0.08 }}
-              onClick={() => onSelectQuestion(starter.question)}
-              className={`flex min-h-[150px] flex-col items-start justify-start rounded-[24px] p-4 text-left transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-black ${
-                starter.category === "Work"
-                  ? "order-2 bg-[#E4EFF2] hover:bg-[#D2E4E8]"
-                  : starter.category === "Services"
-                    ? "order-1 bg-black text-white hover:bg-zinc-800 md:col-span-2 [&_h2]:text-white [&_p]:text-zinc-300 [&>div:first-child]:text-zinc-400"
-                    : "order-1 bg-zinc-100 hover:bg-zinc-200/70 md:col-span-2"
-              }`}
+        <span>Jinwh — Studio of One</span>
+        <span className="hidden md:inline">Berlin</span>
+        <span className="hidden md:inline">Brand · Product · Code</span>
+        <span>Vol. 2026</span>
+      </motion.div>
+
+      <h1 className="mt-6 font-title text-[clamp(52px,14.5vw,224px)] font-semibold uppercase leading-[0.86] tracking-[-0.045em] text-black">
+        <HeroLine index="01" delay={0.15}>
+          Identity<span className="text-[#ff1744]">.</span>
+        </HeroLine>
+        <HeroLine index="02" delay={0.3}>
+          Product<span className="text-[#ff1744]">.</span>
+        </HeroLine>
+        <HeroLine index="03" delay={0.45}>
+          <span className="bg-black px-[0.05em] text-[#39ff14]">Code.</span>
+        </HeroLine>
+      </h1>
+
+      <div className="mt-10 grid gap-8 border-t border-black pt-6 md:grid-cols-12">
+        <motion.p
+          {...fadeUp(0.7)}
+          className="font-serif text-3xl italic leading-[1.08] text-black md:col-span-6 md:text-5xl"
+        >
+          A studio of one — from the first mark to the shipped product.
+        </motion.p>
+        <motion.div {...fadeUp(0.85)} className="md:col-span-5 md:col-start-8">
+          <p className="text-base leading-7 text-zinc-700">
+            Independent designer in Berlin. I shape the brand, design the product, and build it with AI-assisted code — so
+            nothing gets lost between agency, designer, and developer.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button
               type="button"
-              data-state="related"
+              onClick={() => onSelectQuestion(servicesQuestion)}
+              className="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#ff1744] focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
             >
-              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-500">{starter.category}</div>
-              <h2 className="mt-4 text-base font-semibold leading-6 text-black">{starter.question}</h2>
-              {starter.tags ? (
-                <>
-                  <p className="mt-3 line-clamp-1 text-sm leading-6 text-zinc-600">{starter.cardDescription ?? starter.intent}</p>
-                  <div className="mt-4 flex flex-wrap items-center gap-1.5">
-                    {starter.tags.slice(0, 2).map((tag) => (
-                      <span key={tag} className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-600 ring-1 ring-zinc-200">
-                        {tag}
-                      </span>
-                    ))}
-                    {starter.tags.length > 2 ? (
-                      <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-400 ring-1 ring-zinc-200">
-                        +{starter.tags.length - 2}
-                      </span>
-                    ) : null}
-                  </div>
-                </>
-              ) : (
-                <p className="mt-3 text-sm leading-6 text-zinc-600">{starter.intent}</p>
-              )}
-            </motion.button>
-          ))}
+              What I can build for you →
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectQuestion(identityQuestion)}
+              className="rounded-full px-6 py-3 text-sm font-semibold text-black ring-2 ring-inset ring-black transition hover:bg-black hover:text-white focus:outline-none focus:ring-offset-2"
+            >
+              Who I am
+            </button>
+          </div>
+        </motion.div>
+      </div>
+
+      <motion.div {...fadeUp(1)} className="mt-16 grid gap-3 md:grid-cols-12">
+        <EditorialFigure
+          className="md:col-span-7"
+          aspect="aspect-[4/3]"
+          number="01"
+          caption="Build — Artist's Digital Archive, live since 2024"
+          video="/case-studies/lee-heemoon/lee-heemoon-360-carousel.mp4"
+          image="/case-studies/lee-heemoon/lee-heemoon-360-carousel-poster.jpg"
+          alt="The Lee Heemoon website's 360-degree Projects carousel rotating between project cards"
+          onClick={() => onSelectQuestion("Show me the Artist's Digital Archive case.")}
+        />
+        <div className="grid gap-3 md:col-span-5">
+          <EditorialFigure
+            aspect="aspect-[16/10]"
+            number="02"
+            caption="Product — SaaS Admin Redesign"
+            image="/case-studies/saas-admin-redesign/hero-poster.jpg"
+            alt="LIZ Smart Office floorplan and resource-management interface"
+            onClick={() => onSelectQuestion("Show me the SaaS Admin Redesign case.")}
+          />
+          <EditorialFigure
+            aspect="aspect-[16/10]"
+            number="03"
+            caption="Product — Filter-First Matching"
+            image="/case-studies/coach-finder-filter/hero.jpg"
+            alt="Coach-finder app home screen with filter pills"
+            onClick={() => onSelectQuestion("Show me the Filter-First Matching case.")}
+          />
         </div>
       </motion.div>
+
+      <section className="relative ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] mt-24 w-screen bg-black px-5 py-20 text-white md:px-10 md:py-32">
+        <div className="mx-auto max-w-[1440px]">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Manifesto</div>
+          <p className="mt-8 font-serif text-[clamp(40px,6.6vw,108px)] leading-[1.02] tracking-[-0.01em]">
+            Design is <Highlighter color="#ff1744">not presentation.</Highlighter> Design is the starting point for{" "}
+            <Highlighter color="#39ff14">finding the right solution.</Highlighter>
+          </p>
+        </div>
+      </section>
+
+      <section className="mt-24">
+        <div className="flex items-end justify-between gap-4 border-b-2 border-black pb-3">
+          <h2 className="font-title text-4xl font-semibold uppercase leading-[0.9] tracking-[-0.035em] text-black md:text-7xl">
+            Selected work
+          </h2>
+          <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-black">
+            Index — {String(workCases.length).padStart(2, "0")}
+          </span>
+        </div>
+        <ol>
+          {workCases.map((work, index) => (
+            <li key={work.id}>
+              <button
+                type="button"
+                onClick={() => onSelectQuestion(work.question)}
+                className="group grid w-full grid-cols-12 items-center gap-x-4 gap-y-4 border-b border-black px-1 py-6 text-left transition-colors hover:bg-[#39ff14] focus:outline-none focus-visible:bg-[#39ff14] md:px-3 md:py-8"
+                data-state="related"
+              >
+                <span className="col-span-2 self-start pt-1 text-sm font-semibold tabular-nums text-black md:col-span-1">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="col-span-10 md:col-span-6">
+                  <span className="block font-title text-2xl font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-black transition-transform duration-300 group-hover:translate-x-2 md:text-5xl">
+                    {work.title ?? work.question}
+                  </span>
+                  <span className="mt-2 block font-serif text-lg italic leading-snug text-zinc-600 group-hover:text-black md:text-xl">
+                    {work.cardDescription ?? work.intent}
+                  </span>
+                </span>
+                <span className="hidden text-[11px] font-semibold uppercase leading-5 tracking-[0.14em] text-zinc-600 group-hover:text-black md:col-span-2 md:block">
+                  {work.tags?.slice(0, 2).join(" / ")}
+                </span>
+                <span className="hidden text-[11px] font-semibold uppercase tracking-[0.14em] text-black md:col-span-1 md:block">
+                  {work.year}
+                </span>
+                <span className="col-span-12 overflow-hidden md:col-span-2">
+                  <WorkThumbnail src={work.thumbnail} label={work.thumbnailLabel ?? work.title ?? ""} />
+                </span>
+              </button>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section className="mt-24 grid gap-3 md:grid-cols-3">
+        <button
+          type="button"
+          onClick={() => onSelectQuestion(servicesQuestion)}
+          className="group flex min-h-[320px] flex-col justify-between bg-[#ff1744] p-6 text-left text-white transition hover:bg-black md:col-span-2 md:p-10"
+        >
+          <span className="text-[11px] font-semibold uppercase tracking-[0.18em]">Services</span>
+          <span>
+            <span className="block font-title text-4xl font-semibold uppercase leading-[0.92] tracking-[-0.035em] md:text-7xl">
+              A brand, a product, an idea?
+            </span>
+            <span className="mt-4 block font-serif text-2xl italic md:text-3xl">See what I can build for you →</span>
+          </span>
+        </button>
+        <button
+          type="button"
+          onClick={() => onSelectQuestion(identityQuestion)}
+          className="flex min-h-[320px] flex-col justify-between bg-zinc-100 p-6 text-left text-black transition hover:bg-zinc-200 md:p-10"
+        >
+          <span className="text-[11px] font-semibold uppercase tracking-[0.18em]">Identity</span>
+          <span className="font-serif text-3xl italic leading-[1.05] md:text-5xl">Who is behind the studio →</span>
+        </button>
+      </section>
+
+      <footer className="mt-16 flex flex-wrap justify-between gap-3 border-t-2 border-black pt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-black">
+        <span>© 2026 Jinwh — Studio of One</span>
+        <span>Berlin</span>
+      </footer>
     </div>
   );
 }
 
-function TypedWordGroup({ words, delay }: { words: string[]; delay: number }) {
+function HeroLine({ index, delay, children }: { index: string; delay: number; children: React.ReactNode }) {
   return (
-    <span className="inline-flex flex-wrap items-baseline gap-x-[0.18em] gap-y-0">
-      {words.map((word, index) => (
-        <motion.span
-          key={`${word}-${index}`}
-          initial={{ opacity: 0, y: 0.35, filter: "blur(6px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{
-            duration: 0.22,
-            ease: [0.22, 1, 0.36, 1],
-            delay: delay + index * 0.14,
-          }}
-          className="inline-block"
-        >
-          {word}
-        </motion.span>
-      ))}
+    <span className="block overflow-hidden pb-[0.04em]">
+      <motion.span
+        initial={{ y: "105%" }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, ease: EDITORIAL_EASE, delay }}
+        className="flex items-start gap-[0.12em]"
+      >
+        <span className="mt-[0.5em] font-sans text-[11px] font-semibold tracking-normal md:mt-[0.4em] md:text-sm">{index}</span>
+        <span>{children}</span>
+      </motion.span>
     </span>
   );
 }
 
-function UnderlinePhrase({
-  words,
-  delay,
-  underlineClassName,
+function Highlighter({ color, children }: { color: string; children: React.ReactNode }) {
+  return (
+    <span
+      className="[box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
+      style={{
+        backgroundImage: `linear-gradient(${color}, ${color})`,
+        backgroundSize: "100% 0.07em",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "0 92%",
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function EditorialFigure({
+  className = "",
+  aspect,
+  number,
+  caption,
+  image,
+  video,
+  alt,
+  onClick,
 }: {
-  words: string[];
-  delay: number;
-  underlineClassName: string;
+  className?: string;
+  aspect: string;
+  number: string;
+  caption: string;
+  image: string;
+  video?: string;
+  alt: string;
+  onClick: () => void;
 }) {
   return (
-    <span className="relative ml-[0.18em] inline-flex flex-wrap items-baseline gap-x-[0.18em] gap-y-0">
-      {words.map((word, index) => (
-        <motion.span
-          key={`${word}-${index}`}
-          initial={{ opacity: 0, y: 0.35, filter: "blur(6px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{
-            duration: 0.22,
-            ease: [0.22, 1, 0.36, 1],
-            delay: delay + index * 0.14,
-          }}
-          className="inline-block"
-        >
-          {word}
-        </motion.span>
-      ))}
-      <motion.span
-        aria-hidden="true"
-        initial={{ scaleX: 0, opacity: 0 }}
-        animate={{ scaleX: 1, opacity: 1 }}
-        transition={{
-          duration: 0.38,
-          ease: [0.22, 1, 0.36, 1],
-          delay: delay + words.length * 0.14 + 0.1,
-        }}
-        className={`absolute inset-x-0 -bottom-[0.02em] h-[0.08em] origin-left ${underlineClassName}`}
-      />
-    </span>
+    <figure className={className}>
+      <button type="button" onClick={onClick} className={`group relative block w-full overflow-hidden bg-zinc-100 ${aspect}`}>
+        {video ? (
+          <video
+            className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+            src={video}
+            poster={image}
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-label={alt}
+          />
+        ) : (
+          <img
+            className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+            src={image}
+            alt={alt}
+          />
+        )}
+      </button>
+      <figcaption className="mt-2 flex gap-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500">
+        <span className="text-black">Fig. {number}</span>
+        <span>{caption}</span>
+      </figcaption>
+    </figure>
+  );
+}
+
+function WorkThumbnail({ src, label }: { src?: string; label: string }) {
+  if (!src) {
+    return (
+      <span className="flex aspect-[4/3] items-center justify-center bg-black p-3 text-center font-title text-lg font-semibold uppercase leading-tight tracking-[-0.02em] text-[#39ff14] md:text-base">
+        {label}
+      </span>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt=""
+      className="aspect-[4/3] w-full object-cover grayscale transition duration-500 group-hover:scale-105 group-hover:grayscale-0"
+    />
   );
 }
 
@@ -367,7 +503,7 @@ function AnswerWorkspace({
 
       <div className="mt-10 space-y-10">
         {answerBlocks.map((block) => (
-          <div key={block.id} className="max-w-4xl">
+          <div key={block.id} className={block.type === "serviceStack" ? "" : "max-w-4xl"}>
             <AnswerBlockRenderer block={block} delay={0.18} onQuestionSelect={onSelectQuestion} currentQuestionId={question.id} />
           </div>
         ))}
