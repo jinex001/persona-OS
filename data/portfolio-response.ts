@@ -1,4 +1,4 @@
-export type QuestionCategory = "Identity" | "Work" | "Evidence" | "Principles" | "Logs";
+export type QuestionCategory = "Identity" | "Services" | "Work" | "Evidence" | "Principles" | "Logs";
 
 export type QuestionState = "current" | "answered" | "related" | "loading" | "disabled";
 
@@ -87,7 +87,22 @@ export type CareerTimelineEntry = {
   alignAfter?: string;
 };
 
+export type ServicePhase = {
+  step: string;
+  title: string;
+  description: string;
+  deliverables: string[];
+  proof: { label: string; targetQuestion: string }[];
+};
+
 export type AnswerBlock =
+  | {
+      id: string;
+      type: "serviceStack";
+      label: string;
+      title: string;
+      phases: ServicePhase[];
+    }
   | {
       id: string;
       type: "summary";
@@ -190,7 +205,7 @@ export type QuestionNode = {
   followUpQuestions: string[];
 };
 
-export const questionCategories: QuestionCategory[] = ["Identity", "Work", "Evidence", "Principles", "Logs"];
+export const questionCategories: QuestionCategory[] = ["Identity", "Services", "Work", "Evidence", "Principles", "Logs"];
 
 export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" | "category"> & {
   /** Short, one-line version of the description shown on the Work starter-path card. Falls back to `intent`. */
@@ -243,6 +258,12 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     question: "Who are you?",
     intent: "Build a first identity map from role, judgment, proof, and next paths.",
     category: "Identity",
+  },
+  {
+    id: "studio-services",
+    question: "What can you build for me?",
+    intent: "One designer, end to end: brand identity, digital product design, and the working product — built with AI-assisted code.",
+    category: "Services",
   },
 ];
 
@@ -319,6 +340,105 @@ const decisionLog12: DesignLog = {
 
 export const questionBank: QuestionNode[] = [
   {
+    id: "studio-services",
+    question: "What can you build for me?",
+    intent: "One designer, end to end: brand identity, digital product design, and the working product — built with AI-assisted code.",
+    category: "Services",
+    answerTitle: "Studio of one",
+    answerBlocks: [
+      {
+        id: "services-summary",
+        type: "summary",
+        label: "Studio Summary",
+        title: "Identity, product, and code — designed and built by one person.",
+        body:
+          "Most products lose intent at every handoff: brand agency to product team, designer to developer. I work as a one-person studio so that never happens. The same person defines how your brand looks and speaks, designs the product people use, and builds it into a working site or app with AI-assisted development. You get one point of contact, one continuous line of reasoning, and something real at the end — not a deck.",
+        signals: ["Corporate identity", "Digital product design", "Vibe coding", "Launch & maintenance"],
+      },
+      {
+        id: "services-stack",
+        type: "serviceStack",
+        label: "What I Offer",
+        title: "Three layers, one practice",
+        phases: [
+          {
+            step: "01",
+            title: "Brand identity (CI)",
+            description:
+              "Define who you are visually and verbally before a single screen exists, so the product has something to stand on.",
+            deliverables: ["Logo & visual identity", "Colour & type system", "Brand guidelines", "Art direction"],
+            proof: [
+              { label: "Career evolution — CI for ZyseME & Pyrexx", targetQuestion: "Who are you?" },
+              { label: "Artist's Digital Archive", targetQuestion: "Show me the Artist's Digital Archive case." },
+            ],
+          },
+          {
+            step: "02",
+            title: "Digital product design",
+            description:
+              "Turn the problem into structure: information architecture, flows, interface, and a design system that keeps scaling.",
+            deliverables: ["UX research & framing", "Information architecture", "UI & interaction design", "Design system"],
+            proof: [
+              { label: "SaaS Admin Redesign", targetQuestion: "Show me the SaaS Admin Redesign case." },
+              { label: "Connected Experience Design", targetQuestion: "Show me the Connected Experience Design case." },
+              { label: "Filter-First Matching", targetQuestion: "Show me the Filter-First Matching case." },
+            ],
+          },
+          {
+            step: "03",
+            title: "Build with vibe coding",
+            description:
+              "Ship the design as a working product using AI-assisted development — websites, web apps, and prototypes that behave like the real thing.",
+            deliverables: ["Websites (Next.js, Webflow)", "Web app MVPs", "Interactive prototypes", "Launch & ongoing care"],
+            proof: [
+              { label: "Artist's Digital Archive — built & maintained", targetQuestion: "Show me the Artist's Digital Archive case." },
+              { label: "AI Workflow prototype", targetQuestion: "Show me the AI Workflow case." },
+            ],
+          },
+        ],
+      },
+      {
+        id: "services-process",
+        type: "designReasoning",
+        label: "How A Project Runs",
+        title: "From first question to live product",
+        steps: [
+          "Frame — find the real problem, the audience, and what success looks like before anything is designed.",
+          "Identify — shape the brand foundation: name, mark, colour, type, and tone.",
+          "Design — structure the product: flows, information architecture, interface, and components.",
+          "Build — turn the design into working code with AI-assisted development, reviewing every decision as the designer.",
+          "Launch & evolve — ship it, then keep improving it as content, features, and the business grow.",
+        ],
+      },
+      {
+        id: "services-why",
+        type: "summary",
+        label: "Why One Person",
+        title: "No handoff, no translation loss.",
+        body:
+          "AI-assisted development changed what a single designer can ship. Instead of handing a Figma file to someone who has to reinterpret it, I carry the same intent from brand to build. Small teams, founders, and creative practices get a coherent identity and a working product without assembling an agency. You can also take any single layer on its own — identity only, product design only, or building from an existing design.",
+        signals: ["Founders & startups", "Small businesses", "Artists & creative practices", "In-house teams needing extra hands"],
+      },
+      {
+        id: "services-proof",
+        type: "summary",
+        label: "Proof In Plain Sight",
+        title: "This site is an example.",
+        body:
+          "Portfolio OS — the site you are reading — was designed and built the same way: concept, interface system, and code produced by one designer working with AI coding tools.",
+      },
+      {
+        id: "services-related-work",
+        type: "workShowcase",
+        label: "Selected Work",
+        title: "See the layers in real projects",
+      },
+    ],
+    relatedCards: [],
+    evidenceReferences: [],
+    followUpQuestions: ["Who are you?", "Show me the Artist's Digital Archive case."],
+  },
+  {
     id: "who-are-you",
     question: "Who are you?",
     intent: "Explain identity through role, values, operating model, and proof.",
@@ -329,10 +449,10 @@ export const questionBank: QuestionNode[] = [
         id: "identity-summary",
         type: "summary",
         label: "Identity Summary",
-        title: "I build products where complex thinking becomes usable.",
+        title: "A one-person studio — from brand identity to a working product.",
         body:
-          "I am a senior product designer and builder working across product strategy, interface systems, and AI-enabled workflows. My work is less about presenting finished screens and more about helping teams find the right problem, make better decisions, and turn ambiguity into usable systems.",
-        signals: ["Product strategy", "UX/UI", "Design systems", "AI workflows"],
+          "I am an independent designer running a studio of one. I take a product from its corporate identity, through digital product design, all the way to a working build — developed with AI-assisted code (vibe coding). My work is less about presenting finished screens and more about finding the right problem, making better decisions, and turning ambiguity into something people can actually use.",
+        signals: ["Brand identity (CI)", "Digital product design", "Design systems", "AI-assisted development"],
       },
       {
         id: "what-i-design-for",
@@ -493,7 +613,7 @@ export const questionBank: QuestionNode[] = [
     ],
     relatedCards: [],
     evidenceReferences: coreEvidence.flatMap((item) => item.references),
-    followUpQuestions: ["How has your design philosophy changed?", "Show me the Connected Experience Design case."],
+    followUpQuestions: ["What can you build for me?", "How has your design philosophy changed?"],
   },
   {
     id: "design-philosophy",
@@ -987,7 +1107,7 @@ export const questionBank: QuestionNode[] = [
         type: "nextQuestions",
         label: "Next Questions",
         title: "Continue exploring",
-        questions: ["Show me the Connected Experience Design case.", "Show me the AI Workflow case."],
+        questions: ["Show me the Connected Experience Design case.", "Show me the AI Workflow case.", "What can you build for me?"],
       },
       {
         id: "saas-related-work",
@@ -1319,7 +1439,7 @@ export const questionBank: QuestionNode[] = [
         type: "nextQuestions",
         label: "Next Questions",
         title: "Continue exploring",
-        questions: ["Show me the SaaS Admin Redesign case.", "Show me the Artist's Digital Archive case."],
+        questions: ["Show me the SaaS Admin Redesign case.", "Show me the Artist's Digital Archive case.", "What can you build for me?"],
       },
       {
         id: "coach-related-work",
@@ -1461,7 +1581,7 @@ export const questionBank: QuestionNode[] = [
         type: "nextQuestions",
         label: "Next Questions",
         title: "Continue exploring",
-        questions: ["Show me the SaaS Admin Redesign case.", "Show me the Connected Experience Design case."],
+        questions: ["Show me the SaaS Admin Redesign case.", "Show me the Connected Experience Design case.", "What can you build for me?"],
       },
       {
         id: "jira-related-work",
@@ -1758,7 +1878,7 @@ export const questionBank: QuestionNode[] = [
         type: "nextQuestions",
         label: "Next Questions",
         title: "Continue exploring",
-        questions: ["Show me the SaaS Admin Redesign case.", "Show me the AI Workflow case.", "Who are you?"],
+        questions: ["Show me the SaaS Admin Redesign case.", "Show me the AI Workflow case.", "Who are you?", "What can you build for me?"],
       },
       {
         id: "heemoon-related-work",
@@ -1830,7 +1950,7 @@ export const fallbackQuestion: QuestionNode = {
       type: "nextQuestions",
       label: "Next Questions",
       title: "More grounded paths",
-      questions: ["Who are you?", "Show me the SaaS Admin Redesign case."],
+      questions: ["Who are you?", "What can you build for me?", "Show me the SaaS Admin Redesign case."],
     },
   ],
   relatedCards: [
@@ -1856,6 +1976,13 @@ export function resolveQuestion(input: string): QuestionNode {
     return questionBank.find((node) => node.id === starter.id) ?? fallbackQuestion;
   }
 
+  if (
+    ["service", "offer", "hire", "build for me", "work together", "studio", "freelance", "vibe"].some((keyword) =>
+      normalized.includes(keyword),
+    )
+  ) {
+    return questionBank.find((node) => node.id === "studio-services") ?? fallbackQuestion;
+  }
   if (normalized.includes("who") || normalized.includes("identity")) {
     return questionBank.find((node) => node.id === "who-are-you") ?? fallbackQuestion;
   }

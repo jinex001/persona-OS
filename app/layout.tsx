@@ -17,14 +17,14 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   applicationName: "Portfolio OS",
   title: "Portfolio OS — Jinwh",
-  description: "An interactive design knowledge system for exploring decisions, evidence, and product thinking.",
+  description: "A one-person design studio — brand identity, digital product design, and AI-assisted development, end to end.",
   metadataBase: new URL("https://os.jinwh.com"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Portfolio OS — Jinwh",
-    description: "An interactive design knowledge system for exploring decisions, evidence, and product thinking.",
+    description: "A one-person design studio — brand identity, digital product design, and AI-assisted development, end to end.",
     url: "https://os.jinwh.com/",
     siteName: "Portfolio OS",
     type: "website",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Portfolio OS — Jinwh",
-    description: "An interactive design knowledge system for exploring decisions, evidence, and product thinking.",
+    description: "A one-person design studio — brand identity, digital product design, and AI-assisted development, end to end.",
   },
 };
 

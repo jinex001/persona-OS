@@ -39,6 +39,12 @@ export function ConversationWorkspace() {
         items: [{ id: "who-are-you", label: "Who are you", question: "Who are you?" as string | null }],
       },
       {
+        label: "Services",
+        items: [
+          { id: "studio-services", label: "What I can build for you", question: "What can you build for me?" as string | null },
+        ],
+      },
+      {
         label: "Works",
         items: workCases.map((starter) => ({
           id: starter.id,
@@ -191,9 +197,10 @@ function OpeningWorkspace({ onSelectQuestion }: { onSelectQuestion: (question: s
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 1.05 }}
-        className="mt-8 max-w-2xl text-lg leading-8 text-zinc-600"
+        className="mt-8 max-w-3xl text-lg leading-8 text-zinc-600"
       >
-        Ask a question to explore how I think, decide, design, and ship.
+        Independent designer in Berlin — a studio of one, from brand identity and digital product design to a
+        working product built with AI-assisted code.
       </motion.p>
 
       <motion.div
@@ -213,7 +220,9 @@ function OpeningWorkspace({ onSelectQuestion }: { onSelectQuestion: (question: s
               className={`flex min-h-[150px] flex-col items-start justify-start rounded-[24px] p-4 text-left transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-black ${
                 starter.category === "Work"
                   ? "order-2 bg-[#E4EFF2] hover:bg-[#D2E4E8]"
-                  : "order-1 col-span-full bg-zinc-100 hover:bg-zinc-200/70"
+                  : starter.category === "Services"
+                    ? "order-1 bg-black text-white hover:bg-zinc-800 md:col-span-2 [&_h2]:text-white [&_p]:text-zinc-300 [&>div:first-child]:text-zinc-400"
+                    : "order-1 bg-zinc-100 hover:bg-zinc-200/70 md:col-span-2"
               }`}
               type="button"
               data-state="related"

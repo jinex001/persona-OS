@@ -172,6 +172,46 @@ export function AnswerBlockRenderer({
     );
   }
 
+  if (block.type === "serviceStack") {
+    return (
+      <MotionBlock delay={delay} eyebrow={block.label}>
+        <TypewriterText as="h2" text={block.title} speed={14} className="text-xl font-semibold text-black" />
+        <div className="mt-5 grid gap-3 md:grid-cols-3">
+          {block.phases.map((phase) => (
+            <article key={phase.step} className="flex flex-col rounded-[22px] bg-zinc-100 p-5">
+              <div className="text-xs font-semibold text-zinc-400">{phase.step}</div>
+              <h3 className="mt-3 text-base font-semibold text-black">{phase.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-zinc-600">{phase.description}</p>
+              <div className="mt-4 flex flex-wrap gap-1.5">
+                {phase.deliverables.map((deliverable) => (
+                  <span key={deliverable} className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-600 ring-1 ring-zinc-200">
+                    {deliverable}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-auto pt-5">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-400">Proof</div>
+                <div className="mt-2 space-y-1">
+                  {phase.proof.map((item) => (
+                    <button
+                      key={item.label}
+                      onClick={() => onQuestionSelect(item.targetQuestion)}
+                      className="block text-left text-sm font-medium text-black underline-offset-4 hover:underline"
+                      type="button"
+                      data-state="related"
+                    >
+                      {item.label} →
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </MotionBlock>
+    );
+  }
+
   if (block.type === "careerEvolution") {
     return (
       <CareerEvolutionBlock
