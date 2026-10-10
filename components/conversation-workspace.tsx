@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { AnswerBlockRenderer, HeroMediaBlock } from "@/components/knowledge-blocks";
+import { AnswerBlockRenderer, HeroMediaBlock, WorkIndex } from "@/components/knowledge-blocks";
 import {
   resolveQuestion,
   starterQuestions,
@@ -289,39 +289,7 @@ function OpeningWorkspace({ onSelectQuestion }: { onSelectQuestion: (question: s
             Index — {String(workCases.length).padStart(2, "0")}
           </span>
         </div>
-        <ol>
-          {workCases.map((work, index) => (
-            <li key={work.id}>
-              <button
-                type="button"
-                onClick={() => onSelectQuestion(work.question)}
-                className="group grid w-full grid-cols-12 items-center gap-x-4 gap-y-4 border-b border-black px-1 py-6 text-left transition-colors hover:bg-[#39ff14] focus:outline-none focus-visible:bg-[#39ff14] md:px-3 md:py-8"
-                data-state="related"
-              >
-                <span className="col-span-2 self-start pt-1 text-sm font-semibold tabular-nums text-black md:col-span-1">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className="col-span-10 md:col-span-6">
-                  <span className="block font-title text-2xl font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-black transition-transform duration-300 group-hover:translate-x-2 md:text-5xl">
-                    {work.title ?? work.question}
-                  </span>
-                  <span className="mt-2 block font-serif text-lg italic leading-snug text-zinc-600 group-hover:text-black md:text-xl">
-                    {work.cardDescription ?? work.intent}
-                  </span>
-                </span>
-                <span className="hidden text-[11px] font-semibold uppercase leading-5 tracking-[0.14em] text-zinc-600 group-hover:text-black md:col-span-2 md:block">
-                  {work.tags?.slice(0, 2).join(" / ")}
-                </span>
-                <span className="hidden text-[11px] font-semibold uppercase tracking-[0.14em] text-black md:col-span-1 md:block">
-                  {work.year}
-                </span>
-                <span className="col-span-12 overflow-hidden md:col-span-2">
-                  <WorkThumbnail src={work.thumbnail} label={work.thumbnailLabel ?? work.title ?? ""} />
-                </span>
-              </button>
-            </li>
-          ))}
-        </ol>
+        <WorkIndex cases={workCases} onSelect={onSelectQuestion} />
       </section>
 
       <section className="mt-24 grid gap-3 md:grid-cols-3">
@@ -437,24 +405,6 @@ function EditorialFigure({
   );
 }
 
-function WorkThumbnail({ src, label }: { src?: string; label: string }) {
-  if (!src) {
-    return (
-      <span className="flex aspect-[4/3] items-center justify-center bg-black p-3 text-center font-title text-lg font-semibold uppercase leading-tight tracking-[-0.02em] text-[#39ff14] md:text-base">
-        {label}
-      </span>
-    );
-  }
-
-  return (
-    <img
-      src={src}
-      alt=""
-      className="aspect-[4/3] w-full object-cover grayscale transition duration-500 group-hover:scale-105 group-hover:grayscale-0"
-    />
-  );
-}
-
 function AnswerWorkspace({
   onPresentationComplete,
   question,
@@ -474,36 +424,57 @@ function AnswerWorkspace({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [question.id]);
 
+  const starter = starterQuestions.find((item) => item.id === question.id);
+  const workCases = starterQuestions.filter((item) => item.category === "Work");
+  const caseIndex = workCases.findIndex((item) => item.id === question.id);
+  const caseLabel = caseIndex >= 0 ? `Case ${String(caseIndex + 1).padStart(2, "0")}` : question.category;
+  const fullWidthBlocks = new Set(["serviceStack", "evidence", "designReasoning", "workShowcase", "nextQuestions", "processStrip", "careerEvolution"]);
+
   return (
-    <div className="mx-auto max-w-5xl pb-20">
+    <div className="mx-auto max-w-[1280px] pb-20">
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
-        className="flex justify-end"
+        {...fadeUp(0.05)}
+        className="mt-14 flex items-end justify-between gap-6 border-b-2 border-black pb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-black md:mt-16"
       >
-        <div className="relative mr-1 rounded-[3px] bg-black px-5 py-4 text-sm text-white md:mr-5 md:min-w-[300px]">
-          {question.question}
-          <div className="absolute bottom-[-9px] right-0 h-0 w-0 border-l-[14px] border-t-[14px] border-l-transparent border-t-black" />
-        </div>
+        <span>
+          {question.category} — {caseLabel}
+        </span>
+        <span className="hidden min-w-0 truncate md:inline">Q: {question.question}</span>
+        <span>{starter?.year ?? "Vol. 2026"}</span>
       </motion.div>
 
-      {question.heroMedia ? <HeroMediaBlock media={question.heroMedia} /> : null}
+      <h1 className="mt-6 font-title text-[clamp(44px,9.5vw,152px)] font-semibold uppercase leading-[0.88] tracking-[-0.045em] text-black">
+        <HeroLine index={caseIndex >= 0 ? String(caseIndex + 1).padStart(2, "0") : "—"} delay={0.1}>
+          {question.answerTitle}
+        </HeroLine>
+      </h1>
 
-      <motion.div
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: 0.16 }}
-        className="mt-12 max-w-2xl"
-      >
-        <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-400">{question.category} / Intent</div>
-        <h1 className="mt-3 text-2xl font-semibold text-black md:text-3xl">{question.answerTitle}</h1>
-        <p className="mt-3 text-sm leading-6 text-zinc-600">{question.intent}</p>
-      </motion.div>
+      <div className="mt-8 grid gap-6 border-t border-black pt-6 md:grid-cols-12">
+        <motion.p {...fadeUp(0.35)} className="font-serif text-2xl italic leading-[1.12] text-black md:col-span-7 md:text-4xl">
+          {question.intent}
+        </motion.p>
+        {starter?.tags ? (
+          <motion.p
+            {...fadeUp(0.5)}
+            className="text-[11px] font-semibold uppercase leading-6 tracking-[0.16em] text-black md:col-span-4 md:col-start-9"
+          >
+            {starter.tags.join(" / ")}
+          </motion.p>
+        ) : null}
+      </div>
 
-      <div className="mt-10 space-y-10">
+      {question.heroMedia ? <HeroMediaBlock
+          media={question.heroMedia}
+          fallbackTitle={starter?.thumbnailLabel ?? question.answerTitle}
+          fallbackImage={starter?.thumbnail}
+        /> : null}
+
+      <div className="mt-20 space-y-20 md:space-y-28">
         {answerBlocks.map((block) => (
-          <div key={block.id} className={block.type === "serviceStack" ? "" : "max-w-4xl"}>
+          <div
+            key={block.id}
+            className={fullWidthBlocks.has(block.type) || (block.type === "summary" && block.tone === "inverted") ? "" : "max-w-5xl"}
+          >
             <AnswerBlockRenderer block={block} delay={0.18} onQuestionSelect={onSelectQuestion} currentQuestionId={question.id} />
           </div>
         ))}

@@ -125,6 +125,8 @@ export type AnswerBlock =
       title: string;
       body: string;
       signals?: string[];
+      /** "inverted" renders the block as a full-bleed black band. */
+      tone?: "inverted";
     }
   | {
       id: string;
@@ -466,6 +468,7 @@ export const questionBank: QuestionNode[] = [
       {
         id: "services-why",
         type: "summary",
+        tone: "inverted",
         label: "Why One Person",
         title: "No handoff, no translation loss.",
         body:
@@ -1120,6 +1123,7 @@ export const questionBank: QuestionNode[] = [
       {
         id: "saas-outcome",
         type: "summary",
+        tone: "inverted",
         label: "System Outcome",
         title: "From individual settings to a configuration system",
         body:
@@ -1452,6 +1456,7 @@ export const questionBank: QuestionNode[] = [
       {
         id: "coach-outcome",
         type: "summary",
+        tone: "inverted",
         label: "System Outcome",
         title: "From a search screen to a filter-first product",
         body:
@@ -1891,6 +1896,7 @@ export const questionBank: QuestionNode[] = [
       {
         id: "heemoon-ownership",
         type: "summary",
+        tone: "inverted",
         label: "Ownership",
         title: "Designed, built, and maintained",
         body:
