@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { AnswerBlockRenderer, HeroMediaBlock, WorkIndex } from "@/components/knowledge-blocks";
+import { AnswerBlockRenderer, HeroMediaBlock, Pills, WorkIndex } from "@/components/knowledge-blocks";
 import {
   resolveQuestion,
   starterQuestions,
@@ -454,12 +454,9 @@ function AnswerWorkspace({
           {question.intent}
         </motion.p>
         {starter?.tags ? (
-          <motion.p
-            {...fadeUp(0.5)}
-            className="text-[11px] font-semibold uppercase leading-6 tracking-[0.16em] text-black md:col-span-4 md:col-start-9"
-          >
-            {starter.tags.join(" / ")}
-          </motion.p>
+          <motion.div {...fadeUp(0.5)} className="md:col-span-4 md:col-start-9">
+            <Pills items={starter.tags} />
+          </motion.div>
         ) : null}
       </div>
 

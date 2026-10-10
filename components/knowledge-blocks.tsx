@@ -174,9 +174,7 @@ export function AnswerBlockRenderer({
           className={`mt-6 max-w-3xl text-lg leading-8 ${inverted ? "text-zinc-300" : "text-zinc-800"}`}
         />
         {block.signals ? (
-          <p className={`mt-8 max-w-4xl text-[11px] font-semibold uppercase leading-6 tracking-[0.16em] ${inverted ? "text-[#39ff14]" : "text-black"}`}>
-            {block.signals.join(" / ")}
-          </p>
+          <Pills items={block.signals} tone={inverted ? "inverted" : "default"} className="mt-8 max-w-4xl" />
         ) : null}
       </>
     );
@@ -260,9 +258,7 @@ export function AnswerBlockRenderer({
                   {phase.title}
                 </h3>
                 <p className="mt-4 font-serif text-2xl italic leading-[1.15] text-zinc-700 md:text-3xl">{phase.description}</p>
-                <p className="mt-6 text-[11px] font-semibold uppercase leading-5 tracking-[0.16em] text-black">
-                  {phase.deliverables.join(" / ")}
-                </p>
+                <Pills items={phase.deliverables} className="mt-6" />
                 <div className="mt-6 border-t border-zinc-300 pt-4">
                   <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">Proof</div>
                   <div className="mt-2 space-y-1.5">
@@ -406,6 +402,33 @@ export function AnswerBlockRenderer({
   );
 }
 
+export function Pills({
+  items,
+  tone = "default",
+  size = "md",
+  className = "",
+}: {
+  items: string[];
+  tone?: "default" | "inverted";
+  size?: "sm" | "md";
+  className?: string;
+}) {
+  return (
+    <ul className={`flex flex-wrap gap-1.5 ${className}`}>
+      {items.map((item) => (
+        <li
+          key={item}
+          className={`rounded-full font-semibold uppercase tracking-[0.12em] ring-1 ring-inset ${
+            size === "sm" ? "px-2.5 py-1 text-[10px]" : "px-3 py-1.5 text-[11px]"
+          } ${tone === "inverted" ? "text-[#39ff14] ring-[#39ff14]" : "text-black ring-black"}`}
+        >
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 type WorkCase = (typeof starterQuestions)[number];
 
 export function WorkIndex({
@@ -451,8 +474,8 @@ export function WorkIndex({
               </span>
             </span>
             {compact ? null : (
-              <span className="hidden text-[11px] font-semibold uppercase leading-5 tracking-[0.14em] text-zinc-600 group-hover:text-black md:col-span-2 md:block">
-                {work.tags?.slice(0, 2).join(" / ")}
+              <span className="hidden md:col-span-2 md:block">
+                {work.tags ? <Pills items={work.tags.slice(0, 2)} size="sm" /> : null}
               </span>
             )}
             <span className="hidden text-[11px] font-semibold uppercase tracking-[0.14em] text-black md:col-span-1 md:block">
