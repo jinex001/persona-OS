@@ -12,6 +12,7 @@ import type {
   EvidenceItem,
   HeroMedia,
   PerspectiveLens,
+  ServicePhase,
   SourceReference,
 } from "@/data/portfolio-response";
 
@@ -36,7 +37,7 @@ export function MotionBlock({ delay, eyebrow, children }: MotionBlockProps) {
       className="bg-white"
       data-state="completed"
     >
-      <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-400">{eyebrow}</div>
+      <div className="mb-6 border-t-2 border-black pt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-black">{eyebrow}</div>
       {children}
     </motion.section>
   );
@@ -44,9 +45,43 @@ export function MotionBlock({ delay, eyebrow, children }: MotionBlockProps) {
 
 type HeroMediaBlockProps = {
   media: HeroMedia;
+  /** Shown as a typographic cover when the media has no source file yet. */
+  fallbackTitle?: string;
+  /** Shown contained on a black cover when the media has no source file yet. */
+  fallbackImage?: string;
 };
 
-export function HeroMediaBlock({ media }: HeroMediaBlockProps) {
+export function HeroMediaBlock({ media, fallbackTitle, fallbackImage }: HeroMediaBlockProps) {
+  if (!media.src && fallbackImage) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="relative mt-12 flex w-screen ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] items-center justify-center bg-black px-5 py-12 md:px-10 md:py-20"
+      >
+        <img src={fallbackImage} alt={fallbackTitle ?? ""} className="max-h-[75vh] w-auto max-w-full object-contain" />
+      </motion.div>
+    );
+  }
+
+  if (!media.src && fallbackTitle) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="relative mt-12 flex h-[70vh] w-screen ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] items-end overflow-hidden bg-black px-5 pb-8 md:px-10 md:pb-12"
+        role="img"
+        aria-label={fallbackTitle}
+      >
+        <span className="font-title text-[clamp(56px,13vw,220px)] font-semibold uppercase leading-[0.84] tracking-[-0.05em] text-[#39ff14]">
+          {fallbackTitle}
+        </span>
+      </motion.div>
+    );
+  }
+
   const isMotion = media.kind === "motion";
   const isVideo = media.kind === "video";
   const isImageBg = media.kind === "image";
@@ -123,31 +158,50 @@ export function AnswerBlockRenderer({
   currentQuestionId?: string;
 }) {
   if (block.type === "summary") {
+    const inverted = block.tone === "inverted";
+    const content = (
+      <>
+        <TypewriterText
+          as="h2"
+          text={block.title}
+          speed={14}
+          className="max-w-5xl font-serif text-4xl leading-[1.02] tracking-[-0.01em] md:text-6xl"
+        />
+        <TypewriterText
+          as="p"
+          text={block.body}
+          speed={18}
+          className={`mt-6 max-w-3xl text-lg leading-8 ${inverted ? "text-zinc-300" : "text-zinc-800"}`}
+        />
+        {block.signals ? (
+          <Pills items={block.signals} tone={inverted ? "inverted" : "default"} className="mt-8 max-w-4xl" />
+        ) : null}
+      </>
+    );
+
+    if (inverted) {
+      return (
+        <motion.section
+          variants={blockVariants}
+          initial="hidden"
+          animate="show"
+          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1], delay }}
+          className="w-screen ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] bg-black px-5 py-20 text-white md:px-10 md:py-28"
+          data-state="completed"
+        >
+          <div className="mx-auto max-w-[1280px]">
+            <div className="mb-6 border-t-2 border-white pt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-white">
+              {block.label}
+            </div>
+            {content}
+          </div>
+        </motion.section>
+      );
+    }
+
     return (
       <MotionBlock delay={delay} eyebrow={block.label}>
-        <div className="max-w-3xl">
-          <TypewriterText
-            as="h1"
-            text={block.title}
-            speed={14}
-            className="text-2xl font-semibold leading-tight text-black md:text-3xl"
-          />
-          <TypewriterText
-            as="p"
-            text={block.body}
-            speed={18}
-            className="mt-4 max-w-2xl text-base leading-7 text-black"
-          />
-        </div>
-        {block.signals ? (
-          <div className="mt-7 flex flex-wrap gap-2">
-            {block.signals.map((signal) => (
-              <span key={signal} className="rounded-full bg-zinc-100 px-3 py-1.5 text-sm text-zinc-700">
-                {signal}
-              </span>
-            ))}
-          </div>
-        ) : null}
+        <div className="text-black">{content}</div>
       </MotionBlock>
     );
   }
@@ -159,15 +213,98 @@ export function AnswerBlockRenderer({
   if (block.type === "designReasoning") {
     return (
       <MotionBlock delay={delay} eyebrow={block.label}>
-        <TypewriterText as="h2" text={block.title} speed={14} className="text-xl font-semibold text-black" />
-        <div className="mt-5 grid gap-x-8 gap-y-4 md:grid-cols-2">
+        <TypewriterText
+          as="h2"
+          text={block.title}
+          speed={14}
+          className="font-title text-4xl font-semibold uppercase leading-[0.92] tracking-[-0.035em] text-black md:text-6xl"
+        />
+        <ol className="mt-10 grid gap-x-10 md:grid-cols-2">
           {block.steps.map((step, index) => (
-            <div key={step} className="rounded-[18px] p-1 transition hover:bg-zinc-50" data-state="related">
-              <div className="text-xs font-semibold text-zinc-400">0{index + 1}</div>
-              <TypewriterText as="p" text={step} speed={16} className="mt-2 text-base leading-7 text-black" />
-            </div>
+            <li key={step} className="flex gap-5 border-t border-black py-5" data-state="related">
+              <span className="w-10 shrink-0 font-title text-2xl font-semibold leading-7 tracking-[-0.03em] text-[#ff1744] tabular-nums">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <TypewriterText as="p" text={step} speed={16} className="text-lg leading-7 text-black" />
+            </li>
+          ))}
+        </ol>
+      </MotionBlock>
+    );
+  }
+
+  if (block.type === "serviceStack") {
+    const accents = [
+      "bg-[#ff1744] text-white",
+      "bg-black text-[#39ff14]",
+      "bg-[#39ff14] text-black",
+    ];
+
+    return (
+      <MotionBlock delay={delay} eyebrow={block.label}>
+        <h2 className="font-title text-4xl font-semibold uppercase leading-[0.92] tracking-[-0.035em] text-black md:text-6xl">
+          {block.title}
+        </h2>
+        <div className="mt-10">
+          {block.phases.map((phase, index) => (
+            <article key={phase.step} className="grid gap-8 border-t-2 border-black py-10 md:grid-cols-12 md:py-14">
+              <div className="md:col-span-5">
+                <span
+                  className={`inline-block px-2 font-title text-6xl font-semibold leading-none tracking-[-0.05em] md:text-8xl ${accents[index % accents.length]}`}
+                >
+                  {phase.step}
+                </span>
+                <h3 className="mt-6 font-title text-3xl font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-black md:text-5xl">
+                  {phase.title}
+                </h3>
+                <p className="mt-4 font-serif text-2xl italic leading-[1.15] text-zinc-700 md:text-3xl">{phase.description}</p>
+                <Pills items={phase.deliverables} className="mt-6" />
+                <div className="mt-6 border-t border-zinc-300 pt-4">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">Proof</div>
+                  <div className="mt-2 space-y-1.5">
+                    {phase.proof.map((item) => (
+                      <button
+                        key={item.label}
+                        onClick={() => onQuestionSelect(item.targetQuestion)}
+                        className="block text-left text-sm font-medium text-black underline decoration-zinc-300 underline-offset-4 transition hover:decoration-black"
+                        type="button"
+                        data-state="related"
+                      >
+                        {item.label} →
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <figure className="md:col-span-7">
+                <ServiceMedia media={phase.media} />
+                <figcaption className="mt-3 flex gap-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                  <span className="text-black">Fig. {phase.step}</span>
+                  <span>{phase.media.caption}</span>
+                </figcaption>
+              </figure>
+            </article>
           ))}
         </div>
+      </MotionBlock>
+    );
+  }
+
+  if (block.type === "processStrip") {
+    return (
+      <MotionBlock delay={delay} eyebrow={block.label}>
+        <h2 className="font-title text-3xl font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-black md:text-5xl">
+          {block.title}
+        </h2>
+        <ol className="mt-8 grid gap-x-4 gap-y-6 sm:grid-cols-2 md:grid-cols-5">
+          {block.steps.map((step, index) => (
+            <li key={step.title} className="border-t-2 border-black pt-3">
+              <div className="text-xs font-semibold tabular-nums text-zinc-400">0{index + 1}</div>
+              <div className="mt-2 font-title text-xl font-semibold uppercase tracking-[-0.02em] text-black">{step.title}</div>
+              <p className="mt-2 text-sm leading-6 text-zinc-600">{step.detail}</p>
+            </li>
+          ))}
+        </ol>
       </MotionBlock>
     );
   }
@@ -210,35 +347,10 @@ export function AnswerBlockRenderer({
 
     return (
       <MotionBlock delay={delay} eyebrow={block.label}>
-        <TypewriterText as="h2" text={block.title} speed={14} className="text-xl font-semibold text-black" />
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {workCases.map((starter) => (
-            <button
-              key={starter.id}
-              type="button"
-              onClick={() => onQuestionSelect(starter.question)}
-              className="flex flex-col items-start rounded-[16px] bg-[#E4EFF2] p-4 text-left transition hover:-translate-y-0.5 hover:bg-[#D2E4E8] focus:outline-none focus:ring-2 focus:ring-black"
-            >
-              <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-500">{starter.category}</div>
-              <h3 className="mt-2.5 line-clamp-2 text-sm font-semibold leading-5 text-black">{starter.question}</h3>
-              <p className="mt-2 line-clamp-2 text-xs leading-5 text-zinc-600">{starter.cardDescription ?? starter.intent}</p>
-              {starter.tags ? (
-                <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                  {starter.tags.slice(0, 2).map((tag) => (
-                    <span key={tag} className="rounded-full bg-white px-2 py-0.5 text-[10px] font-medium text-zinc-600 ring-1 ring-zinc-200">
-                      {tag}
-                    </span>
-                  ))}
-                  {starter.tags.length > 2 ? (
-                    <span className="rounded-full bg-white px-2 py-0.5 text-[10px] font-medium text-zinc-400 ring-1 ring-zinc-200">
-                      +{starter.tags.length - 2}
-                    </span>
-                  ) : null}
-                </div>
-              ) : null}
-            </button>
-          ))}
-        </div>
+        <h2 className="font-title text-4xl font-semibold uppercase leading-[0.92] tracking-[-0.035em] text-black md:text-6xl">
+          {block.title}
+        </h2>
+        <WorkIndex cases={workCases} onSelect={onQuestionSelect} compact className="mt-8" />
       </MotionBlock>
     );
   }
@@ -267,21 +379,179 @@ export function AnswerBlockRenderer({
 
   return (
     <MotionBlock delay={delay} eyebrow={block.label}>
-      <TypewriterText as="h2" text={block.title} speed={14} className="text-xl font-semibold text-black" />
-      <div className="mt-5 flex flex-wrap gap-2">
+      <h2 className="font-title text-4xl font-semibold uppercase leading-[0.92] tracking-[-0.035em] text-black md:text-6xl">
+        {block.title}
+      </h2>
+      <div className="mt-8 border-b border-black">
         {block.questions.map((question) => (
           <button
             key={question}
             onClick={() => onQuestionSelect(question)}
-            className="rounded-full bg-zinc-100 px-4 py-2 text-sm text-zinc-700 transition hover:bg-black hover:text-white"
+            className="group flex w-full items-center justify-between gap-6 border-t border-black px-1 py-5 text-left transition-colors hover:bg-[#39ff14] md:px-3"
             type="button"
             data-state="related"
           >
-            {question}
+            <span className="font-serif text-2xl italic leading-tight text-black md:text-4xl">{question}</span>
+            <span className="font-title text-2xl text-black transition-transform group-hover:translate-x-1 md:text-4xl" aria-hidden="true">
+              →
+            </span>
           </button>
         ))}
       </div>
     </MotionBlock>
+  );
+}
+
+export function Pills({
+  items,
+  tone = "default",
+  size = "md",
+  className = "",
+}: {
+  items: string[];
+  tone?: "default" | "inverted";
+  size?: "sm" | "md";
+  className?: string;
+}) {
+  return (
+    <ul className={`flex flex-wrap gap-1.5 ${className}`}>
+      {items.map((item) => (
+        <li
+          key={item}
+          className={`rounded-full font-semibold uppercase tracking-[0.12em] ring-1 ring-inset ${
+            size === "sm" ? "px-2.5 py-1 text-[10px]" : "px-3 py-1.5 text-[11px]"
+          } ${tone === "inverted" ? "text-[#39ff14] ring-[#39ff14]" : "text-black ring-black"}`}
+        >
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+type WorkCase = (typeof starterQuestions)[number];
+
+export function WorkIndex({
+  cases,
+  onSelect,
+  compact = false,
+  className = "",
+}: {
+  cases: WorkCase[];
+  onSelect: (question: string) => void;
+  compact?: boolean;
+  className?: string;
+}) {
+  return (
+    <ol className={className}>
+      {cases.map((work, index) => (
+        <li key={work.id}>
+          <button
+            type="button"
+            onClick={() => onSelect(work.question)}
+            className={`group grid w-full grid-cols-12 items-center gap-x-4 gap-y-4 border-b border-black px-1 text-left transition-colors hover:bg-[#39ff14] focus:outline-none focus-visible:bg-[#39ff14] md:px-3 ${
+              compact ? "py-4 md:py-5" : "py-6 md:py-8"
+            }`}
+            data-state="related"
+          >
+            <span className="col-span-2 self-start pt-1 text-sm font-semibold tabular-nums text-black md:col-span-1">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className={compact ? "col-span-7 md:col-span-7" : "col-span-10 md:col-span-6"}>
+              <span
+                className={`block font-title font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-black transition-transform duration-300 group-hover:translate-x-2 ${
+                  compact ? "text-xl md:text-3xl" : "text-2xl md:text-5xl"
+                }`}
+              >
+                {work.title ?? work.question}
+              </span>
+              <span
+                className={`mt-2 block font-serif italic leading-snug text-zinc-600 group-hover:text-black ${
+                  compact ? "text-base md:text-lg" : "text-lg md:text-xl"
+                }`}
+              >
+                {work.cardDescription ?? work.intent}
+              </span>
+            </span>
+            {compact ? null : (
+              <span className="hidden md:col-span-2 md:block">
+                {work.tags ? <Pills items={work.tags.slice(0, 2)} size="sm" /> : null}
+              </span>
+            )}
+            <span className="hidden text-[11px] font-semibold uppercase tracking-[0.14em] text-black md:col-span-1 md:block">
+              {work.year}
+            </span>
+            <span className={compact ? "col-span-3 overflow-hidden md:col-span-3" : "col-span-12 overflow-hidden md:col-span-2"}>
+              <WorkThumbnail src={work.thumbnail} label={work.thumbnailLabel ?? work.title ?? ""} />
+            </span>
+          </button>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function WorkThumbnail({ src, label }: { src?: string; label: string }) {
+  if (!src) {
+    return (
+      <span className="flex aspect-[4/3] items-center justify-center bg-black p-2 text-center font-title text-sm font-semibold uppercase leading-tight tracking-[-0.02em] text-[#39ff14] md:p-3 md:text-base">
+        {label}
+      </span>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt=""
+      className="aspect-[4/3] w-full object-cover grayscale transition duration-500 group-hover:scale-105 group-hover:grayscale-0"
+    />
+  );
+}
+
+function ServiceMedia({ media }: { media: ServicePhase["media"] }) {
+  if (media.kind === "specimen") {
+    return (
+      <div
+        role="img"
+        aria-label={media.alt}
+        className="relative flex aspect-[4/3] flex-col justify-between overflow-hidden bg-[#ff1744] p-6 text-white md:p-8"
+      >
+        <div className="flex items-start justify-between text-[11px] font-semibold uppercase tracking-[0.16em]">
+          <span>Mark</span>
+          <span>Type</span>
+          <span>Colour</span>
+        </div>
+        <div className="flex items-end justify-between gap-6">
+          <span className="font-serif text-[clamp(120px,22vw,260px)] italic leading-[0.75]">Aa</span>
+          <span className="mb-3 grid grid-cols-2 gap-1.5">
+            {["#ff1744", "#111111", "#39ff14", "#ffffff"].map((swatch) => (
+              <span key={swatch} className="size-8 ring-1 ring-white/70 md:size-12" style={{ background: swatch }} />
+            ))}
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  if (media.kind === "video" && media.src) {
+    return (
+      <video
+        className="aspect-[4/3] w-full bg-zinc-100 object-cover"
+        src={media.src}
+        poster={media.poster}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label={media.alt}
+      />
+    );
+  }
+
+  return (
+    <img className="aspect-[4/3] w-full bg-zinc-100 object-cover" src={media.src} alt={media.alt} />
   );
 }
 
@@ -324,10 +594,30 @@ export function EvidenceBlock({
   items: EvidenceItem[];
   onQuestionSelect: (question: string) => void;
 }) {
+  const decisionNumber = label.match(/(\d+)\s*$/)?.[1];
+
   return (
     <MotionBlock delay={delay} eyebrow={label}>
-      <TypewriterText as="h2" text={title} speed={14} className="text-xl font-semibold text-black" />
-      <ArtifactGallery items={items} onQuestionSelect={onQuestionSelect} />
+      <div className="grid gap-6 md:grid-cols-12 md:gap-10">
+        <div className="self-start md:sticky md:top-24 md:col-span-4">
+          {decisionNumber ? (
+            <span className="inline-block bg-black px-2 font-title text-6xl font-semibold leading-none tracking-[-0.05em] text-[#39ff14] md:text-7xl">
+              {decisionNumber}
+            </span>
+          ) : null}
+          <TypewriterText
+            as="h2"
+            text={title}
+            speed={14}
+            className={`font-title text-3xl font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-black md:text-4xl ${
+              decisionNumber ? "mt-5" : ""
+            }`}
+          />
+        </div>
+        <div className="md:col-span-8">
+          <ArtifactGallery items={items} onQuestionSelect={onQuestionSelect} />
+        </div>
+      </div>
     </MotionBlock>
   );
 }
@@ -348,7 +638,7 @@ export function ArtifactGallery({
   );
 
   return (
-    <div className="mt-6 grid gap-x-6 gap-y-9 md:grid-cols-2" data-state="artifact-gallery">
+    <div className="grid gap-x-6 gap-y-9 md:grid-cols-2" data-state="artifact-gallery">
       {artifacts.map((artifact) => (
         <ArtifactCard
           key={`${artifact.item.title}-${artifact.reference.label}`}

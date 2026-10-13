@@ -1,4 +1,4 @@
-export type QuestionCategory = "Identity" | "Work" | "Evidence" | "Principles" | "Logs";
+export type QuestionCategory = "Identity" | "Services" | "Work" | "Evidence" | "Principles" | "Logs";
 
 export type QuestionState = "current" | "answered" | "related" | "loading" | "disabled";
 
@@ -87,7 +87,37 @@ export type CareerTimelineEntry = {
   alignAfter?: string;
 };
 
+export type ServicePhase = {
+  step: string;
+  title: string;
+  description: string;
+  deliverables: string[];
+  proof: { label: string; targetQuestion: string }[];
+  /** Visual shown beside the phase. "specimen" renders a typographic identity specimen instead of a file. */
+  media: {
+    kind: "video" | "image" | "specimen";
+    src?: string;
+    poster?: string;
+    alt: string;
+    caption: string;
+  };
+};
+
 export type AnswerBlock =
+  | {
+      id: string;
+      type: "processStrip";
+      label: string;
+      title: string;
+      steps: { title: string; detail: string }[];
+    }
+  | {
+      id: string;
+      type: "serviceStack";
+      label: string;
+      title: string;
+      phases: ServicePhase[];
+    }
   | {
       id: string;
       type: "summary";
@@ -95,6 +125,8 @@ export type AnswerBlock =
       title: string;
       body: string;
       signals?: string[];
+      /** "inverted" renders the block as a full-bleed black band. */
+      tone?: "inverted";
     }
   | {
       id: string;
@@ -190,13 +222,20 @@ export type QuestionNode = {
   followUpQuestions: string[];
 };
 
-export const questionCategories: QuestionCategory[] = ["Identity", "Work", "Evidence", "Principles", "Logs"];
+export const questionCategories: QuestionCategory[] = ["Identity", "Services", "Work", "Evidence", "Principles", "Logs"];
 
 export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" | "category"> & {
   /** Short, one-line version of the description shown on the Work starter-path card. Falls back to `intent`. */
   cardDescription?: string;
   /** Tags shown on Work starter-path cards only. Card shows the first 2 plus a "+N" overflow badge. */
   tags?: string[];
+  /** Short project name for the editorial work index on the home screen. */
+  title?: string;
+  /** Year or project type shown in the work index. */
+  year?: string;
+  /** Thumbnail image for the work index. Falls back to a typographic tile with `thumbnailLabel`. */
+  thumbnail?: string;
+  thumbnailLabel?: string;
 })[] = [
   {
     id: "saas-admin-redesign",
@@ -205,6 +244,9 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     cardDescription: "Turning workplace configuration into one coherent system.",
     tags: ["B2B SaaS", "Enterprise UX", "Information Architecture"],
     category: "Work",
+    title: "SaaS Admin Redesign",
+    year: "2023–26",
+    thumbnail: "/case-studies/saas-admin-redesign/hero-poster.jpg",
   },
   {
     id: "meeting-room-redesign",
@@ -213,6 +255,9 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     cardDescription: "Real-time room availability on a tablet display.",
     tags: ["Workplace UX", "Tablet interface", "Timeline design"],
     category: "Work",
+    title: "Connected Experience",
+    year: "2023–26",
+    thumbnail: "/artifacts/meeting-room-timeline-meeting-current.png",
   },
   {
     id: "jira-automation",
@@ -221,6 +266,9 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     cardDescription: "Turning Figma design-system changes into Jira tickets.",
     tags: ["Workflow automation", "Design systems", "Design-to-engineering handoff"],
     category: "Work",
+    title: "AI Workflow",
+    year: "Hackathon",
+    thumbnailLabel: "Figma → Jira",
   },
   {
     id: "lee-heemoon",
@@ -229,6 +277,9 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     cardDescription: "An evolving digital home for a genre-defying artist.",
     tags: ["UX/UI Design", "Art Direction", "Interaction Design"],
     category: "Work",
+    title: "Artist's Digital Archive",
+    year: "2024–",
+    thumbnail: "/case-studies/lee-heemoon/lee-heemoon-360-carousel-poster.jpg",
   },
   {
     id: "coach-finder-filter",
@@ -237,12 +288,21 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     cardDescription: "Making filtering the main way people find the right coach.",
     tags: ["Mobile UX", "Filter Design", "Interaction Design"],
     category: "Work",
+    title: "Filter-First Matching",
+    year: "Concept",
+    thumbnail: "/case-studies/coach-finder-filter/hero.jpg",
   },
   {
     id: "who-are-you",
     question: "Who are you?",
     intent: "Build a first identity map from role, judgment, proof, and next paths.",
     category: "Identity",
+  },
+  {
+    id: "studio-services",
+    question: "What can you build for me?",
+    intent: "One designer, end to end: brand identity, digital product design, and the working product — built with AI-assisted code.",
+    category: "Services",
   },
 ];
 
@@ -319,6 +379,121 @@ const decisionLog12: DesignLog = {
 
 export const questionBank: QuestionNode[] = [
   {
+    id: "studio-services",
+    question: "What can you build for me?",
+    intent: "One designer, end to end: brand identity, digital product design, and the working product — built with AI-assisted code.",
+    category: "Services",
+    answerTitle: "Studio of one",
+    answerBlocks: [
+      {
+        id: "services-summary",
+        type: "summary",
+        label: "Studio Summary",
+        title: "Identity, product, and code — by one person.",
+        body:
+          "One point of contact and one line of reasoning, from the first mark to the shipped product. You end up with something that works, not a deck.",
+        signals: ["Corporate identity", "Digital product design", "Vibe coding", "Launch & maintenance"],
+      },
+      {
+        id: "services-stack",
+        type: "serviceStack",
+        label: "What I Offer",
+        title: "Three layers, one practice",
+        phases: [
+          {
+            step: "01",
+            title: "Brand identity",
+            description: "Who you are, visually and verbally, before a single screen exists.",
+            deliverables: ["Logo & mark", "Colour & type", "Brand guidelines", "Art direction"],
+            proof: [
+              { label: "Career — CI for ZyseME & Pyrexx", targetQuestion: "Who are you?" },
+              { label: "Artist's Digital Archive", targetQuestion: "Show me the Artist's Digital Archive case." },
+            ],
+            media: {
+              kind: "specimen",
+              alt: "Typographic identity specimen showing a letterform and a four-colour palette",
+              caption: "Specimen — mark, type, colour",
+            },
+          },
+          {
+            step: "02",
+            title: "Product design",
+            description: "Structure, flows, interface, and a design system that keeps scaling.",
+            deliverables: ["UX framing", "Information architecture", "UI & interaction", "Design system"],
+            proof: [
+              { label: "SaaS Admin Redesign", targetQuestion: "Show me the SaaS Admin Redesign case." },
+              { label: "Connected Experience Design", targetQuestion: "Show me the Connected Experience Design case." },
+              { label: "Filter-First Matching", targetQuestion: "Show me the Filter-First Matching case." },
+            ],
+            media: {
+              kind: "video",
+              src: "/case-studies/saas-admin-redesign/hero.mp4",
+              poster: "/case-studies/saas-admin-redesign/hero-poster.jpg",
+              alt: "Recording of the LIZ Smart Office floorplan and resource-management interface",
+              caption: "SaaS Admin Redesign — floorplan & resources",
+            },
+          },
+          {
+            step: "03",
+            title: "Build with code",
+            description: "The design shipped as a working product, built with AI-assisted development.",
+            deliverables: ["Websites", "Web app MVPs", "Interactive prototypes", "Ongoing care"],
+            proof: [
+              { label: "Artist's Digital Archive — built & maintained", targetQuestion: "Show me the Artist's Digital Archive case." },
+              { label: "AI Workflow prototype", targetQuestion: "Show me the AI Workflow case." },
+            ],
+            media: {
+              kind: "video",
+              src: "/case-studies/lee-heemoon/lee-heemoon-360-carousel.mp4",
+              poster: "/case-studies/lee-heemoon/lee-heemoon-360-carousel-poster.jpg",
+              alt: "The Lee Heemoon website's 360-degree Projects carousel rotating between project cards",
+              caption: "Artist's Digital Archive — live since 2024",
+            },
+          },
+        ],
+      },
+      {
+        id: "services-process",
+        type: "processStrip",
+        label: "How A Project Runs",
+        title: "From first question to live product",
+        steps: [
+          { title: "Frame", detail: "The real problem, the audience, what success means." },
+          { title: "Identify", detail: "Name, mark, colour, type, tone." },
+          { title: "Design", detail: "Flows, structure, interface, components." },
+          { title: "Build", detail: "Working code, AI-assisted, designer-reviewed." },
+          { title: "Evolve", detail: "Launch, then keep improving it." },
+        ],
+      },
+      {
+        id: "services-why",
+        type: "summary",
+        tone: "inverted",
+        label: "Why One Person",
+        title: "No handoff, no translation loss.",
+        body:
+          "The same intent carries from brand to build. Founders, small teams, and creative practices get a coherent identity and a working product without assembling an agency — or book any single layer on its own.",
+        signals: ["Founders & startups", "Small businesses", "Artists & creative practices", "In-house teams needing extra hands"],
+      },
+      {
+        id: "services-proof",
+        type: "summary",
+        label: "Proof In Plain Sight",
+        title: "This site is an example.",
+        body: "Concept, interface system, and code — produced by one designer working with AI coding tools.",
+      },
+      {
+        id: "services-related-work",
+        type: "workShowcase",
+        label: "Selected Work",
+        title: "See the layers in real projects",
+      },
+    ],
+    relatedCards: [],
+    evidenceReferences: [],
+    followUpQuestions: ["Who are you?", "Show me the Artist's Digital Archive case."],
+  },
+  {
     id: "who-are-you",
     question: "Who are you?",
     intent: "Explain identity through role, values, operating model, and proof.",
@@ -329,10 +504,10 @@ export const questionBank: QuestionNode[] = [
         id: "identity-summary",
         type: "summary",
         label: "Identity Summary",
-        title: "I build products where complex thinking becomes usable.",
+        title: "A one-person studio — from brand identity to a working product.",
         body:
-          "I am a senior product designer and builder working across product strategy, interface systems, and AI-enabled workflows. My work is less about presenting finished screens and more about helping teams find the right problem, make better decisions, and turn ambiguity into usable systems.",
-        signals: ["Product strategy", "UX/UI", "Design systems", "AI workflows"],
+          "I am an independent designer running a studio of one. I take a product from its corporate identity, through digital product design, all the way to a working build — developed with AI-assisted code (vibe coding). My work is less about presenting finished screens and more about finding the right problem, making better decisions, and turning ambiguity into something people can actually use.",
+        signals: ["Brand identity (CI)", "Digital product design", "Design systems", "AI-assisted development"],
       },
       {
         id: "what-i-design-for",
@@ -493,7 +668,7 @@ export const questionBank: QuestionNode[] = [
     ],
     relatedCards: [],
     evidenceReferences: coreEvidence.flatMap((item) => item.references),
-    followUpQuestions: ["How has your design philosophy changed?", "Show me the Connected Experience Design case."],
+    followUpQuestions: ["What can you build for me?", "How has your design philosophy changed?"],
   },
   {
     id: "design-philosophy",
@@ -948,6 +1123,7 @@ export const questionBank: QuestionNode[] = [
       {
         id: "saas-outcome",
         type: "summary",
+        tone: "inverted",
         label: "System Outcome",
         title: "From individual settings to a configuration system",
         body:
@@ -987,7 +1163,7 @@ export const questionBank: QuestionNode[] = [
         type: "nextQuestions",
         label: "Next Questions",
         title: "Continue exploring",
-        questions: ["Show me the Connected Experience Design case.", "Show me the AI Workflow case."],
+        questions: ["Show me the Connected Experience Design case.", "Show me the AI Workflow case.", "What can you build for me?"],
       },
       {
         id: "saas-related-work",
@@ -1280,6 +1456,7 @@ export const questionBank: QuestionNode[] = [
       {
         id: "coach-outcome",
         type: "summary",
+        tone: "inverted",
         label: "System Outcome",
         title: "From a search screen to a filter-first product",
         body:
@@ -1319,7 +1496,7 @@ export const questionBank: QuestionNode[] = [
         type: "nextQuestions",
         label: "Next Questions",
         title: "Continue exploring",
-        questions: ["Show me the SaaS Admin Redesign case.", "Show me the Artist's Digital Archive case."],
+        questions: ["Show me the SaaS Admin Redesign case.", "Show me the Artist's Digital Archive case.", "What can you build for me?"],
       },
       {
         id: "coach-related-work",
@@ -1461,7 +1638,7 @@ export const questionBank: QuestionNode[] = [
         type: "nextQuestions",
         label: "Next Questions",
         title: "Continue exploring",
-        questions: ["Show me the SaaS Admin Redesign case.", "Show me the Connected Experience Design case."],
+        questions: ["Show me the SaaS Admin Redesign case.", "Show me the Connected Experience Design case.", "What can you build for me?"],
       },
       {
         id: "jira-related-work",
@@ -1719,6 +1896,7 @@ export const questionBank: QuestionNode[] = [
       {
         id: "heemoon-ownership",
         type: "summary",
+        tone: "inverted",
         label: "Ownership",
         title: "Designed, built, and maintained",
         body:
@@ -1758,7 +1936,7 @@ export const questionBank: QuestionNode[] = [
         type: "nextQuestions",
         label: "Next Questions",
         title: "Continue exploring",
-        questions: ["Show me the SaaS Admin Redesign case.", "Show me the AI Workflow case.", "Who are you?"],
+        questions: ["Show me the SaaS Admin Redesign case.", "Show me the AI Workflow case.", "Who are you?", "What can you build for me?"],
       },
       {
         id: "heemoon-related-work",
@@ -1830,7 +2008,7 @@ export const fallbackQuestion: QuestionNode = {
       type: "nextQuestions",
       label: "Next Questions",
       title: "More grounded paths",
-      questions: ["Who are you?", "Show me the SaaS Admin Redesign case."],
+      questions: ["Who are you?", "What can you build for me?", "Show me the SaaS Admin Redesign case."],
     },
   ],
   relatedCards: [
@@ -1856,6 +2034,13 @@ export function resolveQuestion(input: string): QuestionNode {
     return questionBank.find((node) => node.id === starter.id) ?? fallbackQuestion;
   }
 
+  if (
+    ["service", "offer", "hire", "build for me", "work together", "studio", "freelance", "vibe"].some((keyword) =>
+      normalized.includes(keyword),
+    )
+  ) {
+    return questionBank.find((node) => node.id === "studio-services") ?? fallbackQuestion;
+  }
   if (normalized.includes("who") || normalized.includes("identity")) {
     return questionBank.find((node) => node.id === "who-are-you") ?? fallbackQuestion;
   }

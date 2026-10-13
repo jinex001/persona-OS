@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, Poppins } from "next/font/google";
+import { IBM_Plex_Sans, Instrument_Serif, Poppins } from "next/font/google";
 import "./globals.css";
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-ibm-plex-sans",
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
 });
 
 const poppins = Poppins({
@@ -17,14 +24,14 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   applicationName: "Portfolio OS",
   title: "Portfolio OS — Jinwh",
-  description: "An interactive design knowledge system for exploring decisions, evidence, and product thinking.",
+  description: "A one-person design studio — brand identity, digital product design, and AI-assisted development, end to end.",
   metadataBase: new URL("https://os.jinwh.com"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Portfolio OS — Jinwh",
-    description: "An interactive design knowledge system for exploring decisions, evidence, and product thinking.",
+    description: "A one-person design studio — brand identity, digital product design, and AI-assisted development, end to end.",
     url: "https://os.jinwh.com/",
     siteName: "Portfolio OS",
     type: "website",
@@ -32,7 +39,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Portfolio OS — Jinwh",
-    description: "An interactive design knowledge system for exploring decisions, evidence, and product thinking.",
+    description: "A one-person design studio — brand identity, digital product design, and AI-assisted development, end to end.",
   },
 };
 
@@ -42,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${ibmPlexSans.variable} ${poppins.variable}`}>
+    <html lang="en" className={`${ibmPlexSans.variable} ${poppins.variable} ${instrumentSerif.variable}`}>
       <body>{children}</body>
     </html>
   );

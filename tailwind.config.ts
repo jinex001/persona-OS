@@ -17,6 +17,7 @@ const config: Config = {
       },
       fontFamily: {
         title: ["var(--font-poppins)", "sans-serif"],
+        serif: ["var(--font-instrument-serif)", "Georgia", "serif"],
       },
       boxShadow: {
         input: "0 -1px 0 rgba(17, 17, 17, 0.08)",
