@@ -95,7 +95,7 @@ export type ServicePhase = {
   proof: { label: string; targetQuestion: string }[];
   /** Visual shown beside the phase. "specimen" renders a typographic identity specimen instead of a file. */
   media: {
-    kind: "video" | "image" | "specimen";
+    kind: "video" | "image" | "specimen" | "leeHeemoonSystem";
     src?: string;
     poster?: string;
     alt: string;
@@ -104,6 +104,15 @@ export type ServicePhase = {
 };
 
 export type AnswerBlock =
+  | {
+      id: string;
+      type: "designSystem";
+      label: string;
+      title: string;
+      body: string;
+      /** Which bespoke specimen to render. */
+      system: "lee-heemoon";
+    }
   | {
       id: string;
       type: "processStrip";
@@ -274,8 +283,8 @@ export const starterQuestions: (Pick<QuestionNode, "id" | "question" | "intent" 
     id: "lee-heemoon",
     question: "Show me the Artist's Digital Archive case.",
     intent: "Designing and maintaining an evolving digital home for a genre-defying artist.",
-    cardDescription: "An evolving digital home for a genre-defying artist.",
-    tags: ["UX/UI Design", "Art Direction", "Interaction Design"],
+    cardDescription: "An evolving digital home — and its design system — for a genre-defying artist.",
+    tags: ["UX/UI Design", "Art Direction", "Design System", "Interaction Design"],
     category: "Work",
     title: "Artist's Digital Archive",
     year: "2024–",
@@ -406,13 +415,13 @@ export const questionBank: QuestionNode[] = [
             description: "Who you are, visually and verbally, before a single screen exists.",
             deliverables: ["Logo & mark", "Colour & type", "Brand guidelines", "Art direction"],
             proof: [
+              { label: "Artist's Digital Archive — design system", targetQuestion: "Show me the Artist's Digital Archive case." },
               { label: "Career — CI for ZyseME & Pyrexx", targetQuestion: "Who are you?" },
-              { label: "Artist's Digital Archive", targetQuestion: "Show me the Artist's Digital Archive case." },
             ],
             media: {
-              kind: "specimen",
-              alt: "Typographic identity specimen showing a letterform and a four-colour palette",
-              caption: "Specimen — mark, type, colour",
+              kind: "leeHeemoonSystem",
+              alt: "Lee Heemoon design system: the brand blue, a Korean title chip and icon-font arrow buttons",
+              caption: "Lee Heemoon — visual system, documented from the live site",
             },
           },
           {
@@ -1707,7 +1716,7 @@ export const questionBank: QuestionNode[] = [
         title: "One artist. Many identities. One evolving digital system.",
         body:
           "Lee Heemoon's practice moves between Korean traditional music, contemporary performance, pop culture, fashion, and collaborations — often building an entirely new identity from one project to the next. The challenge wasn't to design an artist website; it was to create a digital system that could hold many different artistic identities without reducing them to conventional genre categories. Designed and built directly in Webflow with Ewon Art Company since 2024, and still in active use.",
-        signals: ["UX/UI Design", "Art Direction", "Information Architecture", "Interaction Design", "Webflow Development", "Ongoing Ownership"],
+        signals: ["UX/UI Design", "Art Direction", "Information Architecture", "Interaction Design", "Design System", "Webflow Development", "Ongoing Ownership"],
       },
       {
         id: "heemoon-reasoning",
@@ -1894,14 +1903,23 @@ export const questionBank: QuestionNode[] = [
         ],
       },
       {
+        id: "heemoon-design-system",
+        type: "designSystem",
+        label: "Evidence",
+        title: "From a live site to a design system",
+        body:
+          "After two years of new projects, teasers and pages, I extracted the site's visual rules directly from its production code into a design system: one brand colour, square blue blocks for text against round cards for images, Poppins and NanumSquareRound with a custom icon font for arrows and language labels, and eight components documented from the live pages.",
+        system: "lee-heemoon",
+      },
+      {
         id: "heemoon-ownership",
         type: "summary",
         tone: "inverted",
         label: "Ownership",
         title: "Designed, built, and maintained",
         body:
-          "I designed and built the website directly in Webflow and have continued managing it in collaboration with Ewon Art since 2024. New projects, performances, albums, and promotional priorities continue to enter the system — the website functions as an evolving publishing platform rather than a finished, one-off deliverable.",
-        signals: ["2024 — Present", "Ewon Art Company, Korea", "Design → Build → Launch → Maintain → Evolve"],
+          "I designed and built the website directly in Webflow and have continued managing it in collaboration with Ewon Art since 2024. New projects, performances, albums, and promotional priorities continue to enter the system — the website functions as an evolving publishing platform rather than a finished, one-off deliverable. In 2026 its visual rules became a documented design system, extracted from the live code.",
+        signals: ["2024 — Present", "Ewon Art Company, Korea", "Design → Build → Launch → Maintain → Systematize"],
       },
       {
         id: "heemoon-lens",

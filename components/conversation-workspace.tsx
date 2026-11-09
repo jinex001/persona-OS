@@ -428,7 +428,7 @@ function AnswerWorkspace({
   const workCases = starterQuestions.filter((item) => item.category === "Work");
   const caseIndex = workCases.findIndex((item) => item.id === question.id);
   const caseLabel = caseIndex >= 0 ? `Case ${String(caseIndex + 1).padStart(2, "0")}` : question.category;
-  const fullWidthBlocks = new Set(["serviceStack", "evidence", "designReasoning", "workShowcase", "nextQuestions", "processStrip", "careerEvolution"]);
+  const fullWidthBlocks = new Set(["serviceStack", "designSystem", "evidence", "designReasoning", "workShowcase", "nextQuestions", "processStrip", "careerEvolution"]);
 
   return (
     <div className="mx-auto max-w-[1280px] pb-20">
