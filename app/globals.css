@@ -11,6 +11,37 @@
   box-sizing: border-box;
 }
 
+/* Lee Heemoon design-system specimen: the artist site's own icon and Korean fonts. */
+@font-face {
+  font-family: "Heemoon";
+  src: url("/fonts/lee-heemoon/heemoon.ttf") format("truetype");
+  font-display: block;
+}
+
+@font-face {
+  font-family: "NanumSquareRound R";
+  src: url("/fonts/lee-heemoon/NanumSquareRoundOTFR.otf") format("opentype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "NanumSquareRound EB";
+  src: url("/fonts/lee-heemoon/NanumSquareRoundOTFEB.otf") format("opentype");
+  font-display: swap;
+}
+
+.font-heemoon-icons {
+  font-family: "Heemoon", sans-serif;
+}
+
+.font-nanum-r {
+  font-family: "NanumSquareRound R", Arial, sans-serif;
+}
+
+.font-nanum-eb {
+  font-family: "NanumSquareRound EB", Arial, sans-serif;
+}
+
 html,
 body {
   min-height: 100%;

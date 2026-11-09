@@ -2,6 +2,7 @@
 
 import { useState, type KeyboardEvent, type ReactNode, type TouchEvent } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { LeeHeemoonDesignSystem, LeeHeemoonSystemTile } from "@/components/lee-heemoon-design-system";
 import { starterQuestions } from "@/data/portfolio-response";
 import type {
   AnswerBlock,
@@ -290,6 +291,30 @@ export function AnswerBlockRenderer({
     );
   }
 
+  if (block.type === "designSystem") {
+    return (
+      <MotionBlock delay={delay} eyebrow={block.label}>
+        <div className="grid gap-6 md:grid-cols-12 md:gap-10">
+          <div className="self-start md:sticky md:top-24 md:col-span-4">
+            <span className="inline-block bg-[#0106c7] px-2 font-title text-5xl font-semibold leading-none tracking-[-0.05em] text-white md:text-6xl">
+              DS
+            </span>
+            <TypewriterText
+              as="h2"
+              text={block.title}
+              speed={14}
+              className="mt-5 font-title text-3xl font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-black md:text-4xl"
+            />
+            <p className="mt-5 text-base leading-7 text-zinc-700">{block.body}</p>
+          </div>
+          <div className="md:col-span-8">
+            <LeeHeemoonDesignSystem />
+          </div>
+        </div>
+      </MotionBlock>
+    );
+  }
+
   if (block.type === "processStrip") {
     return (
       <MotionBlock delay={delay} eyebrow={block.label}>
@@ -510,6 +535,10 @@ function WorkThumbnail({ src, label }: { src?: string; label: string }) {
 }
 
 function ServiceMedia({ media }: { media: ServicePhase["media"] }) {
+  if (media.kind === "leeHeemoonSystem") {
+    return <LeeHeemoonSystemTile label={media.alt} />;
+  }
+
   if (media.kind === "specimen") {
     return (
       <div
